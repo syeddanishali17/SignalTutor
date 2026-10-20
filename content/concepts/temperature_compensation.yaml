@@ -5,7 +5,7 @@ code: C3
 track: course_l01
 prerequisites: [wheatstone_full]
 status: verified
-source_refs: ["own lecture notes, p. 5 (temperature affects them all the same)", "Lecture 1 notes, p. 2"]
+source_refs: ["notes (temperature affects them all the same)"]
 one_liner: "Gauges also change with temperature. If all four warm up together their drifts cancel in a full bridge; a quarter bridge mistakes heat for strain."
 plain_words: "equal drifts cancel"
 explanation_md: temperature_compensation.md

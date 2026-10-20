@@ -11,7 +11,7 @@ Resistor names follow the lecture drawings exactly:
   amplifier with four equal resistors R → A_d = 1 + 2·R2/R1
 
 Closed-form ideal results are provided next to the simulated ones so tests can
-check the solver against the lecture formulas.
+check the solver against the written formulas.
 """
 
 from __future__ import annotations
@@ -142,7 +142,7 @@ class InaResult:
     v_in2: float
     v_A: float  # inverting input of the top op-amp (top of R1)
     v_B: float  # inverting input of the bottom op-amp (bottom of R1)
-    v_o1: float  # stage-1 outputs (the lecture reuses V1, V2 for these, see K10)
+    v_o1: float  # stage-1 outputs (some notes reuse V1, V2 for these, see K10)
     v_o2: float
     v_out: float
     i_R1: float  # current from B to A through R1 (the same current flows through both R2)

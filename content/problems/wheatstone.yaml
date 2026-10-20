@@ -17,7 +17,7 @@ problems:
       - {fn: bridge.full_with_raw_microstrain, misconception: microstrain_slip}
     solution: >-
       Full bridge: $|V_\text{out}| = G\,\varepsilon\,V_b = [[G]] \times ([[eps_ue]]\times10^{-6}) \times [[Vb]]\,\text{V}$.
-      No $\tfrac14$ — that belongs to the quarter bridge.
+      No $\tfrac14$. That belongs to the quarter bridge.
 
   - id: quarter_bridge_output
     concept: wheatstone_quarter
@@ -114,7 +114,7 @@ problems:
       - {id: four, text: "4×"}
       - {id: sixteen, text: "16×"}
     correct: four
-    solution: "Quarter $\\approx \\tfrac14\\,\\tfrac{\\Delta R}{R}\\,V_0$, full $= \\tfrac{\\Delta R}{R}\\,V_0$: a factor 4."
+    solution: "Quarter $\\approx \\tfrac14\\,\\tfrac{\\Delta R}{R}\\,V_0$, full $= \\tfrac{\\Delta R}{R}\\,V_0$. A factor 4."
 
   - id: balance_condition
     concept: wheatstone_bridge

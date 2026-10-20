@@ -521,7 +521,7 @@ def membrane(p_kpa: float, p_max_kpa: float, eps: float, x_rel: float, selected=
 
     The bulge follows the clamped-plate shape w(u) ∝ (1 − 4u²)² (zero slope at the rim).
     Rim gauges are stretched (+ε → R + ΔR), centre gauges squeezed (−ε → R − ΔR); the
-    equal magnitudes are the lecture's full-bridge idealisation.
+    equal magnitudes are the written full-bridge idealisation.
     """
     sel = _sel(selected)
     c = Canvas(700, 420, "Pressure membrane with strain gauges",

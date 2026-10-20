@@ -9,7 +9,7 @@ prerequisites:
 - integral_area
 status: verified
 source_refs:
-- Lecture 2 notes, p. 7–8
+- notes
 one_liner: 'The **PSD** $S(f)$ says how much noise power sits in each hertz of bandwidth. Unit: $\text{quantity}^2/\text{Hz}$
   (e.g. $\text{V}^2/\text{Hz}$). **White** noise: flat. **1/f** noise: falls with frequency.'
 plain_words: noise power per hertz, at each frequency

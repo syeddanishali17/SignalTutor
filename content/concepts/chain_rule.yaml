@@ -8,12 +8,12 @@ prerequisites:
 status: supplemental
 source_refs:
 - standard
-one_liner: 'If $C$ depends on $x$ and $x$ depends on time, then $\dfrac{dC}{dt} = \dfrac{dC}{dx}\,\dfrac{dx}{dt}$:
+one_liner: 'If $C$ depends on $x$ and $x$ depends on time, then $\dfrac{dC}{dt} = \dfrac{dC}{dx}\,\dfrac{dx}{dt}$. 
   how sensitive $C$ is to $x$, times how fast $x$ moves.'
 plain_words: 'a chain of ''how much per'': per metre times metres per second'
 explanation_md: chain_rule.md
 misconceptions:
 - id: chain_rule_forget_speed
   text: dC/dt equals dC/dx.
-  correction: $dC/dx$ is a slope in F/m; $dC/dt$ is a rate in F/s. You must multiply by the speed $dx/dt$ — a stiff,
+  correction: $dC/dx$ is a slope in F/m; $dC/dt$ is a rate in F/s. You must multiply by the speed $dx/dt$, a stiff,
     motionless membrane gives $dC/dt = 0$ however large $dC/dx$ is.

@@ -6,7 +6,7 @@ track: electrical
 prerequisites: [resistance, proportionality, fractions]
 status: supplemental
 source_refs: ["standard"]
-one_liner: "$I = \\dfrac{V}{R}$: for a resistor, current is the push (voltage) divided by the opposition (resistance)."
+one_liner: "$I = \\dfrac{V}{R}$. For a resistor, current is the push (voltage) divided by the opposition (resistance)."
 plain_words: "more push → more flow; more resistance → less flow"
 explanation_md: ohms_law.md
 symbol: "I = V/R"

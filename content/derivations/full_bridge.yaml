@@ -2,7 +2,7 @@ id: full_bridge
 title: Full-bridge output
 concept: wheatstone_full
 figure: bridge_full
-source: "Lecture 1 notes, p. 2 (result); steps follow the same divider method as Lecture 2 notes, p. 2"
+source: "notes (result); steps follow the same divider method as notes"
 symbols: {Vb: V, R: ohm, dR: ohm, I1: A, I2: A, V1: V, V2: V}
 steps:
   - id: setup
@@ -23,7 +23,7 @@ steps:
     highlight: [R1, R4, R2, R3, I1, I2]
     check: {kind: define, name: I2, expr: "Vb/((R + dR) + (R - dR))"}
     fade:
-      prompt: "Current in the left branch (R1 = R + ΔR over R4 = R − ΔR)?"
+      prompt: "Current in the left branch ($R_1 = R + \\Delta R$ over $R_4 = R - \\Delta R$)?"
       correct: 0
       options:
         - {latex: "\\frac{V_b}{2R}", expr: "Vb/(2*R)"}
@@ -32,7 +32,7 @@ steps:
 
   - id: v2
     latex: "V_2 = I_2\\,(R - \\Delta R) = \\frac{V_b}{2}\\left(1 - \\frac{\\Delta R}{R}\\right)"
-    changed: "Left midpoint: across R4 = R − ΔR."
+    changed: "Left midpoint: across $R_4 = R - \\Delta R$."
     why: "Measured from ground, across the lower-left arm."
     law: "Ohm's law"
     highlight: [R4, V2]
@@ -40,7 +40,7 @@ steps:
 
   - id: v1
     latex: "V_1 = I_1\\,(R + \\Delta R) = \\frac{V_b}{2}\\left(1 + \\frac{\\Delta R}{R}\\right)"
-    changed: "Right midpoint: across R3 = R + ΔR."
+    changed: "Right midpoint: across $R_3 = R + \\Delta R$."
     why: "Measured from ground, across the lower-right arm."
     law: "Ohm's law"
     highlight: [R3, V1]

@@ -2,12 +2,12 @@ id: quarter_bridge
 title: Quarter-bridge output
 concept: wheatstone_quarter
 figure: bridge_quarter
-source: "Lecture 2 notes, p. 2 (gauge placed in the upper-left arm, see K9)"
+source: "notes (gauge placed in the upper-left arm, see K9)"
 symbols: {V0: V, R: ohm, dR: ohm, I1: A, I2: A, V1: V, V2: V}
 steps:
   - id: setup
     latex: "R_1 = R + \\Delta R,\\quad R_2 = R_3 = R_4 = R,\\qquad I_\\text{meter} = 0"
-    changed: "Name the parts. Only R1 (upper left) is the strain gauge."
+    changed: "Name the parts. Only $R_1$ (upper left) is the strain gauge."
     why: "An ideal voltmeter draws no current, so the two branches do not influence each other: each one is a separate voltage divider."
     law: "Circuit reading"
     assumption: "Ideal voltmeter (infinite input resistance)"
@@ -18,12 +18,12 @@ steps:
     annotated: |-
       I_1 = \frac{\overbrace{V_0}^{\text{push: the supply}}}{\underbrace{2R}_{\text{right branch: } R_2 + R_3}}
     changed: "Current in the right branch."
-    why: "R2 and R3 are in series between V0 and ground: total 2R. Ohm's law gives the branch current."
+    why: "$R_2$ and $R_3$ are in series between $V_0$ and ground: total $2R$. Ohm's law gives the branch current."
     law: "Series resistors + Ohm's law"
     highlight: [R2, R3, I1]
     check: {kind: define, name: I1, expr: "V0/(2*R)"}
     fade:
-      prompt: "Current in the right branch (R2 and R3)?"
+      prompt: "Current in the right branch ($R_2$ and $R_3$)?"
       correct: 0
       options:
         - {latex: "\\frac{V_0}{2R}", expr: "V0/(2*R)"}
@@ -36,12 +36,12 @@ steps:
     annotated: |-
       I_2 = \frac{\overbrace{V_0}^{\text{push: the supply}}}{\underbrace{2R + \Delta R}_{\text{left branch: } R_1 + R_4 \,=\, (R+\Delta R) + R}}
     changed: "Current in the left branch: ΔR appears for the first time."
-    why: "The left branch is R1 = R + ΔR in series with R4 = R: total 2R + ΔR."
+    why: "The left branch is $R_1 = R + \\Delta R$ in series with $R_4 = R$. The total is $2R + \\Delta R$."
     law: "Series resistors + Ohm's law"
     highlight: [R1, R4, I2]
     check: {kind: define, name: I2, expr: "V0/(2*R + dR)"}
     fade:
-      prompt: "Current in the left branch (R1 = R + ΔR and R4)?"
+      prompt: "Current in the left branch ($R_1 = R + \\Delta R$ and $R_4$)?"
       correct: 1
       options:
         - {latex: "\\frac{V_0}{2R}", expr: "V0/(2*R)"}
@@ -54,7 +54,7 @@ steps:
     annotated: |-
       V_1 = \underbrace{I_1}_{\text{right current}} \cdot \underbrace{R}_{R_3} = \frac{V_0}{2}
     changed: "Right midpoint voltage."
-    why: "V1 is measured from ground, i.e. across the lower-right resistor R3 = R."
+    why: "$V_1$ is measured from ground, i.e. across the lower-right resistor $R_3 = R$."
     law: "Ohm's law"
     highlight: [R3, V1]
     check: {kind: define, name: V1, expr: "I1*R"}
@@ -64,12 +64,12 @@ steps:
     annotated: |-
       V_2 = \underbrace{I_2}_{\text{left current}} \cdot \underbrace{R}_{R_4} = \frac{V_0\,R}{2R + \Delta R} \;\overset{\div R\text{ top and bottom}}{=}\; \frac{V_0}{2 + \Delta R/R}
     changed: "Left midpoint voltage; then divide numerator and denominator by R."
-    why: "V2 is measured from ground, across the lower-left resistor R4 = R. Dividing by R makes the normalised change ΔR/R appear."
+    why: "$V_2$ is measured from ground, across the lower-left resistor $R_4 = R$. Dividing by $R$ makes the normalised change $\\Delta R/R$ appear."
     law: "Ohm's law, then normalising"
     highlight: [R4, V2]
     check: {kind: define, name: V2, expr: "I2*R"}
     fade:
-      prompt: "Left midpoint voltage V2 (measured from ground)?"
+      prompt: "Left midpoint voltage $V_2$ (measured from ground)?"
       correct: 0
       options:
         - {latex: "\\frac{V_0}{2 + \\Delta R/R}", expr: "V0/(2 + dR/R)"}
@@ -85,7 +85,7 @@ steps:
     highlight: [meter, V1, V2]
     check: {kind: equals, lhs: "V2 - V1", expr: "-V0/2*(dR/R)/(2 + dR/R)"}
     fade:
-      prompt: "Exact bridge output V2 − V1?"
+      prompt: "Exact bridge output $V_2 - V_1$?"
       correct: 2
       options:
         - {latex: "-\\frac{V_0}{2}\\,\\frac{\\Delta R}{R}", expr: "-V0/2*dR/R"}

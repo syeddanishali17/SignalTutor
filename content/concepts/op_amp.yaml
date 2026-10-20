@@ -5,7 +5,7 @@ code: C8
 track: course_l02
 prerequisites: [amplifier_gain, differential_signal, common_mode, impedance]
 status: verified
-source_refs: ["Lecture 2 notes, p. 1"]
+source_refs: ["notes"]
 one_liner: "An **op-amp** amplifies the difference between its two inputs by an enormous gain: $V_\\text{out} = A_d\\,(V_+ - V_-)$, clipped at its supply rails."
 plain_words: "a difference amplifier with a huge gain"
 explanation_md: op_amp.md

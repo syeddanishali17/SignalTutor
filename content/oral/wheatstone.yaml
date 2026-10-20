@@ -51,7 +51,7 @@ questions:
       - {when_missing: condition, ask: "When is your approximation valid, and how big is its error?"}
       - {when_missing: no_current, ask: "Why may you treat the two branches separately?"}
       - {always: true, ask: "How big is the relative error of the approximation for ΔR/R = 2 %?", hint: "$\\tfrac12\\,\\Delta R/R = 1\\,\\%$."}
-      - {always: true, ask: "Your drawing has the gauge in the lower-left arm. What changes?", hint: "$V_2 = I_2(R + \\Delta R)$: the sign flips, the magnitude stays (K9)."}
+      - {always: true, ask: "Your drawing has the gauge in the lower-left arm. What changes?", hint: "$V_2 = I_2(R + \\Delta R)$. The sign flips, the magnitude stays (K9)."}
     traps:
       - "$V_2$ is measured from ground, i.e. across the **lower** arm."
       - "Forgetting the $\\ll$ condition when writing $\\approx$."
@@ -85,7 +85,7 @@ questions:
     priority: high
     question: "What is the gauge factor, and how does it enter the transfer function of a piezoresistive pressure sensor?"
     structure:
-      - {label: definition, text: "$G = \\dfrac{\\Delta R/R}{\\varepsilon}$: relative resistance change per unit strain; no unit."}
+      - {label: definition, text: "$G = \\dfrac{\\Delta R/R}{\\varepsilon}$. Relative resistance change per unit strain; no unit."}
       - {label: mechanism, text: "Strain changes the geometry (longer, thinner) and, in silicon, the resistivity itself."}
       - {label: key equation, text: "$\\Delta R/R = G\\,\\varepsilon$; full bridge $V_\\text{out} = G\\,\\varepsilon\\,V_b$; $H_{\\varepsilon\\text{-}V} = G\\,V_b$; overall $H_{p\\text{-}V} = \\xi\\,G\\,V_b$."}
       - {label: physical meaning, text: "Metal foil $G \\approx 2$ (geometry); silicon of order 100 (piezoresistive effect)."}
@@ -124,7 +124,7 @@ whiteboard:
     time_limit_s: 240
     reference_figure: bridge_full
     checklist:
-      - {id: arms, text: "Four arms labelled $R_1$–$R_4$ with supply $V_b$ and ground"}
+      - {id: arms, text: "Four arms labelled $R_1$ to $R_4$ with supply $V_b$ and ground"}
       - {id: signs, text: "Diagonally opposite arms carry the same sign ($R_1, R_3$: $+\\Delta R$; $R_2, R_4$: $-\\Delta R$)"}
       - {id: output, text: "Output terminals at the two midpoints, polarity labelled"}
       - {id: formula, text: "Wrote $V_\\text{out} = \\tfrac{\\Delta R}{R}\\,V_b = G\\,\\varepsilon\\,V_b$ next to it"}

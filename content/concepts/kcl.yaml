@@ -5,7 +5,7 @@ code: E7
 track: electrical
 prerequisites: [charge_current]
 status: supplemental
-source_refs: ["standard", "Lecture 2 notes, p. 5 (I1 = I2 = I3 in the instrumentation amplifier)"]
+source_refs: ["standard", "notes (I1 = I2 = I3 in the instrumentation amplifier)"]
 one_liner: "At any **node** (junction), the current flowing in equals the current flowing out: $\\sum I_\\text{in} = \\sum I_\\text{out}$."
 plain_words: "what goes in must come out"
 explanation_md: kcl.md

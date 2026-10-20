@@ -106,7 +106,7 @@ class KnownIssue(Strict):
     severity: Literal["low", "medium", "high"]
     status: Literal["open", "confirmed", "resolved"] = "open"
     formulas: list[str] = []
-    found_by: str = "analysis of the learner's L01/L02 notes"
+    found_by: str = "checked while building this app"
 
 
 # --- problems ----------------------------------------------------------------------

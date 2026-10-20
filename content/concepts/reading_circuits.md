@@ -4,7 +4,7 @@ A circuit diagram is a **map of connections**.
 |---|---|---|
 | line | **wire** | ideal conductor, 0 Ω. All points joined by plain lines form **one node** |
 | ● | **node / junction** | where parts meet |
-| ▭ | **resistor** | rectangle (IEC, as in the lecture drawings) or zig-zag — same part |
+| ▭ | **resistor** | rectangle (IEC) or zig-zag — same part |
 | long + short plate | **battery / source** | the long plate is the + side |
 | ⏚ | **ground** | the agreed 0 V reference |
 | ○ | **terminal** | where a meter or the next stage connects — usually the output |

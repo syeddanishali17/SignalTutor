@@ -13,6 +13,7 @@ from tutor.engine.mastery import Attempt
 from tutor.engine.oral import checklist_complete, coverage, missed_points, select_followups
 from tutor.models.content import ContentBundle, OralQuestion, WhiteboardPrompt
 from tutor.ui import state
+from tutor.ui.components import prose
 from tutor.ui.svg.core import as_img
 from tutor.ui.svg.figures import FIGURES
 
@@ -81,7 +82,8 @@ def oral_dock(q: OralQuestion, scope: str) -> None:
 
     with st.expander("Answer structure", expanded=True):
         for part in q.structure:
-            st.markdown(f"**{part.label.capitalize()}.** {part.text}")
+            st.markdown(f"**{part.label.capitalize()}.**")
+            prose.show(part.text)
     st.markdown("**Tick the points you actually said:**")
     ticked = {p.id for p in q.expected_points if st.checkbox(p.text, key=_k(scope, f"pt_{p.id}"))}
     cov = coverage(q, ticked)
@@ -171,15 +173,15 @@ _GROUPS = (
 def mock_session(bundle: ContentBundle) -> None:
     """15-minute, two-topic oral. Not a quiz: speak, then a hidden checklist, then paper."""
     st.markdown('<p class="mst-kicker">Mock oral exam · two topics · 15 minutes</p>', unsafe_allow_html=True)
-    st.caption("Verified lecture material only. Say the answer aloud before you reveal anything. "
+    st.caption("Verified material only. Say the answer aloud before you reveal anything. "
                "Draw and derive on paper. A weak topic goes back into today's review.")
     if "mock_ids" not in st.session_state:
         pool = mock_exam.eligible_questions(bundle.oral, bundle.concepts)
         if len(pool) < 2:
             st.warning("Not enough verified course questions to run a mock exam yet.")
             return
-        st.markdown("The real exam is about 20 minutes at the whiteboard. This practice is **15 minutes**, "
-                    "two topics, each with a follow-up and — where the course has one — a paper derivation or drawing.")
+        st.markdown("This practice is **15 minutes** and two topics, each with a follow-up and, "
+                    "where one exists, a paper derivation or drawing.")
         if st.button("Start mock exam", type="primary", icon=":material/timer:"):
             rng = random.Random()
             a, b = mock_exam.choose_pair(pool, rng)
@@ -221,7 +223,8 @@ def _mock_revealed(bundle: ContentBundle, q: OralQuestion, scope: str, last: boo
             continue
         with st.expander(title, expanded=title == "Explain it"):
             for part in parts:
-                st.markdown(f"**{part.label.capitalize()}.** {part.text}")
+                st.markdown(f"**{part.label.capitalize()}.**")
+            prose.show(part.text)
     st.markdown("**Tick only the points you actually said:**")
     ticked = {p.id for p in q.expected_points if st.checkbox(p.text, key=_k(scope, f"pt_{p.id}"))}
     cov = coverage(q, ticked)

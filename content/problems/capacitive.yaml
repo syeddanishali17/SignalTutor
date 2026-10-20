@@ -18,7 +18,7 @@ problems:
     kind: numeric
     level: 4
     template: >-
-      The lecture's membrane (area $[[A_mm2]]\,\text{mm}^2$) sits on **two** springs of stiffness $k = [[k_N]]\,\text{N/m}$ each.
+      The membrane (area $[[A_mm2]]\,\text{mm}^2$) sits on **two** springs of stiffness $k = [[k_N]]\,\text{N/m}$ each.
       How far does a pressure of $[[p_kPa]]\,\text{kPa}$ push it?
     params:
       A_mm2: {choices: [1]}
@@ -52,7 +52,7 @@ problems:
       - {id: same, text: "stays the same", misconception: capacitance_depends_on_V}
       - {id: down, text: "halves", misconception: capacitance_gap_bigger}
     correct: up
-    solution: "The gap is in the **denominator** of $C = \\varepsilon A/\\text{gap}$: half the gap, twice the capacitance."
+    solution: "The gap is in the **denominator** of $C = \\varepsilon A/\\text{gap}$. Half the gap, twice the capacitance."
 
   - id: cap_charge
     concept: capacitance
@@ -63,7 +63,7 @@ problems:
       C_pF: {choices: [2, 4.4, 10]}
       V: {choices: [1, 5, 10]}
     answer: {fn: cap.charge, unit: C, tolerance_rel: 0.02, display_prefix: p}
-    solution: "$Q = C\\,V = [[C_pF]]\\,\\text{pF}\\times[[V]]\\,\\text{V}$ — $+Q$ on one plate, $-Q$ on the other."
+    solution: "$Q = C\\,V = [[C_pF]]\\,\\text{pF}\\times[[V]]\\,\\text{V}$. $+Q$ on one plate, $-Q$ on the other."
 
   - id: cap_c_of_x
     concept: capacitive_sensor
@@ -76,13 +76,13 @@ problems:
     answer: {fn: cap.c_of_x, unit: F, tolerance_rel: 0.01, display_prefix: p}
     misconception_checks:
       - {fn: cap.c_of_x_linear, misconception: capacitive_linear}
-    solution: "$C = \\dfrac{C_0}{1 - x/d} = \\dfrac{[[C0_pF]]\\,\\text{pF}}{1 - [[u_pct]]/100}$. Not $C_0(1 + x/d)$ — that is only the small-signal tangent."
+    solution: "$C = \\dfrac{C_0}{1 - x/d} = \\dfrac{[[C0_pF]]\\,\\text{pF}}{1 - [[u_pct]]/100}$. Not $C_0(1 + x/d)$, that is only the small-signal tangent."
 
   - id: cap_no_h
     concept: transfer_function
     kind: mc
     level: 3
-    template: "Why does the lecture say the capacitive pressure sensor has **no constant transfer function**?"
+    template: "Why does this capacitive pressure sensor have **no constant transfer function**?"
     options:
       - {id: curved, text: "$C(x) = C_0/(1 - x/d)$ is curved: the change per unit deflection depends on where you are"}
       - {id: ac, text: "because it needs an AC bias"}
@@ -135,7 +135,7 @@ problems:
       - {id: zero, text: "zero"}
       - {id: large, text: "large, because $dC/dx$ is large", misconception: chain_rule_forget_speed}
     correct: zero
-    solution: "$\\dfrac{dC}{dt} = \\dfrac{dC}{dx}\\,\\dfrac{dx}{dt}$ and $\\dfrac{dx}{dt} = 0$: no motion, no current."
+    solution: "$\\dfrac{dC}{dt} = \\dfrac{dC}{dx}\\,\\dfrac{dx}{dt}$ and $\\dfrac{dx}{dt} = 0$. No motion, no current."
 
   - id: cap_barometer_amp
     concept: capacitor_current
@@ -179,13 +179,13 @@ problems:
     params:
       u_pct: {choices: [5, 10, 20, 30]}
     answer: {fn: cap.ss_error, unit: "1", tolerance_rel: 0.03}
-    solution: "Relative error $= \\dfrac{C - C_0(1 + u)}{C} = u^2$ with $u = x/d$: $([[u_pct]]\\,\\%)^2$."
+    solution: "Relative error $= \\dfrac{C - C_0(1 + u)}{C} = u^2$ with $u = x/d$. $([[u_pct]]\\,\\%)^2$."
 
   - id: cap_small_meaning
     concept: small_signal
     kind: mc
     level: 2
-    template: "In the lecture, 'small-signal approximation' means…"
+    template: "Here, 'small-signal approximation' means…"
     options:
       - {id: defl, text: "the deflection is small compared with the gap, $x \\ll d$"}
       - {id: volt, text: "the output voltage is small", misconception: small_signal_voltage}
@@ -215,7 +215,7 @@ problems:
       - {id: noise, text: "noise picked up by the cable", misconception: harmonics_from_noise}
       - {id: bias, text: "the DC bias"}
     correct: nonlin
-    solution: "$\\hat x^2 = x_0^2 e^{i2\\omega t}$, $\\hat x^3 = x_0^3 e^{i3\\omega t}$ — new frequencies created by the nonlinearity."
+    solution: "$\\hat x^2 = x_0^2 e^{i2\\omega t}$, $\\hat x^3 = x_0^3 e^{i3\\omega t}$. New frequencies created by the nonlinearity."
 
   - id: cap_pullin_x
     concept: pull_in
@@ -227,7 +227,7 @@ problems:
     answer: {fn: cap.pullin_x, unit: m, tolerance_rel: 0.02, display_prefix: µ}
     misconception_checks:
       - {fn: cap.pullin_half, misconception: pullin_d2}
-    solution: "$x = d/3$ (lecture: point of instability for constant $V$)."
+    solution: "$x = d/3$ (written form: point of instability for constant $V$)."
 
   - id: cap_pullin_v
     concept: pull_in

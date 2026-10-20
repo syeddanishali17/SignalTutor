@@ -1,4 +1,4 @@
-"""Modern Sensor Technologies tutor.
+"""Signal Tutor.
 
 Layers:
 - ``tutor.sim``         pure-Python physics/circuit models

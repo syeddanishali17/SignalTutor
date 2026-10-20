@@ -8,4 +8,4 @@ $$V_\text{read} \approx V_\text{open}\,\frac{R_\text{in}}{R_\text{in} + R}$$
 
 $R_\text{in} = 10\,R$ loses about 9 %; $R_\text{in} = 1000\,R$ loses 0.1 %.
 
-This is exactly the problem lecture 2 raises with the difference amplifier — its input impedance is set by ordinary resistors, "less than ∞" — and why the **instrumentation amplifier** feeds the bridge straight into op-amp inputs.
+This is the same problem a difference amplifier raises — its input impedance is set by ordinary resistors, "less than ∞" — and why the **instrumentation amplifier** feeds the bridge straight into op-amp inputs.

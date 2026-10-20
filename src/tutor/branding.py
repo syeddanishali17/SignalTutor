@@ -5,7 +5,7 @@ Pure Python (no Streamlit) so the one-pager exporter can use it too.
 
 from __future__ import annotations
 
-APP_NAME = "Modern Sensor Tutor"
+APP_NAME = "Signal Tutor"
 CREATOR = "Danish"
 SIGNATURE = f"{APP_NAME} · Built by {CREATOR}"
 SIGNATURE_SHORT = f"Built by {CREATOR}"

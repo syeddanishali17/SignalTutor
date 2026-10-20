@@ -1,4 +1,4 @@
-"""Noise figures (lecture 2, p. 7–8) in the shared visual grammar.
+"""Noise figures in the shared visual grammar.
 
 * ``chain``    — clean signal ⊕/⊗ noise → measured output, with live sparklines drawn
   from the SAME arrays as the plots (ids: signal, noise, op, out, mean, sigma)

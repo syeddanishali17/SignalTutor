@@ -1,8 +1,10 @@
-# Sensor Tutor
+# Signal Tutor
 
-A visual, interactive tutor for a modern sensor technologies course, built for a learner with **no electrical-engineering background** who has to explain, draw, derive and defend the material in an oral whiteboard exam.
+Signal Tutor is an interactive learning application for building intuition in sensor electronics, signal conditioning, circuit fundamentals, and oral technical explanation.
 
 Every lesson follows the same loop: **predict → observe → name → derive → break it → check → explain it**, with a circuit picture, an inspector, controls, an equation strip and a plot that are all driven by the same simulation state.
+
+Signal Tutor is an independent educational project created by Danish. It is not affiliated with, endorsed by, or an official product of any university or educational institution.
 
 ## Run it
 
@@ -12,7 +14,7 @@ uv pip install --python .venv/Scripts/python.exe -e ".[dev]"
 .venv/Scripts/streamlit run app.py
 ```
 
-Learner data (attempts, review queue, settings) is stored locally in `data/tutor.db` (git-ignored).
+Learner data (attempts, review queue, settings) is stored locally in `data/tutor.db` (git-ignored). An optional `local/schedule.yaml` with `exam: YYYY-MM-DD` shows a personal countdown on Today. That file is git-ignored.
 
 ## Check it
 
@@ -22,27 +24,26 @@ Learner data (attempts, review queue, settings) is stored locally in `data/tutor
 ```
 
 * `pytest` — reference values and property tests for every simulation, grading, scheduling and mastery rules, SymPy checks of every derivation step, and headless smoke tests of every page and scene.
-* `validate_content.py` — concept graph (no cycles, no dangling prerequisites), dimension checks of every formula, symbol/term references, typography rules (no YAML escape traps such as `"\text"` → TAB, balanced `$…$`), and the rule that a *needs review* formula is never shown without its flag.
-* `scripts/qa_screenshots.py` — full-page screenshots at laptop and tablet widths (needs the app running with `TUTOR_DEV=1`).
+* `validate_content.py` — concept graph (no cycles, no dangling prerequisites), dimension checks of every formula, symbol/term references, typography rules (balanced `$…$`, no dash sitting against inline math), and the rule that a *needs review* formula is never shown without its flag.
 
 ## What is in it
 
-| Area | Content |
-|---|---|
-| Foundation Playground | closed loop & current, voltage as a difference, Ohm's law (with fractions), divider, ground, KCL, reading a circuit |
-| Wheatstone Bridge Lab | pressure → strain → ΔR (membrane), two dividers → bridge, quarter bridge (exact vs approximate), full bridge, temperature drift, loading by a real meter, SymPy-checked derivations |
-| Amplifier Lab | mains interference & common mode, the op-amp as a black box, negative feedback and the virtual short, non-inverting amplifier, difference amplifier, instrumentation amplifier |
-| Capacitive Sensor Lab | membrane and Hooke's law, parallel-plate capacitance, C(x), barometer vs microphone current, small-signal and harmonics, pull-in |
-| Noise Lab | additive vs multiplicative noise, variance and RMS, spectrum, PSD (white and 1/f), band power, one-sided vs two-sided and the 2π trap. One seeded noise record feeds the time trace, histogram, Welch estimate and band integral |
-| Practice | auto-graded problems with units and misconception diagnosis, spaced review (1/3/7/14/30 days), oral drills with examiner follow-ups, paper-first whiteboard drills, a 15-minute two-topic mock oral |
-| Reference | progress (rule-based mastery states: not started, shaky, solid, exam-ready), glossary with a concept map, sources & known issues |
+* Beginner electrical foundations: current, voltage, Ohm's law, dividers, ground, KCL, reading a circuit
+* Wheatstone bridges: strain, quarter and full bridges, temperature drift, meter loading, checked derivations
+* Op-amps and feedback, including the virtual short
+* Difference and instrumentation amplifiers
+* Capacitive sensors, nonlinear behaviour and pull-in
+* Noise and power spectral density, including one-sided and two-sided conventions
+* Practice problems with units and misconception notes
+* Oral and whiteboard practice, including a 15-minute two-topic mock oral
+* Spaced review (1/3/7/14/30 days) and rule-based mastery tracking
 
 ## What is not in it yet
 
-* Lecture 3 and later (the `course_l03` track is empty). Lock-in detection is named at the end of the Noise Lab and is not a lesson.
+* Later topics such as lock-in detection. The `course_l03` track is empty.
 * The sensor-map stages ADC, processing and communication have no lessons.
-* Known issues K1–K10 stay **open**. Dimension checks do not close them; the official slides have not been compared.
-* There is no printable one-pager export. The creator line (`Modern Sensor Tutor · Built by Danish`) is shared by the footer and the home page so an export can use the same string.
+* Known issues K1–K10 stay **open**. Dimension checks do not close them, and nothing here claims an official source has been compared.
+* There is no printable one-pager export. The creator line (`Signal Tutor · Built by Danish`) is shared by the footer and the home page.
 
 ## Layout
 
@@ -56,15 +57,19 @@ src/tutor/engine/          concept graph, safe expression parser, dimension chec
 src/tutor/models/          pydantic schemas + loader
 src/tutor/persistence/     SQLite repository
 src/tutor/ui/              Streamlit pages, components, SVG figure builders
-scripts/                   content validation, screenshot QA
+scripts/                   content validation
 tests/                     sim / engine / content / ui
 ```
 
-## Visual rules (apply to every module)
+Formula status means:
 
-* Maths is always typeset LaTeX; fractions are stacked; numerators and denominators are labelled in Beginner mode the first time they matter.
-* In circuit drawings a component's **name** (bold, real subscripts) and its **value** (separate tag) are never merged.
-* A selection — a part of the picture or a symbol in the equation — lights up the part, its control and its term together.
-* Semantics never rely on colour alone (arrows, + / − badges, line styles, labels); a legend explains every icon.
+* **verified** — the expression is consistent and passes the dimension or algebra checks in this app
+* **needs review** — a written form still looks doubtful; it is shown with a flag
+* **supplemental** — a standard relation added as explanation
 
-Lecture-derived content is for personal study. Keep the repository private.
+## Visual rules
+
+* Maths is typeset LaTeX. A full equation that introduces an explanation is drawn on its own line, so punctuation cannot be read as a minus.
+* In circuit drawings a component's **name** and its **value** stay separate.
+* A selection lights up the part, its control and its symbol together.
+* The sensor-system map keeps every stage readable. The current stage is accented; later stages use a lighter border only.

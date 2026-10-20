@@ -2,7 +2,7 @@ id: barometer_case
 title: Barometer — why an AC bias, and the current it gives
 concept: capacitor_current
 figure: capacitor_ac
-source: "Lecture 1 notes, p. 4–5"
+source: "notes"
 symbols: {Q: C, V: V, C: F, I: A, dVdt: V/s, dCdt: F/s, V0: V, omega: 1/s, t: s}
 steps:
   - id: charge
@@ -77,6 +77,6 @@ steps:
   - id: lockin
     latex: "|I| = V_0\\,\\omega\\,C(x) \\quad\\text{at the known frequency } \\omega"
     changed: "Read the amplitude at the bias frequency."
-    why: "We chose ω ourselves, so we know exactly where to look: a lock-in amplifier picks out that frequency and ignores everything else (lecture 3). A transimpedance amplifier turns the current into V_out = −R·I (sign: known issue K3)."
+    why: "We chose ω ourselves, so we know exactly where to look: a lock-in amplifier picks out that frequency and ignores everything else (a later topic). A transimpedance amplifier turns the current into V_out = −R·I (sign: known issue K3)."
     law: "Interpretation"
     highlight: [meter]

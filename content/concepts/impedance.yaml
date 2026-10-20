@@ -5,7 +5,7 @@ code: E10
 track: electrical
 prerequisites: [ohms_law, voltage_divider]
 status: supplemental
-source_refs: ["standard", "Lecture 2 notes, p. 4"]
+source_refs: ["standard", "notes"]
 one_liner: "The **input impedance** of a measuring input says how much current it draws: $I = V/R_\\text{in}$. High input impedance = it barely disturbs what it measures."
 plain_words: "how 'hungry' an input is for current"
 explanation_md: impedance.md

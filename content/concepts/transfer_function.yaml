@@ -7,7 +7,7 @@ prerequisites:
 - proportionality
 status: verified
 source_refs:
-- Lecture 1 notes, p. 1–3
+- notes
 one_liner: A **transfer function** $H = \dfrac{Y}{X}$ says how much output you get per unit of input. In a chain
   of stages the transfer functions **multiply**.
 plain_words: how much comes out for each unit that goes in

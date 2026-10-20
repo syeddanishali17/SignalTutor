@@ -1,4 +1,4 @@
-"""Capacitive pressure sensor (lecture 1, p. 3–6): membrane → gap → C(x) → current.
+"""Capacitive pressure sensor: membrane → gap → C(x) → current.
 
 Model and notation follow the lecture:
 
@@ -86,7 +86,7 @@ def c_of_x(x, g: Geometry = DEFAULT):
 
 
 def dc_dx(x, g: Geometry = DEFAULT):
-    """dC/dx = εA/(d − x)² = C₀·d/(d − x)² (canonical form; the lecture form misses εA, K2)."""
+    """dC/dx = εA/(d − x)² = C₀·d/(d − x)² (canonical form; the written form misses εA, K2)."""
     x = np.asarray(x, dtype=float)
     if np.any(x >= g.d):
         raise InvalidState("x reached the gap d.")
@@ -185,7 +185,7 @@ def relative_error(u, order: int):
 
 
 def mic_partial(u, order: int):
-    """Lecture p. 6: x/(1 − x/d)² ≈ x + 2x²/d + 3x³/d² + …, written in u = x/d as
+    """Series: x/(1 − x/d)² ≈ x + 2x²/d + 3x³/d² + …, written in u = x/d as
     (x/d)/(1 − x/d)² ≈ Σ n·uⁿ, n = 1 … order."""
     u = np.asarray(u, dtype=float)
     out = sum(n * u**n for n in range(1, order + 1))

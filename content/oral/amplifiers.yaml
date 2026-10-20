@@ -20,7 +20,7 @@ questions:
       - {id: stages, text: "Stage 1 passes CM with gain 1, amplifies the difference; stage 2 removes CM"}
       - {id: impedance, text: "High input impedance: the bridge sees only + inputs"}
     followups:
-      - {when_missing: cm, ask: "At what voltage does each bridge output sit when the bridge is balanced?", hint: "Both at $V_0/2$ — that is the common mode."}
+      - {when_missing: cm, ask: "At what voltage does each bridge output sit when the bridge is balanced?", hint: "Both at $V_0/2$, that is the common mode."}
       - {when_missing: approach2, ask: "A difference amplifier subtracts — so what is wrong with it?"}
       - {when_missing: stages, ask: "What does stage 1 do with a pure common-mode input?", hint: "$V_A = V_B$ → no current in $R_1$ → both outputs equal their inputs (gain 1)."}
       - {when_missing: impedance, ask: "Why does the INA not load the bridge?"}
@@ -36,9 +36,9 @@ questions:
     priority: very_high
     question: "What is an ideal operational amplifier, and what are the two rules you use to analyse circuits with it?"
     structure:
-      - {label: definition, text: "A differential amplifier with output $V_\\text{out} = A_d\\,(V_+ - V_-)$, open-loop gain $A_d \\to \\infty$ (real: $10^5$–$10^6$), infinite input impedance, zero output impedance."}
+      - {label: definition, text: "A differential amplifier with output $V_\\text{out} = A_d\\,(V_+ - V_-)$, open-loop gain $A_d \\to \\infty$ (real: $10^5$ to $10^6$), infinite input impedance, zero output impedance."}
       - {label: mechanism, text: "Without feedback, any microvolt difference drives the output to a rail. With **negative** feedback (output → − input) the output settles where the difference is tiny."}
-      - {label: key equation, text: "Rule 1: no current flows into the inputs, $I_+ = I_- = 0$. Rule 2 (virtual short): $V_+ = V_-$ — **only** with negative feedback and an unsaturated output."}
+      - {label: key equation, text: "Rule 1: no current flows into the inputs, $I_+ = I_- = 0$. Rule 2 (virtual short): $V_+ = V_-$. **Only** with negative feedback and an unsaturated output."}
       - {label: physical meaning, text: "The virtual short is not a wire: it is the result of a huge gain inside a correcting loop. $V_+ - V_- = V_\\text{out}/A_d$, microvolts."}
       - {label: limitations, text: "The output can never exceed the supply rails. With positive feedback or open loop, rule 2 fails."}
     expected_points:
@@ -49,7 +49,7 @@ questions:
       - {id: rails, text: "The output is limited by the supply rails"}
     followups:
       - {when_missing: condition, ask: "Does $V_+ = V_-$ hold for an op-amp with its output connected to the + input?", hint: "No — that is positive feedback: the output runs to a rail."}
-      - {when_missing: rails, ask: "Open loop, $A_d = 10^5$, input difference 1 mV. What is the output?", hint: "$10^5 \\times 1\\,\\text{mV} = 100\\,\\text{V}$ — impossible; it saturates at the rail."}
+      - {when_missing: rails, ask: "Open loop, $A_d = 10^5$, input difference 1 mV. What is the output?", hint: "$10^5 \\times 1\\,\\text{mV} = 100\\,\\text{V}$. Impossible; it saturates at the rail."}
       - {always: true, ask: "Why is a huge, poorly controlled gain useful at all?", hint: "With negative feedback the closed-loop gain depends only on resistor ratios, not on $A_d$."}
     traps:
       - "Using $V_+ = V_-$ without stating negative feedback."
@@ -73,7 +73,7 @@ questions:
       - {when_missing: a2, ask: "What happens to a difference amplifier when $R_4$ is 1 % too large?", hint: "$A_{cm} \\ne 0$: part of the 2.5 V common mode leaks to the output."}
       - {always: true, ask: "Draw approach 3 and mark which part is stage 1 and which is stage 2."}
     traps:
-      - "Mixing up the non-inverting gain $1 + R_1/R_2$ (lecture labels) with the INA $1 + 2R_2/R_1$ — state your resistor names."
+      - "Mixing up the non-inverting gain $1 + R_1/R_2$ (those labels) with the INA $1 + 2R_2/R_1$, state your resistor names."
 
   - id: derive_ina
     concepts: [instrumentation_amp, virtual_short]
@@ -84,7 +84,7 @@ questions:
       - {label: mechanism, text: "Virtual short: $V_A = V_1$, $V_B = V_2$. So $R_1$ carries $I = \\dfrac{V_B - V_A}{R_1} = \\dfrac{V_2 - V_1}{R_1}$. No current enters the inputs, so the **same** $I$ flows through both $R_2$."}
       - {label: key equation, text: "$V_{o2} = V_B + I\\,R_2$ and $V_{o1} = V_A - I\\,R_2$, so $V_{o2} - V_{o1} = I\\,(R_2 + R_1 + R_2) = \\left(1 + \\dfrac{2R_2}{R_1}\\right)(V_2 - V_1)$. Stage 2 passes it with gain 1."}
       - {label: assumptions, text: "Ideal op-amps with negative feedback, unsaturated; matched stage-2 resistors."}
-      - {label: physical meaning, text: "Common mode: $V_1 = V_2$ → $I = 0$ → $V_{o1} = V_1$, $V_{o2} = V_2$: passed with gain 1, then removed by stage 2."}
+      - {label: physical meaning, text: "Common mode: $V_1 = V_2$ → $I = 0$ → $V_{o1} = V_1$, $V_{o2} = V_2$. Passed with gain 1, then removed by stage 2."}
     expected_points:
       - {id: vs, text: "Uses the virtual short: $V_A = V_1$, $V_B = V_2$"}
       - {id: current, text: "$I = (V_2 - V_1)/R_1$ through $R_1$"}

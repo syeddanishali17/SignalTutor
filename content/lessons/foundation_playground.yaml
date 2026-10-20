@@ -19,7 +19,7 @@ break_it:
     title: "Loading the divider"
     cause: "Whatever you connect to the output draws current and sits side by side (in parallel) with $R_2$."
     condition: "The load resistance is not much larger than $R_2$ (rule of thumb: less than $10\\times R_2$)."
-    consequence: "$V_\\text{out}$ sags below $V_\\text{in}\\,\\dfrac{R_2}{R_1+R_2}$ — the formula's 'nothing connected' assumption is broken."
+    consequence: "$V_\\text{out}$ sags below $V_\\text{in}\\,\\dfrac{R_2}{R_1+R_2}$. The formula's 'nothing connected' assumption is broken."
     recovery: "Measure with an input of much higher resistance. This is exactly why amplifiers for sensors need a high input impedance."
 scenes:
   - id: loop
@@ -66,7 +66,7 @@ scenes:
     concepts: [voltage, ground_reference]
     problem: >-
       A **voltmeter** (Ⓥ) always has **two** leads. So what is it actually measuring?
-      Here every connection point (**node**) is drawn at the height of its **potential** $\varphi$ — its electrical 'height'.
+      Here every connection point (**node**) is drawn at the height of its **potential** $\varphi$, its electrical 'height'.
     predict:
       question: "Nodes A and B both rise by +2 V together. What happens to the voltage between them, $V_{AB}$?"
       options:
@@ -78,7 +78,7 @@ scenes:
         $V_{AB} = \varphi_A - \varphi_B$. When both rise by 2 V, the 2 V cancels in the difference.
         Only differences are physical — the shared part is what we will later call **common mode**.
     inspect:
-      - {id: A, label: "Node A", concept: voltage, role: "A connection point with potential $\\varphi_A$ — its height on the scale.", controls: [phiA]}
+      - {id: A, label: "Node A", concept: voltage, role: "A connection point with potential $\\varphi_A$, its height on the scale.", controls: [phiA]}
       - {id: B, label: "Node B", concept: voltage, role: "A second point, potential $\\varphi_B$. The meter compares A against B.", controls: [phiB]}
       - {id: meter, label: "Voltmeter", concept: voltage, role: "Always spans **two** points and shows their difference $V_{AB}$.", controls: [lift]}
       - {id: ref, label: "Reference (0 V)", concept: ground_reference, role: "The node we *call* 0 V. Moving it relabels every node but changes no difference.", controls: [ref]}
@@ -112,7 +112,7 @@ scenes:
         - {id: up, label: "double"}
       correct: down
       reveal: >-
-        $I = \dfrac{V}{R}$ — $R$ is in the **denominator** (the bottom of the fraction): a bigger bottom number makes the result smaller.
+        $I = \dfrac{V}{R}$. $R$ is in the **denominator** (the bottom of the fraction): a bigger bottom number makes the result smaller.
         Double $R$, half the current. Watch the dashes slow down and the point slide down the graph.
     inspect:
       - {id: V, label: "Battery V", concept: voltage, role: "The push: the voltage across the resistor (the numerator of $I = V/R$).", controls: [V]}
@@ -152,7 +152,7 @@ scenes:
         - {id: up, label: "increases"}
       correct: up
       reveal: >-
-        $V_\text{out} = V_\text{in}\,\dfrac{R_2}{R_1 + R_2}$: a bigger $R_2$ takes a bigger **share** of the supply.
+        $V_\text{out} = V_\text{in}\,\dfrac{R_2}{R_1 + R_2}$. A bigger $R_2$ takes a bigger **share** of the supply.
         This is exactly what one strain gauge does to one side of a Wheatstone bridge.
     inspect:
       - {id: Vin, label: "Supply V_in", concept: voltage, role: "Total voltage across both resistors.", controls: [Vin]}
@@ -193,7 +193,7 @@ scenes:
         - {id: up, label: "increases"}
       correct: same
       reveal: >-
-        All node labels shift by the same amount, so every difference — including the drop across $R_1$ — stays the same.
+        All node labels shift by the same amount. Every difference stays the same, including the drop across $R_1$.
         The circuit does not notice where you put the 0 V label.
     inspect:
       - {id: top, label: "Top node", concept: ground_reference, role: "Its label depends on the reference.", controls: [ref]}
@@ -255,7 +255,7 @@ scenes:
       - {id: src, label: "Source", concept: voltage, role: "The battery or supply. Long plate = $+$ side.", highlight: [Vin]}
       - {id: wire, label: "Wire / node", concept: reading_circuits, role: "Ideal conductor. Everything joined by plain lines is one node at one potential."}
       - {id: branch, label: "Branch", concept: reading_circuits, role: "One path between two nodes — here $R_1$ and $R_2$ in a row."}
-      - {id: R1, label: "Resistor", concept: resistance, role: "Rectangle (IEC, as in the lecture drawings) or zig-zag: same part. **Name** in bold, **value** in the tag."}
+      - {id: R1, label: "Resistor", concept: resistance, role: "Rectangle (IEC) or zig-zag: same part. **Name** in bold, **value** in the tag."}
       - {id: gnd, label: "Ground", concept: ground_reference, role: "The 0 V reference node."}
       - {id: out, label: "Output terminal", concept: reading_circuits, role: "Open circle ○: where a meter or the next stage connects."}
     explain:

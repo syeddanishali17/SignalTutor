@@ -9,7 +9,7 @@ $$x = \frac{d}{3} \qquad\text{at}\qquad V_\text{PI} = \sqrt{\frac{8\,k_\text{eff
 
 * Above $V_\text{PI}$ there is no balance at all: the membrane collapses (*pull-in*, *snap-in*).
 
-The lecture marks $d/3$ as the **point of instability for constant $V$** (p. 5) — the $V_\text{out}(x)$ curve is only usable up to there.
+The notes mark $d/3$ as the **point of instability for constant $V$**  — the $V_\text{out}(x)$ curve is only usable up to there.
 
 **Why exactly $d/3$** (supplemental): at the touching point both the forces *and* their slopes are equal. Dividing the two conditions gives $d - x = 2x$, so $x = d/3$.
 

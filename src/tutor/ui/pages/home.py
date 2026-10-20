@@ -3,15 +3,15 @@
 from __future__ import annotations
 
 from datetime import date
+import time
 
 import streamlit as st
 
 from tutor.engine.mastery import SKILLS, is_mastered
+from tutor.greeting import message_for
+from tutor.local_schedule import exam_date
 from tutor.ui import state
-from tutor.ui.components import layout
-
-EXAM_DATES = (date(2027, 1, 29), date(2027, 2, 12))
-FREEZE = date(2027, 1, 5)
+from tutor.ui.components import layout, prose
 
 # the learning path: (concept, page, scene)
 PATH = [
@@ -58,20 +58,37 @@ SCENE_KEY = {"playground": "pg_scene", "wheatstone": "wb_scene", "amplifiers": "
              "capacitive": "cap_scene", "noise": "noise_scene"}
 
 
+def _greet() -> None:
+    """Toast once, and keep it through the reruns Streamlit makes while the page settles."""
+    text = message_for(st.query_params)
+    if text is None:
+        return
+    now = time.time()
+    started = st.session_state.get("_lara_at")
+    if started is None:
+        st.session_state["_lara_at"] = now
+        started = now
+    if now - started < 5:
+        st.toast(text, icon=":material/favorite:", duration=5)
+
+
 def render() -> None:
+    _greet()
     today = date.today()
-    layout.page_header("Modern Sensor Technologies", "Today",
-                       "Oral exam: about 20 minutes at the whiteboard, two topics. Practise explaining, drawing and deriving.")
+    layout.page_header("Signal Tutor", "Today",
+                       "Practise explaining, drawing and deriving.")
     bundle = state.bundle()
     svc = state.service()
     mastery = state.mastery_cached()
 
-    c1, c2, c3 = st.columns(3)
-    first = EXAM_DATES[0]
-    c1.metric("Days to the first exam date", (first - today).days, help="29.01.2027 — second date 12.02.2027.")
-    c2.metric("Days to feature freeze", max(0, (FREEZE - today).days), help="From 5 Jan 2027: practice only, no new features.")
+    exam = exam_date()
     items, minutes = svc.due_summary(today)
-    c3.metric("Today's review", f"{len(items)} items", help=f"About {minutes} minutes.")
+    if exam is not None:
+        c1, c2 = st.columns(2)
+        c1.metric("Days to your exam", (exam - today).days)
+        c2.metric("Today's review", f"{len(items)} items", help=f"About {minutes} minutes.")
+    else:
+        st.metric("Today's review", f"{len(items)} items", help=f"About {minutes} minutes.")
 
     st.markdown("### Today's review")
     if not items:
@@ -99,7 +116,8 @@ def render() -> None:
             states = mastery.get(cid, {s: "not_started" for s in SKILLS})
             left, right = st.columns([6, 1.2], vertical_alignment="center")
             with left:
-                st.markdown(f"**{i}. {c.title}** — {c.one_liner}")
+                st.markdown(f"**{i}. {c.title}**")
+                prose.show(c.one_liner)
                 badges = " ".join(layout.badge_html(states[s], s) for s in SKILLS)
                 missing = state.graph().unmastered_prerequisites(cid, mastered)
                 extra = (f" <span class='mst-muted'>· needs first: "
@@ -122,9 +140,9 @@ def render() -> None:
     )
     with st.expander("About this tutor"):
         st.markdown(
-            "A personal, visual study tool for the oral exam in Modern Sensor Technologies. Lecture-derived material "
-            "is marked with its source; anything added beyond the lecture is labelled *supplemental*; doubtful "
-            "lecture formulas are flagged *needs review* instead of being silently corrected (see Sources)."
+            "Signal Tutor is an independent study tool. Material checked against a written form is marked "
+            "*verified*; extra explanations are *supplemental*; formulas that still need a careful look are "
+            "*needs review* and are never silently corrected (see Sources)."
         )
         layout.signature_inline()
 

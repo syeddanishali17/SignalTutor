@@ -7,7 +7,7 @@ prerequisites:
 - interference
 status: verified
 source_refs:
-- Lecture 2 notes, p. 7
+- notes
 one_liner: '**Noise** is any random fluctuation that adds uncertainty to a measurement. **Additive** noise has the
   same size whatever the signal; **multiplicative** noise grows with the signal.'
 plain_words: random wiggles that make the reading uncertain

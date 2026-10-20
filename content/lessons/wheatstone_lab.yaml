@@ -11,7 +11,7 @@ whiteboard: [wb_quarter_derive, wb_full_draw]
 formulas: [strain_definition, gauge_factor, bridge_quarter_exact, bridge_quarter_approx, bridge_full_output, bridge_full_strain, bridge_balance, quarter_approx_error, bridge_loading]
 
 x-bridge-inspect: &bridge_inspect
-  - {id: V0, label: "Supply V₀", concept: wheatstone_bridge, role: "Feeds **both** dividers. The lecture also calls it $V_b$.", controls: [V0]}
+  - {id: V0, label: "Supply V₀", concept: wheatstone_bridge, role: "Feeds **both** dividers. Some notes also call it $V_b$.", controls: [V0]}
   - {id: R1, label: "R₁", concept: gauge_factor, role: "**Top** of the left divider. In the quarter bridge it is the one strain gauge, $R_1 = R + \\Delta R$.", controls: [eps, G, R4]}
   - {id: R2, label: "R₂", concept: wheatstone_bridge, role: "**Top** of the right divider. Compressed ($R - \\Delta R$) in the full bridge.", controls: [eps, G]}
   - {id: R3, label: "R₃", concept: wheatstone_bridge, role: "**Bottom** of the right divider; $V_1$ is the voltage across it. Stretched ($R + \\Delta R$) in the full bridge.", controls: [eps, G, R3]}
@@ -71,7 +71,7 @@ scenes:
         - "A strained resistor changes: $\\Delta R/R = G\\,\\varepsilon$"
         - "Near the rim stretched (+), near the centre squeezed (−)"
     notes_md: |
-      **The transfer chain** (lecture 1): pressure $p \xrightarrow{\ \xi\ }$ strain $\varepsilon \xrightarrow{\ G\ }$ relative change $\Delta R/R$. The next steps turn $\Delta R/R$ into a voltage.
+      **The transfer chain** : pressure $p \xrightarrow{\ \xi\ }$ strain $\varepsilon \xrightarrow{\ G\ }$ relative change $\Delta R/R$. The next steps turn $\Delta R/R$ into a voltage.
 
       The membrane factor $\xi$ here is an **illustrative** value (it depends on the membrane's size, thickness and material).
 
@@ -206,7 +206,7 @@ scenes:
       correct: smaller
       reveal: >-
         Current now flows through the meter from one midpoint to the other and pulls them together: the reading drops to
-        $\approx R_\text{in}/(R_\text{in} + R) \approx 91\,\%$ of the ideal value. Lecture 2: an amplifier input
+        $\approx R_\text{in}/(R_\text{in} + R) \approx 91\,\%$ of the ideal value. An amplifier input
         impedance below infinity unbalances the bridge.
     inspect: *bridge_inspect
     terms: *bridge_terms

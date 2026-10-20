@@ -2,7 +2,7 @@ id: psd_sides
 title: One-sided and two-sided PSD give the same variance
 concept: psd_sides
 figure: psd_sides
-source: "Lecture 2 notes, p. 8"
+source: "notes"
 symbols: {S0: V^2/Hz, f1: Hz, f2: Hz, one: V^2, two: V^2}
 steps:
   - id: one_sided
@@ -16,7 +16,7 @@ steps:
     latex: "S''(f) = \\tfrac12\\,S(|f|) \\quad (-\\infty < f < \\infty)"
     changed: "Two-sided convention: spread the same power over ±f, at half the height."
     why: "e^{iωt} and e^{−iωt} together make a real cosine, so the mathematics naturally uses both signs of frequency."
-    law: "Definition (lecture: S''(ω) = ½ S(ω))"
+    law: "Definition (written form: S''(ω) = ½ S(ω))"
     highlight: [two, half]
 
   - id: same
@@ -40,6 +40,6 @@ steps:
     latex: "\\int_0^\\infty S''(f)\\,df = \\tfrac12\\,\\sigma^2 \\quad(\\text{the factor-2 trap})"
     changed: "The mistake: integrate a two-sided density over positive frequencies only."
     why: "That throws away the negative-frequency half: the variance comes out half as large. Always say which convention your PSD uses."
-    law: "Exam trap"
+    law: "Common trap"
     highlight: [two]
     check: {kind: equals, lhs: "(S0/2)*(f2 - f1)", expr: "S0*(f2 - f1)/2"}

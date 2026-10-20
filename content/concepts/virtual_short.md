@@ -1,6 +1,6 @@
 The two golden rules for analysing op-amp circuits with **negative feedback**:
 
-1. $V_+ = V_-$ — the **virtual short** (if $V_+$ is grounded, $V_-$ is a **virtual ground**).
+1. $V_+ = V_-$. The **virtual short** (if $V_+$ is grounded, $V_-$ is a **virtual ground**).
 2. No current flows into either input.
 
 They are not a property of the op-amp alone: they are the *result* of negative feedback plus a huge gain. They fail when

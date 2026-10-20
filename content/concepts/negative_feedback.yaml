@@ -5,7 +5,7 @@ code: C8
 track: course_l02
 prerequisites: [op_amp, voltage_divider]
 status: supplemental
-source_refs: ["standard", "Lecture 2 notes, p. 3 (feedback networks)"]
+source_refs: ["standard", "notes (feedback networks)"]
 one_liner: "Feeding (part of) the output back to the **inverting** input makes the op-amp correct itself: the output settles where $V_-$ almost equals $V_+$."
 plain_words: "the output checks itself and corrects"
 explanation_md: negative_feedback.md

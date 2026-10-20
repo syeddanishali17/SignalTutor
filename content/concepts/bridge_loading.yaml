@@ -4,7 +4,7 @@ short: "Loading"
 track: course_l02
 prerequisites: [wheatstone_bridge, ohms_law]
 status: verified
-source_refs: ["Lecture 2 notes, p. 4 (an input impedance below infinity unbalances the Wheatstone bridge)"]
+source_refs: ["notes (an input impedance below infinity unbalances the Wheatstone bridge)"]
 one_liner: "A meter or amplifier that draws current changes the bridge it measures; its input resistance must be $\\gg R$."
 plain_words: "measuring disturbs what you measure"
 explanation_md: bridge_loading.md

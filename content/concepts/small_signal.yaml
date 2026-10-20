@@ -8,7 +8,7 @@ prerequisites:
 - capacitive_sensor
 status: verified
 source_refs:
-- Lecture 1 notes, p. 5
+- notes
 one_liner: 'For $x \ll d$: $\dfrac{1}{1 - x/d} \approx 1 + \dfrac{x}{d}$, so the sensor output is **approximately
   linear**: $V_\text{out} \approx V_{ft}\left(1 + \dfrac{x}{d}\right)$.'
 plain_words: zoom in far enough and every curve looks straight

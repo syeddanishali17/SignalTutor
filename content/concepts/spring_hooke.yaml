@@ -8,8 +8,8 @@ prerequisites:
 - proportionality
 status: verified
 source_refs:
-- Lecture 1 notes, p. 3 (F = 2k·x = p·A)
-one_liner: 'A spring pushes back in proportion to how far it is squeezed: $F = k\,x$. The lecture''s membrane sits
+- notes (F = 2k·x = p·A)
+one_liner: 'A spring pushes back in proportion to how far it is squeezed: $F = k\,x$. The membrane here sits
   on **two** springs, so $F = 2k\,x$.'
 plain_words: squeeze twice as far, it pushes back twice as hard
 explanation_md: spring_hooke.md
@@ -21,7 +21,7 @@ analogy:
 misconceptions:
 - id: two_springs_forgotten
   text: With two springs the membrane still moves x = pA/k.
-  correction: 'Two springs share the load: they push back with $2k\,x$, so $x = \dfrac{pA}{2k}$ — half as far as
+  correction: 'Two springs share the load: they push back with $2k\,x$, so $x = \dfrac{pA}{2k}$. Half as far as
     with one spring.'
 - id: spring_stiffer_moves_more
   text: A stiffer spring (larger k) lets the membrane move further.

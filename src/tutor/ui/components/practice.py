@@ -12,6 +12,7 @@ from tutor.engine.mastery import Attempt
 from tutor.engine.problems import Grade, generate, grade, render
 from tutor.models.content import Problem
 from tutor.ui import state
+from tutor.ui.components import prose
 from tutor.ui.components.feedback import grade_feedback
 
 LEVEL = {1: "Recognise", 2: "Understand", 3: "Understand", 4: "Apply", 5: "Apply+"}
@@ -68,7 +69,7 @@ def problem_card(p: Problem, scope: str, show_concept: bool = True) -> Grade | N
                 st.caption("Added to today's review: " + st.session_state[_k(scope, p.id, "queued")])
             if result.counts:
                 with st.expander("Worked solution", expanded=result.status != "correct"):
-                    st.markdown(render(p.solution, inst.params))
+                    prose.show(render(p.solution, inst.params))
             if p.kind == "numeric" and result.counts:
                 st.button("New numbers", key=_k(scope, p.id, "new"), icon=":material/casino:",
                           on_click=_new_instance, args=(scope, p.id))

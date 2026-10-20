@@ -1,6 +1,6 @@
 """Amplifier Lab (C4, milestone M2).
 
-Six guided steps tell the lecture's story: the bridge signal is a few mV of
+Six guided steps: the bridge signal is a few mV of
 *difference* on 2.5 V of *common mode* (plus mains pickup) → a bare op-amp
 saturates → negative feedback → approach 1 (non-inverting, saturates on the
 common mode) → approach 2 (difference amplifier: matching and loading) →
@@ -71,7 +71,7 @@ def _tex_num(x: float, sig: int = 3) -> str:
 def render() -> None:
     lesson = state.bundle().lessons[LESSON_ID]
     layout.page_header("Amplifier Lab", "Op-amps and the instrumentation amplifier",
-                       "Why a bridge needs a special amplifier — three approaches, from the lecture, built and broken.")
+                       "Why a bridge needs a special amplifier — three approaches, built and broken.")
     scenes = {s.id: s for s in lesson.scenes}
     deep = st.query_params.get("scene")
     if "amp_scene" not in st.session_state:

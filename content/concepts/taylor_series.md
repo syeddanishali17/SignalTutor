@@ -2,7 +2,7 @@ A curved function can be built from simple powers. The one this course needs is 
 
 $$\frac{1}{1-u} = 1 + u + u^2 + u^3 + \dots \qquad (|u| < 1)$$
 
-With $u = x/d$:
+With $u = x/d$. 
 
 $$C(x) = \frac{C_0}{1 - x/d} = C_0\left(1 + \frac{x}{d} + \frac{x^2}{d^2} + \frac{x^3}{d^3} + \dots\right)$$
 

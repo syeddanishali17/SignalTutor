@@ -20,7 +20,7 @@ MODES: tuple[Mode, ...] = ("beginner", "course", "exam")
 class FormulaView:
     latex: str  # the form to display prominently
     flag: str | None  # warning text; never None for needs_review
-    lecture_latex: str | None  # the original lecture form, shown for comparison
+    lecture_latex: str | None  # the original written form, shown for comparison
     badge: str  # short source/status badge
 
 

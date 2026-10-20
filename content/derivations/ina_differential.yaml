@@ -2,12 +2,12 @@ id: ina_differential
 title: Instrumentation amplifier — differential gain
 concept: instrumentation_amp
 figure: ina
-source: "Lecture 2 notes, p. 5 (top input at 0, bottom input at V)"
+source: "notes (top input at 0, bottom input at V)"
 symbols: {V: V, VA: V, VB: V, R1: ohm, R2: ohm, I: A, Vo1: V, Vo2: V}
 steps:
   - id: setup
     latex: "V_{\\text{in},1} = 0,\\qquad V_{\\text{in},2} = V"
-    changed: "As in the lecture: top input at 0 V, bottom input at $V$ — a pure difference of $V$."
+    changed: "Here: top input at 0 V, bottom input at $V$, a pure difference of $V$."
     why: "Any input pair is common mode plus difference; the common part was handled separately."
     law: "Superposition"
     assumption: "Ideal op-amps, negative feedback, not saturated"
@@ -67,7 +67,7 @@ steps:
     annotated: |-
       V_{o2} - V_{o1} = \underbrace{\left(1 + \frac{2R_2}{R_1}\right)}_{A_d:\ \text{both } R_2 \text{ count}} V
     changed: "Subtract: stage-1 differential gain. Stage 2 ($A_d = 1$) passes it to $V_\\text{out}$."
-    why: "Both $R_2$ resistors add a drop $I\\,R_2$ — hence the factor 2. Only $R_1$ needs to change to set the gain."
+    why: "Both $R_2$ resistors add a drop $I\\,R_2$, hence the factor 2. Only $R_1$ needs to change to set the gain."
     law: "Algebra"
     highlight: [R1, R2a, R2b, out]
     check: {kind: equals, lhs: "Vo2 - Vo1", expr: "V*(1 + 2*R2/R1)"}

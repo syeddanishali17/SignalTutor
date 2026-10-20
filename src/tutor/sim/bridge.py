@@ -1,27 +1,25 @@
-"""Wheatstone bridge models (lecture Lecture 1 notes, p. 2 and -02 p2).
+"""Wheatstone bridge models.
 
 Geometry and naming (fixed across every mode so the learner sees exactly which
 resistors change)::
 
-            V0 (supply, called V_b in the L01 notes)
+            V0 (supply, also called V_b)
           ┌──────┴──────┐
           R1            R2          left branch carries I2, right branch I1
           │             │
-     V2 ──●             ●── V1      output: V_out = V2 − V1 (L02 convention)
+     V2 ──●             ●── V1      output: V_out = V2 − V1
           │             │
           R4            R3
           └──────┬──────┘
                 GND
 
-* R1..R4 follow the L01 full-bridge drawing (R1 top-left, R2 top-right,
-  R3 bottom-right, R4 bottom-left).
-* V1, V2, I1, I2 follow the L02 quarter-bridge derivation.
-* Quarter bridge: the active gauge is R1 = R + ΔR. With this placement the
-  lecture derivation ``V2 = I2·R`` holds. The L02 drawing puts R + ΔR in the
-  lower-left arm instead; that flips the sign (known issue K9).
+* R1..R4: R1 top-left, R2 top-right, R3 bottom-right, R4 bottom-left.
+* Quarter bridge: the active gauge is R1 = R + ΔR. With this placement
+  ``V2 = I2·R`` holds. Another drawing puts R + ΔR in the lower-left arm;
+  that flips the sign (known issue K9).
 * Full bridge: R1 and R3 get +ΔR, R2 and R4 get −ΔR (diagonally opposite arms
-  see the same strain), so V2 − V1 = −(ΔR/R)·V0 exactly. The lecture writes
-  the magnitude, V_out = (ΔR/R)·V_b.
+  see the same strain), so V2 − V1 = −(ΔR/R)·V0 exactly. The magnitude is
+  V_out = (ΔR/R)·V_b.
 """
 
 from __future__ import annotations

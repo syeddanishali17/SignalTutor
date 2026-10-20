@@ -19,7 +19,7 @@ import streamlit as st
 from tutor.engine.mastery import Attempt
 from tutor.models.content import Lesson, Scene
 from tutor.ui import state, theme
-from tutor.ui.components import equation, inspector, layout, predict
+from tutor.ui.components import equation, inspector, layout, predict, prose
 from tutor.ui.components.feedback import break_it_banner
 from tutor.ui.components.oral import oral_dock, whiteboard_drill
 from tutor.ui.components.practice import problem_card
@@ -95,7 +95,7 @@ def deeper(scope: str, lesson: Lesson, scene: Scene, derive: Callable[[], None] 
 def _why(scene: Scene) -> None:
     bundle = state.bundle()
     if scene.notes_md:
-        st.markdown(scene.notes_md)
+        prose.show(scene.notes_md)
     if scene.analogy_note and state.mode() != "exam":
         layout.analogy(scene.analogy_note)
     layout.kicker("The ideas in this scene")
@@ -105,7 +105,7 @@ def _why(scene: Scene) -> None:
             inspector.concept_card(c, compact=True)
             if c.explanation:
                 st.divider()
-                st.markdown(c.explanation)
+                prose.show(c.explanation)
             st.caption(f"Content status: {c.status} · source: {', '.join(c.source_refs) or '—'}")
 
 

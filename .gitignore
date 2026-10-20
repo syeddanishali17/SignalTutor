@@ -2,8 +2,19 @@
 sources/
 *.pdf
 
-# Local learner data
+# Local learner data and private study notes
 data/
+local/
+*.sqlite
+*.db
+
+# Secrets
+.env
+.streamlit/secrets.toml
+
+# QA screenshots
+qa_out/
+screenshots/
 
 # Python / tooling
 .venv/

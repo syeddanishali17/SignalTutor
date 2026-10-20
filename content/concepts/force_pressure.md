@@ -11,6 +11,6 @@ $$p = \frac{F}{A} \qquad\Longleftrightarrow\qquad F = p\,A$$
 |---|---|
 | air around us | $\approx 100\,\text{kPa}$ |
 | weather change in a day | $\approx 1\,\text{kPa}$ |
-| loud speech at 1 m | $\approx 0.1$–$1\,\text{Pa}$ |
+| loud speech at 1 m | $\approx 0.1$ to $1\,\text{Pa}$ |
 
 On a sensor membrane of $1\,\text{mm}^2 = 10^{-6}\,\text{m}^2$, a pressure difference of $1\,\text{kPa}$ pushes with $F = pA = 10^{3} \times 10^{-6}\,\text{N} = 1\,\text{mN}$.

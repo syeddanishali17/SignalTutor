@@ -15,6 +15,7 @@ import streamlit as st
 from tutor.engine.mastery import Attempt
 from tutor.models.content import Derivation
 from tutor.ui import state
+from tutor.ui.components import prose
 from tutor.ui.svg.core import as_img
 from tutor.ui.svg.figures import FIGURES
 
@@ -88,8 +89,10 @@ def stepper(d: Derivation, scope: str) -> None:
             else:
                 st.latex(step.annotated if (beginner and step.annotated) else step.latex)
         if not faded_here:
-            st.markdown(f"**What changed:** {step.changed}")
-            st.markdown(f"**Why it is allowed:** {step.why}")
+            st.markdown("**What changed:**")
+            prose.show(step.changed)
+            st.markdown("**Why it is allowed:**")
+            prose.show(step.why)
             if step.law:
                 st.markdown(f'<span class="mst-chip">law</span> {step.law}', unsafe_allow_html=True)
             if step.assumption:

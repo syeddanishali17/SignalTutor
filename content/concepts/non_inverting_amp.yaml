@@ -5,7 +5,7 @@ code: C9
 track: course_l02
 prerequisites: [virtual_short, voltage_divider]
 status: verified
-source_refs: ["Lecture 2 notes, p. 3"]
+source_refs: ["notes"]
 one_liner: "Input on $V_+$, divider $R_1$ (output → $V_-$) and $R_2$ ($V_-$ → ground): $V_\\text{out} = V_\\text{in}\\left(1 + \\dfrac{R_1}{R_2}\\right)$."
 plain_words: "a simple amplifier for one wire"
 explanation_md: non_inverting_amp.md

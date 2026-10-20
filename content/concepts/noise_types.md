@@ -1,4 +1,4 @@
-Lecture 2: *noise is any random fluctuation that adds uncertainty to a measurement.*
+*Noise is any random fluctuation that adds uncertainty to a measurement.*
 
 **Additive noise** — the measured output is the signal **plus** a random part:
 

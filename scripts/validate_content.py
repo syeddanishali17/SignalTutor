@@ -19,6 +19,8 @@ from tutor.engine.concept_graph import ConceptGraph  # noqa: E402
 from tutor.engine.derivation import check_derivation  # noqa: E402
 from tutor.engine.expr import ExprError, names, parse  # noqa: E402
 from tutor.engine.formula_view import MODES, view  # noqa: E402
+from tutor.engine.typography import dash_junctions  # noqa: E402
+from tutor.paths import CONTENT_DIR  # noqa: E402
 from tutor.engine.problems import generate, placeholders  # noqa: E402
 from tutor.models.content import ContentBundle  # noqa: E402
 from tutor.models.loader import load_content  # noqa: E402
@@ -66,8 +68,22 @@ def _text_rules(bundle: ContentBundle) -> list[str]:
     return errors
 
 
+def _math_dash_rules() -> list[str]:
+    """Inline math must not be followed immediately by a dash (it reads as minus)."""
+    errors: list[str] = []
+    for path in sorted(CONTENT_DIR.rglob("*")):
+        if path.suffix not in {".yaml", ".md"}:
+            continue
+        text = path.read_text(encoding="utf-8")
+        for i, line in enumerate(text.splitlines(), 1):
+            for snippet in dash_junctions(line):
+                rel = path.relative_to(CONTENT_DIR.parent)
+                errors.append(f"{rel}:{i}: dash sits against inline math (reads as a minus): {snippet!r}")
+    return errors
+
+
 def validate(bundle: ContentBundle) -> list[str]:
-    errors: list[str] = _text_rules(bundle)
+    errors: list[str] = _text_rules(bundle) + _math_dash_rules()
     concepts = bundle.concepts
     graph = ConceptGraph(concepts)
 

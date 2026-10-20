@@ -2,7 +2,7 @@ id: non_inverting
 title: Non-inverting amplifier gain
 concept: non_inverting_amp
 figure: noninv
-source: "Lecture 2 notes, p. 3"
+source: "notes"
 symbols: {Vin: V, R1: ohm, R2: ohm, Vm: V, I: A, Vout: V}
 steps:
   - id: setup

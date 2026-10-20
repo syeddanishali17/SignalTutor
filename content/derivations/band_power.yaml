@@ -1,8 +1,8 @@
 id: band_power
-title: Noise power in a band — and why the lecture's shortcut needs care
+title: Noise power in a band — and why the shortcut needs care
 concept: band_noise
 figure: psd_band
-source: "Lecture 2 notes, p. 7–8 (see K4, K5, K8)"
+source: "notes (see K4, K5, K8)"
 symbols: {S0: V^2/Hz, S1: V^2, f1: Hz, f2: Hz, w1: 1/s, w2: 1/s, sigma2: V^2, sigmap: V^2, vrms: V}
 steps:
   - id: area
@@ -48,7 +48,7 @@ steps:
 
   - id: lecture_form
     latex: "S(\\omega)\\,(\\omega_2 - \\omega_1) = 2\\pi\\,\\sigma^2 \\quad(\\text{K4: } 2\\pi \\text{ too large})"
-    changed: "Compare with the lecture's form."
+    changed: "Compare with the written form."
     why: "S_V(ω)·(ω₂ − ω₁) with a per-hertz S is 2π times the true band power — and the shortcut itself is only valid for white noise. The dimension check cannot catch this: rad/s and Hz are both 1/s."
     law: "Known issue K4"
     highlight: [band]

@@ -5,8 +5,8 @@ code: C9
 track: course_l02
 prerequisites: [virtual_short, voltage_divider, common_mode, impedance]
 status: verified
-source_refs: ["Lecture 2 notes, p. 3–4"]
-one_liner: "One op-amp and four resistors: $V_\\text{out} = \\dfrac{R_2}{R_1}\\,(V_2 - V_1)$ when $\\dfrac{R_2}{R_1} = \\dfrac{R_4}{R_3}$ — but its common-mode rejection depends on that match, and its inputs load the bridge."
+source_refs: ["notes"]
+one_liner: "One op-amp and four resistors: $V_\\text{out} = \\dfrac{R_2}{R_1}\\,(V_2 - V_1)$ when $\\dfrac{R_2}{R_1} = \\dfrac{R_4}{R_3}$. But its common-mode rejection depends on that match, and its inputs load the bridge."
 plain_words: "subtracts two wires, then amplifies"
 explanation_md: difference_amp.md
 misconceptions:
@@ -15,4 +15,4 @@ misconceptions:
     correction: "You must change **two** ($R_2$ and $R_4$) and keep $R_2/R_1 = R_4/R_3$ matched — otherwise common mode leaks through. Gain and CMR are coupled."
   - id: diffamp_infinite_input
     text: "The difference amplifier has the op-amp's infinite input impedance."
-    correction: "The inputs feed **resistors** ($R_1$; $R_3 + R_4$ to ground), so they draw current and load the bridge — the lecture's second problem."
+    correction: "The inputs feed **resistors** ($R_1$; $R_3 + R_4$ to ground), so they draw current and load the bridge — the second problem."

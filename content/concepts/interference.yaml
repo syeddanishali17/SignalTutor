@@ -5,7 +5,7 @@ code: E12
 track: electrical
 prerequisites: [sine_wave, common_mode]
 status: supplemental
-source_refs: ["standard", "Lecture 2 notes, p. 3 (50 Hz pickup; any noise picked up gets amplified)"]
+source_refs: ["standard", "notes (50 Hz pickup; any noise picked up gets amplified)"]
 one_liner: "**Signal** is what we want; **interference** is an unwanted disturbance from a known source (e.g. 50 Hz mains); **noise** is random. Pickup on two wires arrives mostly as **common mode**."
 plain_words: "unwanted stuff riding on the signal"
 explanation_md: interference.md

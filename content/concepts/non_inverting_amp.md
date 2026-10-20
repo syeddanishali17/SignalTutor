@@ -1,4 +1,4 @@
-**Circuit** (lecture naming): input to $V_+$; $R_1$ from the output to $V_-$; $R_2$ from $V_-$ to ground.
+**Circuit** (the names used here): input to $V_+$; $R_1$ from the output to $V_-$; $R_2$ from $V_-$ to ground.
 
 **Derivation in three lines** (virtual short + no input current):
 

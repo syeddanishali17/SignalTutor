@@ -1,7 +1,7 @@
 """Two-topic mock oral exam.
 
 Picks only questions whose primary concept is verified course material
-(lecture 1 or 2). Supplemental foundations and an empty lecture-3 track
+(the verified course tracks). Supplemental foundations and an empty later track
 are never drawn. The session itself lives in the UI; this module only
 chooses topics and scores what the learner ticked.
 """

@@ -73,10 +73,11 @@ h3 {{ font-size: 1.15rem !important; }}
 
 /* sensor-system map */
 .mst-map {{ display:flex; flex-wrap: wrap; align-items:center; gap: 4px; margin: .1rem 0 .8rem 0; }}
-.mst-map .blk {{ padding: 5px 10px; border: 1.5px solid #cfc9bb; border-radius: 8px; font-size: .8rem; color: var(--muted); background: #fff; }}
+.mst-map .blk {{ padding: 5px 10px; border: 1.5px solid #b7b1a4; border-radius: 8px; font-size: .82rem; color: var(--ink); background: #fff; }}
 .mst-map .blk.on {{ border: 2.5px solid var(--ink); color: var(--ink); font-weight: 800; background: var(--hl); }}
-.mst-map .arr {{ color: #b9b2a2; font-size: .9rem; }}
-.mst-map .note {{ flex-basis: 100%; font-size: .82rem; color: var(--muted); margin-top: 2px; }}
+.mst-map .blk.later {{ border-color: #e4dfd4; background: #f6f4ef; color: var(--ink); font-weight: 500; }}
+.mst-map .arr {{ color: #8a8376; font-size: .9rem; }}
+.mst-map .note {{ flex-basis: 100%; font-size: .82rem; color: var(--ink); margin-top: 2px; }}
 .mst-map .note b {{ color: var(--ink); }}
 
 /* ---- content boxes (keyed containers holding Markdown + LaTeX) ---- */

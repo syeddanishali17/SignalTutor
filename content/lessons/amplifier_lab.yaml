@@ -70,7 +70,7 @@ scenes:
         - {id: small, label: "1 mV"}
       correct: rail
       reveal: >-
-        $A_d \times 1\,\text{mV} = 100\,\text{V}$ — but the output cannot leave its supply range. It sits at the
+        $A_d \times 1\,\text{mV} = 100\,\text{V}$. But the output cannot leave its supply range. It sits at the
         **rail**, +15 V. Without feedback, any input difference above about $15\,\text{V}/10^5 = 150\,\mu\text{V}$
         just slams the output to a rail: useless as a measuring amplifier.
     inspect:
@@ -91,7 +91,7 @@ scenes:
     explain:
       prompt: "Without the picture: what does an op-amp do, and why can't we use it on its own to amplify a 1 mV signal?"
       points:
-        - "$V_\\text{out} = A_d\\,(V_+ - V_-)$, $A_d \\approx 10^5$–$10^6$"
+        - "$V_\\text{out} = A_d\\,(V_+ - V_-)$, $A_d \\approx 10^5$ to $10^6$"
         - "The output is limited to the supply rails"
         - "Above $\\approx V_s/A_d$ (≈ 100 µV) the output saturates"
         - "$A_d$ is huge and poorly controlled — we need feedback"
@@ -117,7 +117,7 @@ scenes:
         where $V_+ - V_-$ is just $V_\text{out}/A_d$: microvolts. That near-equality, $V_+ \approx V_-$, is the
         **virtual short**. Now switch to *positive* feedback and watch it fail.
     inspect:
-      - {id: U, label: "Op-amp", concept: op_amp, role: "Still $V_\\text{out} = A_d\\,(V_+ - V_-)$ — feedback changes what arrives at its inputs.", controls: [A]}
+      - {id: U, label: "Op-amp", concept: op_amp, role: "Still $V_\\text{out} = A_d\\,(V_+ - V_-)$. Feedback changes what arrives at its inputs.", controls: [A]}
       - {id: Vin, label: "V_in", concept: negative_feedback, role: "The input signal, on the **+** input.", controls: [vin]}
       - {id: fb, label: "Feedback path", concept: negative_feedback, role: "Carries a fraction $\\beta$ of the output back. To the − input: **negative** feedback (corrects). To the + input: **positive** (reinforces).", controls: [fb]}
       - {id: R1, label: "R₁", concept: voltage_divider, role: "Top of the feedback divider: from the output to $V_-$.", controls: [gain]}
@@ -139,7 +139,7 @@ scenes:
       prompt: "Without the picture: why does feeding the output back to the − input make the circuit stable, and what is the 'virtual short'?"
       points:
         - "Too high an output raises $V_-$, which lowers the output: self-correction"
-        - "The loop settles where $V_+ - V_- = V_\\text{out}/A_d$ — microvolts"
+        - "The loop settles where $V_+ - V_- = V_\\text{out}/A_d$. Microvolts"
         - "So $V_+ \\approx V_-$: the virtual short (no current flows through it)"
         - "Only with negative feedback and an unsaturated output"
     notes_md: |
@@ -160,7 +160,7 @@ scenes:
       correct: rail
       reveal: >-
         The amplifier multiplies **everything** at its input, the 2.5 V common mode included: $101 \times 2.5\,\text{V}
-        \approx 253\,\text{V}$ — far beyond the rails, so the output saturates and the 1 mV signal is lost.
+        \approx 253\,\text{V}$, far beyond the rails, so the output saturates and the 1 mV signal is lost.
         A single-input amplifier cannot tell common mode from signal. **We need to subtract.**
     inspect:
       - {id: bridge, label: "Bridge node V₂", concept: common_mode, role: "Sits at $\\approx 2.5\\,\\text{V}$ (common mode) plus the tiny strain signal. $V_1$ is not used at all.", controls: [src]}
@@ -170,7 +170,7 @@ scenes:
       - {id: R2, label: "R₂", concept: non_inverting_amp, role: "From $V_-$ to ground. Together with $R_1$ a divider of the output.", controls: [gain]}
       - {id: Vm, label: "V₋", concept: virtual_short, role: "$V_- = V_\\text{out}\\,\\dfrac{R_2}{R_1 + R_2}$, and by the virtual short also $= V_\\text{in}$."}
       - {id: fb, label: "Feedback path", concept: negative_feedback, role: "Negative feedback: to the − input."}
-      - {id: out, label: "V_out", concept: non_inverting_amp, role: "$\\left(1 + \\dfrac{R_1}{R_2}\\right)V_\\text{in}$ — as long as that stays inside the rails."}
+      - {id: out, label: "V_out", concept: non_inverting_amp, role: "$\\left(1 + \\dfrac{R_1}{R_2}\\right)V_\\text{in}$. As long as that stays inside the rails."}
       - {id: I, label: "Divider current", concept: charge_current, role: "$V_\\text{out}/(R_1 + R_2)$ down through the divider."}
     terms:
       - {id: Vout, symbol: op_Vout, highlight: [out]}
@@ -210,12 +210,12 @@ scenes:
     inspect:
       - {id: U, label: "Op-amp", concept: op_amp, role: "One op-amp with negative feedback through $R_2$."}
       - {id: in1, label: "V₁ input", concept: difference_amp, role: "Goes through $R_1$ to the − input. Draws a current from the bridge: **it loads it**."}
-      - {id: in2, label: "V₂ input", concept: difference_amp, role: "Goes through the divider $R_3$–$R_4$ to the + input. Also draws current."}
+      - {id: in2, label: "V₂ input", concept: difference_amp, role: "Goes through the divider $R_3$ to $R_4$ to the + input. Also draws current."}
       - {id: R1, label: "R₁", concept: difference_amp, role: "Input resistor of the − side.", controls: [k]}
       - {id: R2, label: "R₂", concept: difference_amp, role: "Feedback resistor. Gain $R_2/R_1$.", controls: [k]}
       - {id: R3, label: "R₃", concept: difference_amp, role: "Input resistor of the + side.", controls: [k]}
       - {id: R4, label: "R₄", concept: cmrr, role: "From $V_+$ to ground. Must satisfy $R_4/R_3 = R_2/R_1$ **exactly** — try mistuning it.", controls: [mis, k]}
-      - {id: Vp, label: "V₊", concept: voltage_divider, role: "$V_+ = V_2\\,\\dfrac{R_4}{R_3 + R_4}$ — a divider of $V_2$."}
+      - {id: Vp, label: "V₊", concept: voltage_divider, role: "$V_+ = V_2\\,\\dfrac{R_4}{R_3 + R_4}$. A divider of $V_2$."}
       - {id: Vm, label: "V₋", concept: virtual_short, role: "Held equal to $V_+$ by the feedback (virtual short)."}
       - {id: out, label: "V_out", concept: difference_amp, role: "$\\dfrac{R_2}{R_1}\\,(V_2 - V_1)$ when matched; otherwise some common mode leaks through."}
     terms:
@@ -268,10 +268,10 @@ scenes:
       - {id: Ipath, label: "Current path R₂–R₁–R₂", concept: kcl, role: "No current enters the op-amp inputs, so one current flows through all three resistors (KCL)."}
       - {id: VA, label: "V_A", concept: virtual_short, role: "Top of $R_1$; equal to $V_{\\text{in},1}$."}
       - {id: VB, label: "V_B", concept: virtual_short, role: "Bottom of $R_1$; equal to $V_{\\text{in},2}$."}
-      - {id: o1, label: "V_o1", concept: instrumentation_amp, role: "Top stage-1 output: $V_A - I\\,R_2$. The lecture reuses the name $V_1$ here (known issue K10)."}
+      - {id: o1, label: "V_o1", concept: instrumentation_amp, role: "Top stage-1 output: $V_A - I\\,R_2$. Some notes reuse the name $V_1$ here (known issue K10)."}
       - {id: o2, label: "V_o2", concept: instrumentation_amp, role: "Bottom stage-1 output: $V_B + I\\,R_2$."}
       - {id: stage1, label: "Stage 1", concept: instrumentation_amp, role: "Two non-inverting amplifiers sharing $R_1$: $A_d = 1 + 2R_2/R_1$, $A_{cm} = 1$."}
-      - {id: stage2, label: "Stage 2", concept: difference_amp, role: "Difference amplifier with four equal $R$: $A_d = 1$, $A_{cm} = 0$ — removes the common mode.", controls: [mis]}
+      - {id: stage2, label: "Stage 2", concept: difference_amp, role: "Difference amplifier with four equal $R$: $A_d = 1$, $A_{cm} = 0$. Removes the common mode.", controls: [mis]}
       - {id: Rg, label: "Stage-2 resistor to ground", concept: cmrr, role: "Mistune it to see the common mode leak — stage 2 still needs matched resistors.", controls: [mis]}
       - {id: out, label: "V_out", concept: instrumentation_amp, role: "$V_{o2} - V_{o1} = \\left(1 + \\dfrac{2R_2}{R_1}\\right)(V_{\\text{in},2} - V_{\\text{in},1})$."}
     terms:
@@ -301,7 +301,7 @@ break_it:
   - id: open_loop_rail
     title: "No feedback: the output sticks to a rail"
     cause: "The open-loop gain $A_d \\approx 10^5$ multiplies any input difference."
-    condition: "$|V_+ - V_-| > V_s/A_d$ — about 150 µV here."
+    condition: "$|V_+ - V_-| > V_s/A_d$, about 150 µV here."
     consequence: "$V_\\text{out}$ saturates at $\\pm V_s$; the reading no longer depends on the input."
     recovery: "Use negative feedback so the gain is set by resistors."
   - id: positive_feedback
@@ -336,7 +336,7 @@ break_it:
     recovery: "Lower the gain (larger $R_1$) or the bridge supply."
 traps:
   - "The virtual short needs negative feedback and an unsaturated output."
-  - "Non-inverting gain is 1 + R1/R2 (lecture naming), not R1/R2."
+  - "Non-inverting gain is 1 + R1/R2 (the names used here), not R1/R2."
   - "INA: the factor 2 in 2R2/R1 — two R2 carry the same current."
   - "Stage 1 passes common mode (gain 1); stage 2 rejects it."
   - "CMRR: bigger is better."

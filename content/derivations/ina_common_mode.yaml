@@ -2,7 +2,7 @@ id: ina_common_mode
 title: Instrumentation amplifier — common-mode input
 concept: instrumentation_amp
 figure: ina
-source: "Lecture 2 notes, p. 4"
+source: "notes"
 symbols: {Vcm: V, VA: V, VB: V, R1: ohm, R2: ohm, I: A, Vo1: V, Vo2: V}
 steps:
   - id: setup

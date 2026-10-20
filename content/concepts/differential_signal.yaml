@@ -4,7 +4,7 @@ short: "Differential signal"
 track: course_l02
 prerequisites: [voltage, ground_reference]
 status: verified
-source_refs: ["Lecture 2 notes, p. 2–4"]
+source_refs: ["notes"]
 one_liner: "The difference between two wires' voltages, $V_d = V_2 - V_1$. A bridge's output is a tiny differential signal."
 plain_words: "the difference between two wires"
 explanation_md: differential_signal.md

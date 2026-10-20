@@ -146,7 +146,7 @@ problems:
       - {id: four, text: "4 × larger", misconception: rms_no_sqrt}
       - {id: same, text: "unchanged"}
     correct: two
-    solution: "Power $\\propto$ bandwidth (4 ×), RMS $= \\sqrt{\\text{power}}$: 2 ×."
+    solution: "Power $\\propto$ bandwidth (4 ×), RMS $= \\sqrt{\\text{power}}$. 2 ×."
 
   - id: nz_decade
     concept: band_noise
@@ -158,7 +158,7 @@ problems:
       - {id: ten, text: "the higher decade has 10 × more (it is 10 × wider)", misconception: flat_shortcut_always}
       - {id: less, text: "the higher decade has less"}
     correct: same
-    solution: "$S_1\\ln(100/10) = S_1\\ln(1000/100) = S_1\\ln 10$: every decade carries the same power."
+    solution: "$S_1\\ln(100/10) = S_1\\ln(1000/100) = S_1\\ln 10$. Every decade carries the same power."
 
   - id: nz_flat_integral
     concept: integral_area
@@ -182,7 +182,7 @@ problems:
       - {id: lecture, text: "$S_0\\,(\\omega_2 - \\omega_1)$", misconception: omega_no_2pi}
       - {id: times, text: "$2\\pi S_0\\,(\\omega_2 - \\omega_1)$"}
     correct: correct
-    solution: "$d\\omega = 2\\pi\\,df$, so $\\int S\\,df = \\frac{1}{2\\pi}\\int S\\,d\\omega$. The lecture's $S(\\omega)(\\omega_2 - \\omega_1)$ is flagged as K4."
+    solution: "$d\\omega = 2\\pi\\,df$, so $\\int S\\,df = \\frac{1}{2\\pi}\\int S\\,d\\omega$. The written $S(\\omega)(\\omega_2 - \\omega_1)$ is flagged as K4."
 
   - id: nz_two_sided_same
     concept: psd_sides

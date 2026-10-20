@@ -1,9 +1,9 @@
-"""Noise, power spectral density and band-limited noise (lecture 2, p. 7–8).
+"""Noise, power spectral density and band-limited noise.
 
 One coherent signal generator feeds every noise scene: a clean measurement plus
 white or 1/f noise, added (additive) or multiplied in (multiplicative).
 
-Conventions (stated explicitly because the lecture's notation mixes them, K4/K5/K8):
+Conventions (stated explicitly because the notation mixes them, K4/K5/K8):
 
 * ``S`` is a **one-sided** PSD **per hertz**, defined for f ≥ 0, unit V²/Hz.
 * variance  σ² = ∫₀^∞ S(f) df  (the band [f₁, f₂]: ∫_{f₁}^{f₂} S(f) df)
@@ -60,7 +60,7 @@ def sine(t: np.ndarray, amplitude: float, f: float, phase: float = 0.0) -> np.nd
 
 
 def clean_measurement(t: np.ndarray) -> np.ndarray:
-    """The lecture's sketch of a sensor output: a smooth S-shaped rise (V)."""
+    """The written sketch of a sensor output: a smooth S-shaped rise (V)."""
     T = t[-1] if len(t) else 1.0
     return 0.3 + 0.7 / (1.0 + np.exp(-(t / T - 0.5) * 9.0))
 
@@ -123,7 +123,7 @@ def pink_band_power(S1: float, f1: float, f2: float) -> float:
 
 
 def lecture_band_power_omega(S0: float, f1: float, f2: float) -> float:
-    """The lecture's form S·(ω₂ − ω₁) with a per-Hz S: 2π too large (K4)."""
+    """The written form S·(ω₂ − ω₁) with a per-Hz S: 2π too large (K4)."""
     return S0 * 2 * np.pi * (f2 - f1)
 
 
@@ -142,7 +142,7 @@ def bandpass(x: np.ndarray, fs: float, f1: float, f2: float) -> np.ndarray:
     return np.fft.irfft(spec, len(x))
 
 
-# --- lock-in primitives (infrastructure; no course content until lecture 3 is ingested) -----------
+# --- lock-in primitives (infrastructure; no lesson until that material exists) -----------
 
 
 @dataclass(frozen=True)

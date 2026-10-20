@@ -8,4 +8,4 @@ Divide by the time $\Delta t$ it took:
 
 $$\frac{dQ}{dt} = C\,\frac{dV}{dt} + V\,\frac{dC}{dt}$$
 
-This is the lecture's capacitor current. The two strips are the **two ways** to get a current: change the voltage (barometer), or change the capacitor (microphone).
+This is the capacitor current used here. The two strips are the **two ways** to get a current: change the voltage (barometer), or change the capacitor (microphone).

@@ -193,10 +193,10 @@ def opamp_open(v_plus: float, v_minus: float, v_out: float, rail: float, selecte
 def noninv(v_in: float | None, v_out: float | None, v_minus: float | None, R1: float | None, R2: float | None, *,
            selected=None, feedback: str = "negative", source: str = "input", sat: int = 0,
            i_max: float = 1e-3, symbolic: bool = False) -> str:
-    """Non-inverting amplifier (lecture naming). ``feedback="positive"`` swaps the input signs.
+    """Non-inverting amplifier (the names used here). ``feedback="positive"`` swaps the input signs.
 
     ``source="bridge"`` draws one bridge node as the input with the other node left unused
-    (the lecture's approach 1 for the bridge).
+    (the written approach 1 for the bridge).
     """
     sel = _sel(selected)
     c = Canvas(740, 450, "Non-inverting amplifier",

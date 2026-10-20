@@ -34,7 +34,7 @@ problems:
       - {id: same, text: "stays the same"}
       - {id: up, text: "becomes three times bigger", misconception: bigger_denominator_bigger}
     correct: down
-    solution: "$\\dfrac{6}{2} = 3$ but $\\dfrac{6}{6} = 1$: a bigger denominator makes the result smaller. Same reason more resistance means less current."
+    solution: "$\\dfrac{6}{2} = 3$ but $\\dfrac{6}{6} = 1$. A bigger denominator makes the result smaller. Same reason more resistance means less current."
 
   - id: ohm_current
     concept: ohms_law
@@ -89,7 +89,7 @@ problems:
     misconception_checks:
       - {fn: divider.top_resistor_used, misconception: divider_swapped}
     solution: >-
-      $V_\text{out} = V_\text{in}\,\dfrac{R_2}{R_1 + R_2}$: the output is the share of the supply that drops across
+      $V_\text{out} = V_\text{in}\,\dfrac{R_2}{R_1 + R_2}$. The output is the share of the supply that drops across
       the **bottom** resistor.
 
   - id: divider_r2_up
@@ -155,7 +155,7 @@ problems:
     answer: {fn: kcl.remaining, unit: A, tolerance_rel: 0.01, display_prefix: m}
     misconception_checks:
       - {fn: kcl.added, misconception: kcl_adds_all}
-    solution: "$\\sum I_\\text{in} = \\sum I_\\text{out}$: $[[I_in_mA]]\\,\\text{mA} = [[I_out_mA]]\\,\\text{mA} + I$, so $I = [[I_in_mA]] - [[I_out_mA]]\\,\\text{mA}$."
+    solution: "$\\sum I_\\text{in} = \\sum I_\\text{out}$. $[[I_in_mA]]\\,\\text{mA} = [[I_out_mA]]\\,\\text{mA} + I$, so $I = [[I_in_mA]] - [[I_out_mA]]\\,\\text{mA}$."
 
   - id: read_output_node
     concept: reading_circuits

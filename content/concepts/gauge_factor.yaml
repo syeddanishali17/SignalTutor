@@ -5,7 +5,7 @@ code: C2
 track: course_l01
 prerequisites: [strain, resistance, ratios]
 status: verified
-source_refs: ["Lecture 1 notes, p. 2"]
+source_refs: ["notes"]
 one_liner: "A **strain gauge** is a resistor whose resistance follows strain: $\\dfrac{\\Delta R}{R} = G\\,\\varepsilon$, with the **gauge factor** $G$."
 plain_words: "a resistor that measures stretch"
 explanation_md: gauge_factor.md

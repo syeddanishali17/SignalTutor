@@ -1,7 +1,7 @@
 [project]
 name = "modern-sensor-tutor"
 version = "0.1.0"
-description = "Interactive visual tutor for a modern sensor technologies course (personal study, private)"
+description = "Signal Tutor: an independent interactive tutor for sensor electronics and signal conditioning"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "streamlit==1.62.0",

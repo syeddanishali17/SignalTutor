@@ -8,9 +8,9 @@ prerequisites:
 - sine_wave
 status: verified
 source_refs:
-- Lecture 1 notes, p. 6
+- notes
 one_liner: For larger deflections the $x^2$ and $x^3$ terms matter. A sine input $x_0\cos\omega t$ then produces
-  new frequencies $2\omega$ and $3\omega$ — **harmonic distortion**.
+  new frequencies $2\omega$ and $3\omega$, **harmonic distortion**.
 plain_words: a curved response turns a pure tone into a tone plus its overtones
 explanation_md: harmonic_distortion.md
 misconceptions:

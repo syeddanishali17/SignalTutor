@@ -62,4 +62,5 @@ def prompt(scope: str, lesson_id: str, predict: Predict | None) -> None:
         kind, tag, head = "hit", "Prediction confirmed", f"You predicted **{labels[done]}** — observed: **{observed}**."
     else:
         kind, tag, head = "miss", "Surprise — look closer", f"You predicted **{labels[done]}**, but observed: **{observed}**."
-    layout.box(kind, f"{head}  \n{predict.reveal}", title=tag)
+    # Blank line: the verdict, the equation and the explanation stay separate lines.
+    layout.box(kind, f"{head}\n\n{predict.reveal}", title=tag)

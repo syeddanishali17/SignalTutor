@@ -1,11 +1,10 @@
 # Known source issues register (spec section 11).
-# Never silently correct: every deviation from the lecture notes is listed here,
-# shown in the app, and only marked "resolved" after checking the official slides or
-# asking the lecturer.
+# Never silently correct: every doubtful written form is listed here and shown in the app.
+# Mark an item resolved only after the written form and the proposed form have been checked by hand.
 
 issues:
   - id: K1
-    location: "L01 p6, microphone current"
+    location: "microphone current"
     lecture_form: "V_b C_0 \\frac{1}{(d-x)^2}\\, i\\omega\\hat x"
     proposed_form: "V_b C_0 \\frac{d}{(d-x)^2}\\, i\\omega\\hat x"
     reason: "Wrong units (A/m instead of A); the factor d from dC/dx = C0·d/(d−x)² is missing."
@@ -13,7 +12,7 @@ issues:
     formulas: [mic_current]
 
   - id: K2
-    location: "L01 p4, ∂C/∂x"
+    location: "∂C/∂x"
     lecture_form: "\\frac{d}{(d-x)^2}"
     proposed_form: "\\frac{\\varepsilon A}{(d-x)^2} = \\frac{C_0 d}{(d-x)^2}"
     reason: "Units 1/m instead of F/m; prefactor εA missing."
@@ -21,7 +20,7 @@ issues:
     formulas: [dC_dx]
 
   - id: K3
-    location: "L01 p5, transimpedance output (barometer)"
+    location: "transimpedance output (barometer)"
     lecture_form: "V_\\text{out} = -R V_0 \\omega \\sin(\\omega t)\\, C_0 \\ldots"
     proposed_form: "V_\\text{out} = +R V_0 \\omega C \\sin(\\omega t)"
     reason: "V_out = −R·I with I = −V0·ω·C·sin(ωt) gives a positive sign. Amplitude unaffected."
@@ -29,15 +28,15 @@ issues:
     formulas: [tia_output_barometer]
 
   - id: K4
-    location: "L02 p7, noise power in a band"
+    location: "noise power in a band"
     lecture_form: "S(\\omega)\\,(\\omega_2 - \\omega_1)"
     proposed_form: "\\int S\\,df;\\ \\text{white noise only: } S_0 (f_2 - f_1) = \\tfrac{S_0}{2\\pi}(\\omega_2 - \\omega_1)"
-    reason: "Valid only for white noise; integrating a per-Hz density over ω needs 1/2π. Exam trap."
+    reason: "Valid only for white noise; integrating a per-Hz density over ω needs 1/2π. A common slip."
     severity: high
     formulas: [noise_band_power]
 
   - id: K5
-    location: "L02 p8, variance"
+    location: "variance"
     lecture_form: "\\int_0^\\infty S_x(\\omega)\\,df"
     proposed_form: "\\int_0^\\infty S(f)\\,df = \\frac{1}{2\\pi}\\int_0^\\infty S(\\omega)\\,d\\omega"
     reason: "Density written in ω but integrated over f."
@@ -45,7 +44,7 @@ issues:
     formulas: [variance_from_psd]
 
   - id: K6
-    location: "L01 p2, strain prefactor"
+    location: "strain prefactor"
     lecture_form: "\\frac{A}{E h^2}\\,p, \\text{ A = membrane area}"
     proposed_form: "k\\,\\frac{a^2}{E h^2}\\,p"
     reason: "Geometry-dependent; plate theory uses side length (or radius) squared with a dimensionless constant."
@@ -53,14 +52,14 @@ issues:
     formulas: [strain_prefactor]
 
   - id: K7
-    location: "L02 p6, transimpedance feedback capacitor"
+    location: "transimpedance feedback capacitor"
     lecture_form: "C_f \\text{ drawn, not explained}"
     proposed_form: "\\text{Supplemental: } C_f \\text{ limits bandwidth and keeps the loop stable}"
     reason: "Drawn in the circuit but never discussed."
     severity: low
 
   - id: K8
-    location: "L02 p8, PSD convention"
+    location: "PSD convention"
     lecture_form: "S_x(f) = S_x(\\omega) = S_x(2\\pi f)"
     proposed_form: "\\text{one per-Hz density } S_x,\\ \\text{written in } f \\text{ or in } \\omega"
     reason: "Easy to misread as two different densities being equal."
@@ -68,18 +67,18 @@ issues:
     formulas: [psd_convention]
 
   - id: K9
-    location: "L02 p2, quarter-bridge drawing vs derivation"
+    location: "quarter-bridge drawing vs derivation"
     lecture_form: "\\text{drawing: } R+\\Delta R \\text{ lower-left};\\ \\text{derivation: } V_2 = I_2 R"
     proposed_form: "R+\\Delta R \\text{ upper-left (this app)} \\Rightarrow V_2 - V_1 \\approx -\\tfrac14\\tfrac{\\Delta R}{R}V_0"
     reason: "With ground at the bottom, V2 is the voltage across the lower-left arm. The derivation's V2 = I2·R is only true if the gauge is in the upper-left arm. Keeping the drawing instead gives V2 = I2·(R + ΔR) and V2 − V1 ≈ +¼(ΔR/R)V0. Magnitude and the factor ¼ are unaffected; only the sign flips. Found while building this app."
     severity: low
     formulas: [bridge_quarter_V2, bridge_quarter_exact, bridge_quarter_approx]
-    found_by: "cross-check of the L02 p2 figure against its derivation (this app, Oct 2026)"
+    found_by: "cross-check of the figure against its derivation (this app, Oct 2026)"
 
   - id: K10
-    location: "L02 p4–p5, instrumentation amplifier notation"
-    lecture_form: "V_1, V_2 \\text{ = bridge inputs (p4) and stage-1 outputs (p5)}"
+    location: "instrumentation amplifier notation"
+    lecture_form: "V_1, V_2 \\text{ = bridge inputs and stage-1 outputs}"
     proposed_form: "\\text{call the stage-1 outputs } V_{o1}, V_{o2}"
     reason: "The same symbols are reused for inputs and stage-1 outputs, which makes the differential derivation hard to follow. The result A_d = 1 + 2R2/R1 is unaffected."
     severity: low
-    found_by: "reading the L02 notes while building this app (Oct 2026); re-check during the M2 ingest"
+    found_by: "reading the while building this app (Oct 2026); re-check during the M2 ingest"

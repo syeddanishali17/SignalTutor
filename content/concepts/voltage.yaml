@@ -20,4 +20,4 @@ misconceptions:
     correction: "A voltage is a difference between two points. 'The node is at 3 V' silently means '3 V relative to ground'. Move the reference and that number changes; the difference between two nodes never does."
   - id: sign_flip
     text: "The sign of a voltage does not matter."
-    correction: "$V_{AB} = -V_{BA}$: the sign tells you which point is higher. In a bridge it tells you which way the membrane bent."
+    correction: "$V_{AB} = -V_{BA}$. The sign tells you which point is higher. In a bridge it tells you which way the membrane bent."

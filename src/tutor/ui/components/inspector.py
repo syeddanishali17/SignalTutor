@@ -19,6 +19,7 @@ import streamlit as st
 from tutor.engine.mastery import is_mastered
 from tutor.models.content import Concept, InspectItem, Scene, Term
 from tutor.ui import state
+from tutor.ui.components import prose
 
 
 # --------------------------------------------------------------------------- selection state
@@ -112,7 +113,8 @@ def inspector_panel(scope: str, scene: Scene, intro: str | None = None) -> Resol
 def _part_card(item: InspectItem) -> None:
     c = state.bundle().concepts[item.concept]
     st.markdown(f"#### {item.label}")
-    st.markdown(f"**In this picture:** {item.role}")
+    st.markdown("**In this picture:**")
+    prose.show(item.role)
     concept_card(c, compact=True)
 
 
@@ -120,7 +122,7 @@ def _term_card(scene: Scene, term: Term) -> None:
     bundle = state.bundle()
     sym = bundle.symbols[term.symbol]
     st.latex(term_latex(scene, term.id))
-    st.markdown(sym.meaning)
+    prose.show(sym.meaning)
     if sym.unit:
         st.markdown(f'<p class="mst-muted">Unit: <b>{sym.unit}</b></p>', unsafe_allow_html=True)
     if sym.concept and sym.concept in bundle.concepts:
@@ -135,7 +137,8 @@ def concept_card(c: Concept, compact: bool = False) -> None:
         st.markdown(f"#### {c.title}")
     if c.plain_words and mode != "exam":
         st.markdown(f'<div class="mst-plain">In plain words: <b>{c.plain_words}</b></div>', unsafe_allow_html=True)
-    st.markdown(f"**What it is.** {c.one_liner}")
+    st.markdown("**What it is.**")
+    prose.show(c.one_liner)
     if c.analogy and mode == "beginner":
         st.markdown(f"**Picture it** *(analogy — not the physics)*: {c.analogy.text} "
                     f"*Where it breaks:* {c.analogy.breaks_when}")
@@ -143,7 +146,8 @@ def concept_card(c: Concept, compact: bool = False) -> None:
         st.markdown(f"**Unit:** {c.units}")
     if c.misconceptions and mode != "exam":
         m = c.misconceptions[0]
-        st.markdown(f"**Watch out.** A common mistake: *“{m.text}”* — {m.correction}")
+        st.markdown(f"**Watch out.** A common mistake: *“{m.text}”*")
+        prose.show(m.correction)
     missing = unmastered_prereqs(c.id)
     if missing:
         names = ", ".join(state.bundle().concepts[p].short or state.bundle().concepts[p].title for p in missing)
@@ -172,4 +176,4 @@ def term_chips(concept_ids: list[str], label: str = "New words here") -> None:
                 concept_card(c)
                 if c.explanation:
                     with st.expander("Full explanation"):
-                        st.markdown(c.explanation)
+                        prose.show(c.explanation)

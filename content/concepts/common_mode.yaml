@@ -4,7 +4,7 @@ short: "Common mode"
 track: course_l02
 prerequisites: [voltage, ground_reference, differential_signal]
 status: verified
-source_refs: ["Lecture 2 notes, p. 1, 3–4"]
+source_refs: ["notes, 3–4"]
 one_liner: "The part two voltages **share**: $V_{cm} = \\dfrac{V_1 + V_2}{2}$. Both wires move together."
 plain_words: "what both wires have in common"
 explanation_md: common_mode.md

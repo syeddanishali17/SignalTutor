@@ -14,19 +14,19 @@ from tutor.ui.components.equation import formula_card
 
 def render() -> None:
     layout.page_header("Reference", "Sources & known issues",
-                       "Never silently corrected: every deviation from the lecture notes is listed here with the reason.")
+                       "Never silently corrected: every doubtful written form is listed here with the reason.")
     bundle = state.bundle()
     tab = st.segmented_control("View", ["Known issues", "Formula registry"], key="src_tab", required=True,
                                default="Known issues")
     if tab == "Known issues":
-        st.caption("Status 'open' until checked against the official slides or confirmed in the lecture.")
+        st.caption("Status stays open until the written form and the proposed form have been checked by hand.")
         sev_order = {"high": 0, "medium": 1, "low": 2}
         for k in sorted(bundle.known_issues.values(), key=lambda k: (sev_order[k.severity], k.id)):
             with st.container(border=True):
                 st.markdown(
                     f'<span class="mst-chip needs_review">{k.severity}</span><b>{k.id}</b> · {html.escape(k.location)}'
                     f' <span class="mst-muted">· {k.status}</span>', unsafe_allow_html=True)
-                st.caption("Lecture form")
+                st.caption("As written")
                 st.latex(k.lecture_form)
                 st.caption("Proposed")
                 st.latex(k.proposed_form)
@@ -38,7 +38,7 @@ def render() -> None:
             with st.container(border=True):
                 formula_card(f, show_meaning=False)
                 checks = []
-                for label, chk in (("lecture form", f.lecture_check), ("canonical form", f.canonical_check)):
+                for label, chk in (("written form", f.lecture_check), ("canonical form", f.canonical_check)):
                     if chk is None:
                         continue
                     ok, msg = dims.check(chk.expr, chk.symbols, chk.result_unit)

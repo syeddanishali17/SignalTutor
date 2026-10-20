@@ -2,13 +2,13 @@ id: pull_in
 title: Pull-in — why the instability sits at x = d/3
 concept: pull_in
 figure: capacitor_forces
-source: "Lecture 1 notes, p. 5 (d/3 for constant V); force balance: standard (supplemental)"
+source: "notes (d/3 for constant V); force balance: standard (supplemental)"
 symbols: {Fs: N, Fe: N, dFe: N/m, k: N/m, x: m, d: m, eps: F/m, A: m^2, V: V}
 steps:
   - id: spring
     latex: "F_\\text{spring} = 2k\\,x"
     changed: "The springs push the membrane back up."
-    why: "Two springs, each obeying Hooke's law (the lecture's membrane model)."
+    why: "Two springs, each obeying Hooke's law (the two-spring membrane model)."
     law: "Hooke's law"
     highlight: [springs, Fs]
     check: {kind: define, name: Fs, expr: "2*k*x"}
@@ -52,7 +52,7 @@ steps:
   - id: d3
     latex: "x = \\frac{d}{3}"
     changed: "Solve: 2x = d − x."
-    why: "The lecture's point of instability for constant V. It does not depend on the spring stiffness or the bias."
+    why: "The written point of instability for constant V. It does not depend on the spring stiffness or the bias."
     law: "Algebra"
     highlight: [x, d]
     check: {kind: define, name: x, expr: "d/3"}

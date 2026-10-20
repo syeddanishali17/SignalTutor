@@ -5,8 +5,8 @@ code: C3
 track: course_l01
 prerequisites: [wheatstone_quarter, gauge_factor]
 status: verified
-source_refs: ["Lecture 1 notes, p. 2"]
-one_liner: "Four gauges, two stretched and two compressed: $|V_\\text{out}| = \\dfrac{\\Delta R}{R}\\,V_b = G\\,\\varepsilon\\,V_b$ — exactly linear."
+source_refs: ["notes"]
+one_liner: "Four gauges, two stretched and two compressed: $|V_\\text{out}| = \\dfrac{\\Delta R}{R}\\,V_b = G\\,\\varepsilon\\,V_b$. Exactly linear."
 plain_words: "all four resistors sense"
 explanation_md: wheatstone_full.md
 symbol: 'V_\text{out} = G\,\varepsilon\,V_b'

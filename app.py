@@ -1,4 +1,4 @@
-"""Modern Sensor Technologies tutor — router (spec 13: st.Page + st.navigation).
+"""Signal Tutor — router (spec 13: st.Page + st.navigation).
 
     streamlit run app.py
 """
@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
 import streamlit as st  # noqa: E402
 
-st.set_page_config(page_title="Sensor Tutor", page_icon="📐", layout="wide",
+st.set_page_config(page_title="Signal Tutor", page_icon="📐", layout="wide",
                    initial_sidebar_state="collapsed")
 
 from tutor.ui import state, theme  # noqa: E402

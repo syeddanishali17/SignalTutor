@@ -5,7 +5,7 @@ code: P3
 track: physics
 prerequisites: [ratios]
 status: verified
-source_refs: ["Lecture 1 notes, p. 2"]
+source_refs: ["notes"]
 one_liner: "**Strain** $\\varepsilon = \\Delta L / L$ is how much a material stretches, as a fraction of its length ($+$ stretched, $-$ compressed)."
 plain_words: "how much it stretches, as a fraction"
 explanation_md: strain.md

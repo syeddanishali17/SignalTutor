@@ -10,6 +10,6 @@ Why it wins:
 * **Linear**: each branch still totals $2R$, so no $\Delta R/R \ll 1$ approximation is needed.
 * **Temperature compensation**: all four gauges drift together, and equal drifts cancel.
 
-Transfer function (L01): $H_{\varepsilon\text{-}V} = V_\text{out}/\varepsilon = G\,V_b$.
+Transfer function: $H_{\varepsilon\text{-}V} = V_\text{out}/\varepsilon = G\,V_b$.
 
-*Notation:* L01 calls the supply $V_b$, L02 calls it $V_0$ — same thing.
+*Notation:* some notes call the supply $V_b$, others call it $V_0$. Same thing.

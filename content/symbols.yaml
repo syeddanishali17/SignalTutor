@@ -32,7 +32,7 @@ symbols:
   - id: ohm_R
     latex: "R"
     label: "R"
-    meaning: "**Resistance** — how strongly the resistor opposes current. It sits in the **denominator** (bottom) of $I = V/R$: a bigger bottom number makes the result smaller."
+    meaning: "**Resistance** — how strongly the resistor opposes current. It sits in the **denominator** (bottom) of $I = V/R$. A bigger bottom number makes the result smaller."
     unit: "Ω"
     concept: resistance
   - id: ohm_I
@@ -132,7 +132,7 @@ symbols:
   - id: br_V0
     latex: "V_0"
     label: "V₀"
-    meaning: "**Bridge supply voltage** that feeds both dividers (the lecture also calls it $V_b$)."
+    meaning: "**Bridge supply voltage** that feeds both dividers (also called $V_b$)."
     unit: V
     concept: wheatstone_bridge
   - id: br_R
@@ -248,13 +248,13 @@ symbols:
   - id: sig_Vd
     latex: "V_d"
     label: "V_d"
-    meaning: "**Differential signal** $V_d = V_2 - V_1$: the part that pushes the two wires apart — the measurement."
+    meaning: "**Differential signal** $V_d = V_2 - V_1$. The part that pushes the two wires apart — the measurement."
     unit: V
     concept: differential_signal
   - id: sig_Vcm
     latex: "V_{cm}"
     label: "V_cm"
-    meaning: "**Common mode**: what both wires share, $V_{cm} = (V_1 + V_2)/2$ — here the bridge's DC level plus the mains pickup."
+    meaning: "**Common mode**: what both wires share, $V_{cm} = (V_1 + V_2)/2$. Here the bridge's DC level plus the mains pickup."
     unit: V
     concept: common_mode
   - id: sig_pickup
@@ -312,7 +312,7 @@ symbols:
   - id: ni_R1
     latex: "R_1"
     label: "R₁"
-    meaning: "**Feedback resistor** from the output to $V_-$ (lecture naming)."
+    meaning: "**Feedback resistor** from the output to $V_-$ (the names used here)."
     unit: "Ω"
     concept: non_inverting_amp
   - id: ni_R2
@@ -382,25 +382,25 @@ symbols:
   - id: ina_VA
     latex: "V_A"
     label: "V_A"
-    meaning: "**Node A**, top end of $R_1$ — held equal to the top input by the virtual short."
+    meaning: "**Node A**, top end of $R_1$, held equal to the top input by the virtual short."
     unit: V
     concept: virtual_short
   - id: ina_VB
     latex: "V_B"
     label: "V_B"
-    meaning: "**Node B**, bottom end of $R_1$ — held equal to the bottom input by the virtual short."
+    meaning: "**Node B**, bottom end of $R_1$, held equal to the bottom input by the virtual short."
     unit: V
     concept: virtual_short
   - id: ina_Vo1
     latex: "V_{o1}"
     label: "V_o1"
-    meaning: "**Stage-1 output, top.** (The lecture writes $V_1$ here — K10.)"
+    meaning: "**Stage-1 output, top.** (One written form gives $V_1$ here — K10.)"
     unit: V
     concept: instrumentation_amp
   - id: ina_Vo2
     latex: "V_{o2}"
     label: "V_o2"
-    meaning: "**Stage-1 output, bottom.** (The lecture writes $V_2$ here — K10.)"
+    meaning: "**Stage-1 output, bottom.** (One written form gives $V_2$ here — K10.)"
     unit: V
     concept: instrumentation_amp
   - id: ina_I
@@ -440,7 +440,7 @@ symbols:
   - id: cap_k
     latex: "k"
     label: "k"
-    meaning: "**Stiffness of each spring**: newtons of push-back per metre of squeeze. The lecture's membrane sits on two of them, $2k$ in total."
+    meaning: "**Stiffness of each spring**: newtons of push-back per metre of squeeze. The membrane here sits on two of them, $2k$ in total."
     unit: "N/m"
     concept: spring_hooke
   - id: cap_x
@@ -566,13 +566,13 @@ symbols:
   - id: cap_omega
     latex: "\\omega"
     label: "ω"
-    meaning: "**Angular frequency**, $\\omega = 2\\pi f$: how fast the oscillation turns, in radians per second."
+    meaning: "**Angular frequency**, $\\omega = 2\\pi f$. How fast the oscillation turns, in radians per second."
     unit: "rad/s"
     concept: phasor
   - id: cap_Hpx
     latex: "H_{p\\text{-}x}"
     label: "H_p-x"
-    meaning: "**Transfer function pressure → deflection**: metres of deflection per pascal, $A/(2k)$ for the lecture's two-spring membrane."
+    meaning: "**Transfer function pressure → deflection**: metres of deflection per pascal, $A/(2k)$ for the two-spring membrane."
     unit: "m/Pa"
     concept: transfer_function
 
@@ -669,18 +669,18 @@ symbols:
   - id: nz_X
     latex: "X_V(f)"
     label: "X_V(f)"
-    meaning: "**Spectral amplitude** $\\sqrt{S_V(f)}$ — what datasheets quote, in $\\text{V}/\\sqrt{\\text{Hz}}$."
+    meaning: "**Spectral amplitude** $\\sqrt{S_V(f)}$. What datasheets quote, in $\\text{V}/\\sqrt{\\text{Hz}}$."
     unit: "V/√Hz"
     concept: psd
   - id: nz_A
     latex: "A_k"
     label: "A_k"
-    meaning: "**Amplitude** of the $k$-th sine component: the height of its line in the spectrum."
+    meaning: "**Amplitude** of the $k$, th sine component: the height of its line in the spectrum."
     unit: V
     concept: spectrum
   - id: nz_fk
     latex: "f_k"
     label: "f_k"
-    meaning: "**Frequency** of the $k$-th sine component: where its line sits."
+    meaning: "**Frequency** of the $k$, th sine component: where its line sits."
     unit: Hz
     concept: spectrum

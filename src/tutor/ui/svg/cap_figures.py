@@ -1,4 +1,4 @@
-"""Capacitive-sensor figures (lecture 1, p. 3–6), drawn in the shared visual grammar.
+"""Capacitive-sensor figures, drawn in the shared visual grammar.
 
 One physical picture serves every capacitive scene: a membrane on two springs above a
 fixed plate, the gap ``d − x`` drawn as a real dimension, charges on the plates, the

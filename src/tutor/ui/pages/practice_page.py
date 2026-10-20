@@ -8,7 +8,7 @@ import random
 import streamlit as st
 
 from tutor.ui import state
-from tutor.ui.components import layout
+from tutor.ui.components import layout, prose
 from tutor.ui.components.oral import oral_dock, whiteboard_drill
 from tutor.ui.components.practice import problem_card
 
@@ -99,10 +99,10 @@ def _concept_item(cid: str, scope: str) -> None:
     with st.container(key=f"box-note-rc-{scope}"):
         st.markdown(f"**In one or two sentences: what is “{c.title}” and why does it matter here?**")
     if st.toggle("Reveal", key=f"{scope}__rev"):
-        st.markdown(c.one_liner)
+        prose.show(c.one_liner)
         if c.explanation:
             with st.expander("Full explanation"):
-                st.markdown(c.explanation)
+                prose.show(c.explanation)
         _self_check(scope, lambda ok: state.service().review_concept(cid, ok))
 
 
@@ -126,6 +126,6 @@ def _by_topic() -> None:
     bundle = state.bundle()
     order = state.graph().topological_order({p.concept for p in bundle.problems.values()})
     cid = st.selectbox("Topic", order, format_func=lambda c: bundle.concepts[c].title, key="topic_pick")
-    st.markdown(bundle.concepts[cid].one_liner)
+    prose.show(bundle.concepts[cid].one_liner)
     for p in sorted((p for p in bundle.problems.values() if p.concept == cid), key=lambda p: p.level):
         problem_card(p, scope="topic")

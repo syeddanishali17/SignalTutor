@@ -13,10 +13,10 @@ formulas: [pressure_force, membrane_hpx, hooke, charge_qcv, parallel_plate, dC_d
 x-cap-inspect: &cap_inspect
   - {id: membrane, label: "Membrane", concept: capacitive_sensor, role: "The **moving** plate. Pressure pushes it toward the fixed plate by $x$."}
   - {id: fixed, label: "Fixed plate", concept: capacitance, role: "The **fixed** electrode on the chip. Together with the membrane it forms the capacitor."}
-  - {id: gap, label: "Gap d − x", concept: capacitive_sensor, role: "The **remaining gap**. It sits in the denominator of $C = \\varepsilon A/(d - x)$: smaller gap, larger $C$."}
+  - {id: gap, label: "Gap d − x", concept: capacitive_sensor, role: "The **remaining gap**. It sits in the denominator of $C = \\varepsilon A/(d - x)$. Smaller gap, larger $C$."}
   - {id: x, label: "Deflection x", concept: capacitive_sensor, role: "How far the membrane has moved from rest."}
   - {id: d, label: "Rest gap d", concept: capacitive_sensor, role: "The gap with no pressure. $C_0 = \\varepsilon A/d$."}
-  - {id: springs, label: "Springs k", concept: spring_hooke, role: "Two springs push the membrane back: $F = 2k\\,x$ (lecture's model of the membrane's stiffness)."}
+  - {id: springs, label: "Springs k", concept: spring_hooke, role: "Two springs push the membrane back: $F = 2k\\,x$ (two-spring model of the membrane's stiffness)."}
   - {id: charges, label: "Charges ±Q", concept: charge_field, role: "$+Q$ on one plate, $-Q$ on the other, $Q = C\\,V$. Opposite charges attract."}
   - {id: field, label: "Field lines", concept: charge_field, role: "The electric field in the gap, from $+$ to $-$. No charge crosses it."}
   - {id: source, label: "Bias source", concept: capacitor_current, role: "Puts a voltage across the capacitor: **AC** for the barometer, **DC** for the microphone."}
@@ -41,13 +41,13 @@ scenes:
       correct: double
       reveal: >-
         The springs push back in proportion to the squeeze, $2k\,x$; the pressure pushes with $p\,A$. Balance:
-        $x = \dfrac{A}{2k}\,p$ — **twice the pressure, twice the deflection**. This stage has a constant transfer
+        $x = \dfrac{A}{2k}\,p$. **Twice the pressure, twice the deflection**. This stage has a constant transfer
         function $H_{p\text{-}x} = A/(2k)$.
     inspect:
       - {id: pressure, label: "Pressure p", concept: force_pressure, role: "Force per area pushing the membrane down: total force $F = p\\,A$.", controls: [p]}
       - {id: membrane, label: "Membrane (area A)", concept: force_pressure, role: "Collects the force $p\\,A$ over its area."}
       - {id: springs, label: "Springs k", concept: spring_hooke, role: "Push back with $2k\\,x$. Stiffer springs → less deflection.", controls: [k]}
-      - {id: x, label: "Deflection x", concept: spring_hooke, role: "Where $2k\\,x = p\\,A$: $x = \\dfrac{A}{2k}\\,p$."}
+      - {id: x, label: "Deflection x", concept: spring_hooke, role: "Where $2k\\,x = p\\,A$. $x = \\dfrac{A}{2k}\\,p$."}
       - {id: gap, label: "Gap d − x", concept: capacitive_sensor, role: "What is left of the gap. Next step: it sets the capacitance."}
     terms:
       - {id: x, symbol: cap_x, highlight: [x, membrane]}
@@ -63,7 +63,7 @@ scenes:
         - "Balance: $x = \\dfrac{A}{2k}\\,p$, proportional to $p$"
         - "So this stage has a constant transfer function $H_{p\\text{-}x} = A/(2k)$"
     notes_md: |
-      The springs are the lecture's model for the membrane's own stiffness (lecture 1, p. 3). The membrane here is an illustrative MEMS size: $1\,\text{mm}^2$, gap $d = 2\,\mu\text{m}$.
+      The springs are a model for the membrane's own stiffness. The membrane here is an illustrative MEMS size: $1\,\text{mm}^2$, gap $d = 2\,\mu\text{m}$.
 
   - id: capacitance
     title: "A capacitor stores charge"
@@ -80,7 +80,7 @@ scenes:
         - {id: same, label: "stays the same"}
       correct: double
       reveal: >-
-        $C = \dfrac{\varepsilon A}{\text{gap}}$: half the gap, **twice the capacitance**, and with the same $V$
+        $C = \dfrac{\varepsilon A}{\text{gap}}$. Half the gap, **twice the capacitance**, and with the same $V$
         twice the charge ($Q = C\,V$). Closer plates hold more charge per volt — that is the effect the sensor uses.
     inspect:
       - {id: charges, label: "Charges ±Q", concept: charge_field, role: "$Q = C\\,V$ sits on each plate (opposite signs). More charge, more symbols.", controls: [V]}
@@ -98,12 +98,12 @@ scenes:
     explain:
       prompt: "Without the picture: what is capacitance, and how do plate area and gap change it?"
       points:
-        - "$Q = C\\,V$: charge stored per volt"
+        - "$Q = C\\,V$. Charge stored per volt"
         - "$C = \\varepsilon A/\\text{gap}$"
         - "More area → more $C$; smaller gap → more $C$"
         - "The voltage changes the charge, not the capacitance"
     notes_md: |
-      Picofarads are tiny: a $4.4\,\text{pF}$ sensor at $5\,\text{V}$ holds $22\,\text{pC}$ — about $1.4\times10^{8}$ electrons.
+      Picofarads are tiny: a $4.4\,\text{pF}$ sensor at $5\,\text{V}$ holds $22\,\text{pC}$, about $1.4\times10^{8}$ electrons.
 
   - id: cx
     title: "C(x): equal pushes, unequal changes"
@@ -120,8 +120,8 @@ scenes:
         - {id: less, label: "less than the first"}
       correct: more
       reveal: >-
-        $C = \dfrac{C_0}{1 - x/d}$: $C_0 \to 1.33\,C_0 \to 2\,C_0$. The second step adds **twice as much**. The curve
-        bends upward from the start — lecture 1: *"no more H"*. Only for $x \ll d$ is it nearly straight.
+        $C = \dfrac{C_0}{1 - x/d}$. $C_0 \to 1.33\,C_0 \to 2\,C_0$. The second step adds **twice as much**. The curve
+        bends upward from the start — *"no more H"*. Only for $x \ll d$ is it nearly straight.
     inspect: *cap_inspect
     terms:
       - {id: C, symbol: cap_C, highlight: [membrane, fixed, gap]}
@@ -141,7 +141,7 @@ scenes:
         - "The slope $dC/dx = \\varepsilon A/(d - x)^2$ depends on $x$"
         - "Linear only for $x \\ll d$: $C \\approx C_0(1 + x/d)$"
     notes_md: |
-      The lecture writes the slope as $\frac{d}{(d-x)^2}$ — it is missing the factor $\varepsilon A$ (known issue K2, flagged on the Sources page). The app uses $\frac{\varepsilon A}{(d-x)^2} = \frac{C_0\,d}{(d-x)^2}$.
+      One written form gives the slope as $\frac{d}{(d-x)^2}$. It is missing the factor $\varepsilon A$ (known issue K2, flagged on the Sources page). The app uses $\frac{\varepsilon A}{(d-x)^2} = \frac{C_0\,d}{(d-x)^2}$.
 
   - id: current
     title: "Two ways to get a current"
@@ -149,7 +149,7 @@ scenes:
     concepts: [derivative_rate, product_rule, chain_rule, phasor, capacitor_current]
     problem: >-
       An ammeter cannot read a capacitance directly. It reads **current** — charge flowing onto the plates.
-      **When does charge flow at all?** (Lecture 1: study this case closely.)
+      **When does charge flow at all?** (Study this case closely.)
     predict:
       question: "A barometer: the pressure changes over hours. You connect a constant 5 V. The ammeter shows…"
       options:
@@ -184,7 +184,7 @@ scenes:
         - "Microphone: $C$ changes fast, so a constant $V_b$ is enough: $I = V_b\\,(dC/dx)(dx/dt)$"
         - "Barometer amplitude $\\propto C$ is read at the known frequency (lock-in)"
     notes_md: |
-      In the microphone mode, the static pull of the bias on the membrane is ignored here (it matters for pull-in, step 5). The lecture's microphone formula misses a factor $d$ (known issue K1).
+      In the microphone mode, the static pull of the bias on the membrane is ignored here (it matters for pull-in, step 5). The written microphone formula misses a factor $d$ (known issue K1).
 
   - id: smallsignal
     title: "Small signals and harmonic distortion"
@@ -219,7 +219,7 @@ scenes:
         - "$x^2$ terms oscillate at $2\\omega$, $x^3$ at $3\\omega$: harmonic distortion"
         - "They grow like $x_0^2$ and $x_0^3$"
     notes_md: |
-      THD (total harmonic distortion) is a **supplemental** metric, not from the lecture: $\sqrt{A_2^2 + A_3^2 + \dots}\,/A_1$.
+      THD (total harmonic distortion) is a **supplemental** metric: $\sqrt{A_2^2 + A_3^2 + \dots}\,/A_1$.
 
   - id: pullin
     title: "Pull-in: the bias that pulls too hard"
@@ -237,11 +237,11 @@ scenes:
       correct: d3
       reveal: >-
         The pull grows like $1/(d - x)^2$, the springs only like $x$. Beyond $x = d/3$ the pull always wins: no balance,
-        the membrane **snaps** onto the fixed plate (pull-in). Lecture 1: *point of instability for constant V*.
+        the membrane **snaps** onto the fixed plate (pull-in). *point of instability for constant V*.
         A feedback loop that lowers the voltage as the gap closes can hold it anywhere.
     inspect:
-      - {id: Fs, label: "Spring force", concept: spring_hooke, role: "$F_\\text{spring} = 2k\\,x$ — pushes the membrane **back up**, a straight line in $x$."}
-      - {id: Fe, label: "Electrostatic pull", concept: pull_in, role: "$F_\\text{el} = \\dfrac{\\varepsilon A V^2}{2(d - x)^2}$ — pulls **down**, grows ever faster as the gap closes.", controls: [V]}
+      - {id: Fs, label: "Spring force", concept: spring_hooke, role: "$F_\\text{spring} = 2k\\,x$. Pushes the membrane **back up**, a straight line in $x$."}
+      - {id: Fe, label: "Electrostatic pull", concept: pull_in, role: "$F_\\text{el} = \\dfrac{\\varepsilon A V^2}{2(d - x)^2}$. Pulls **down**, grows ever faster as the gap closes.", controls: [V]}
       - {id: membrane, label: "Membrane", concept: equilibrium_stability, role: "Rests where the two forces balance — if that balance is stable."}
       - {id: springs, label: "Springs", concept: spring_hooke, role: "Their stiffness sets the pull-in **voltage**, not the pull-in **position** $d/3$."}
       - {id: gap, label: "Gap d − x", concept: pull_in, role: "The pull depends on $1/(d - x)^2$: closing the gap strengthens the pull."}
@@ -266,7 +266,7 @@ scenes:
         - "They merge at $x = d/3$; above $V_\\text{PI}$ none: snap-in"
         - "Feedback controls $x$ (or the charge) and avoids it"
     notes_md: |
-      The force balance and $V_\text{PI}$ are **supplemental** (standard physics); the critical point $d/3$ for constant voltage is from the lecture. The snap animation is an instructional effect, not a time-accurate simulation.
+      The force balance and $V_\text{PI}$ are **supplemental** (standard physics); the critical point $d/3$ for constant voltage is the marked instability. The snap animation is an instructional effect, not a time-accurate simulation.
 
 break_it:
   - id: big_deflection
@@ -291,5 +291,5 @@ traps:
   - "The gap is d − x, not x."
   - "Barometer → AC bias; microphone → DC bias."
   - "ω = 2πf."
-  - "dC/dx = εA/(d − x)² (the lecture's d/(d − x)² misses εA, K2)."
+  - "dC/dx = εA/(d − x)² (the written d/(d − x)² misses εA, K2)."
   - "Pull-in at d/3 for constant voltage — not d/2, not d."

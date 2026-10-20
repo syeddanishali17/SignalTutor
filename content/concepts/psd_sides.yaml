@@ -7,7 +7,7 @@ prerequisites:
 - band_noise
 status: verified
 source_refs:
-- 'Lecture 2 notes, p. 8 (marked: watch the factor 2)'
+- 'notes (watch the factor of 2)'
 one_liner: 'A **one-sided** PSD $S$ lives on $f \ge 0$; a **two-sided** PSD $S''''$ spreads the same power over
   $-\infty \dots \infty$ with **half** the height: $S''''(f) = \tfrac12 S(f)$. Both integrate to the same variance.'
 plain_words: the same noise, drawn on positive frequencies only or split over ±f

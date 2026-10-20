@@ -2,7 +2,7 @@ id: small_signal
 title: Small-signal approximation and its error
 concept: small_signal
 figure: capacitor
-source: "Lecture 1 notes, p. 5–6"
+source: "notes"
 symbols: {C: F, C0: F, x: m, d: m}
 steps:
   - id: cx
@@ -51,7 +51,7 @@ steps:
     latex: "V_\\text{out} \\cong V_{ft}\\left(1 + \\frac{x}{d}\\right)"
     changed: "The sensor output inherits the same factor."
     why: "V_out is proportional to C (barometer readout), so the output is the feed-through V_ft plus a small part proportional to x/d — the signal."
-    law: "Lecture 1, p. 5"
+    law: "notes"
     highlight: [meter]
 
   - id: mic

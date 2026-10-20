@@ -2,12 +2,12 @@ id: difference_amp
 title: Difference amplifier output
 concept: difference_amp
 figure: diffamp
-source: "Lecture 2 notes, p. 3 (result); steps: virtual short + KCL"
+source: "notes (result); steps: virtual short + KCL"
 symbols: {V1: V, V2: V, R1: ohm, R2: ohm, R3: ohm, R4: ohm, Vp: V, Vm: V, Vout: V}
 steps:
   - id: setup
     latex: "V_1 \\xrightarrow{R_1} V_-,\\quad V_\\text{out} \\xrightarrow{R_2} V_-,\\quad V_2 \\xrightarrow{R_3} V_+ \\xrightarrow{R_4} \\text{ground}"
-    changed: "Name the parts (lecture naming)."
+    changed: "Name the parts (the names used here)."
     why: "Feedback goes through $R_2$ to the $-$ input: negative feedback, so $V_+ = V_-$ and no input current."
     law: "Circuit reading"
     assumption: "Ideal op-amp, negative feedback, not saturated"
@@ -57,9 +57,9 @@ steps:
   - id: matched
     latex: "\\frac{R_4}{R_3} = \\frac{R_2}{R_1} \\quad\\Rightarrow\\quad V_\\text{out} = \\frac{R_2}{R_1}\\,(V_2 - V_1)"
     changed: "Insert $V_+$ and use matched resistor ratios."
-    why: "With $R_4/R_3 = R_2/R_1$ the factor in front of $V_2$ becomes exactly $R_2/R_1$ — so a shared (common-mode) part of $V_1$ and $V_2$ cancels."
+    why: "With $R_4/R_3 = R_2/R_1$ the factor in front of $V_2$ becomes exactly $R_2/R_1$, so a shared (common-mode) part of $V_1$ and $V_2$ cancels."
     law: "Algebra"
-    assumption: "Matched resistors: $R_2/R_1 = R_4/R_3$ — any mismatch leaks common mode"
+    assumption: "Matched resistors: $R_2/R_1 = R_4/R_3$. Any mismatch leaks common mode"
     highlight: [R1, R2, R3, R4, out]
     check: {kind: equals, lhs: "Vout", expr: "R2/R1*(V2 - V1)", subs: {R4: "R3*R2/R1"}}
     fade:

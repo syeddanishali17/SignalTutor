@@ -9,7 +9,7 @@
 # status: verified      = consistent in the notes AND passes dimension/algebra checks
 #                         (slides not yet compared: see 'evidence')
 #         needs_review  = the source form has a problem; shown with a flag
-#         supplemental  = standard textbook relation, not from the lecture
+#         supplemental  = standard textbook relation, an extra relation
 
 formulas:
   # --- foundations ------------------------------------------------------------
@@ -68,13 +68,13 @@ formulas:
     dimension_check: pass
     assumptions: ["Small temperature change (linear coefficient)"]
 
-  # --- L01: piezoresistive transducer and bridges --------------------------------
+  # --- part 1: piezoresistive transducer and bridges --------------------------------
   - id: gauge_factor
     title: Gauge factor
     concept: gauge_factor
     module: C2
     status: verified
-    source: "Lecture 1 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "G = \\frac{\\Delta R}{R}\\,\\frac{1}{\\varepsilon}"
     lecture_check: {expr: "dR/R/eps", symbols: {dR: ohm, R: ohm, eps: "1"}, result_unit: "1"}
@@ -90,7 +90,7 @@ formulas:
     concept: wheatstone_full
     module: C3
     status: verified
-    source: "Lecture 1 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "V_\\text{out} = \\frac{\\Delta R}{R}\\,V_b"
     lecture_check: {expr: "dR/R*Vb", symbols: {dR: ohm, R: ohm, Vb: V}, result_unit: V}
@@ -100,14 +100,14 @@ formulas:
     meaning:
       - {symbol: "V_\\text{out}", meaning: "bridge output (magnitude; sign depends on which node is +)", unit: "V"}
       - {symbol: "\\Delta R/R", meaning: "relative change of each gauge", unit: "1", when_it_goes_up: "V_out rises exactly in proportion"}
-      - {symbol: "V_b", meaning: "bridge supply (V_0 in the L02 notes)", unit: "V", when_it_goes_up: "V_out rises in proportion"}
+      - {symbol: "V_b", meaning: "bridge supply (V_0 in the )", unit: "V", when_it_goes_up: "V_out rises in proportion"}
 
   - id: bridge_full_strain
     title: Full-bridge output from strain
     concept: wheatstone_full
     module: C3
     status: verified
-    source: "Lecture 1 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "V_\\text{out} = G\\,\\varepsilon\\,V_b"
     lecture_check: {expr: "G*eps*Vb", symbols: {G: "1", eps: "1", Vb: V}, result_unit: V}
@@ -119,7 +119,7 @@ formulas:
     concept: wheatstone_full
     module: C2
     status: verified
-    source: "Lecture 1 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "H_{\\varepsilon\\text{-}V} = \\frac{V_\\text{out}}{\\varepsilon} = G\\,V_b"
     lecture_check: {expr: "G*Vb", symbols: {G: "1", Vb: V}, result_unit: V}
@@ -131,20 +131,20 @@ formulas:
     concept: wheatstone_bridge
     module: C3
     status: supplemental
-    source: standard (textbook); follows from the two dividers in Lecture 2 notes, p. 2
+    source: standard (textbook); follows from the two dividers in notes
     evidence: [textbook, sympy]
     lecture_form: "\\frac{R_1}{R_4} = \\frac{R_2}{R_3}"
     lecture_check: {expr: "R1/R4", symbols: {R1: ohm, R4: ohm}, result_unit: "1"}
     dimension_check: pass
     comes_from: "Set V2 = V0·R4/(R1+R4) equal to V1 = V0·R3/(R2+R3)."
 
-  # --- L02: quarter-bridge derivation -------------------------------------------------
+  # --- part 2: quarter-bridge derivation -------------------------------------------------
   - id: bridge_quarter_I1
     title: Right-branch current
     concept: wheatstone_quarter
     module: C3
     status: verified
-    source: "Lecture 2 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "I_1 = \\frac{V_0}{2R}"
     lecture_check: {expr: "V0/(2*R)", symbols: {V0: V, R: ohm}, result_unit: A}
@@ -155,7 +155,7 @@ formulas:
     concept: wheatstone_quarter
     module: C3
     status: verified
-    source: "Lecture 2 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "I_2 = \\frac{V_0}{2R + \\Delta R}"
     lecture_check: {expr: "V0/(2*R + dR)", symbols: {V0: V, R: ohm, dR: ohm}, result_unit: A}
@@ -166,7 +166,7 @@ formulas:
     concept: wheatstone_quarter
     module: C3
     status: verified
-    source: "Lecture 2 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     known_issue: K9
     lecture_form: "V_2 = I_2 R = \\frac{V_0 R}{2R + \\Delta R} = \\frac{V_0}{2 + \\Delta R/R}"
@@ -179,7 +179,7 @@ formulas:
     concept: wheatstone_quarter
     module: C3
     status: verified
-    source: "Lecture 2 notes, p. 2 (intermediate step)"
+    source: "notes (intermediate step)"
     evidence: [notes, dimension_check, sympy]
     known_issue: K9
     lecture_form: "V_2 - V_1 = V_0\\left(\\frac{1}{2 + \\Delta R/R} - \\frac12\\right)"
@@ -191,7 +191,7 @@ formulas:
     concept: wheatstone_quarter
     module: C3
     status: verified
-    source: "Lecture 2 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     known_issue: K9
     lecture_form: "V_2 - V_1 \\cong -\\frac14\\,\\frac{\\Delta R}{R}\\,V_0 \\quad\\text{for } \\frac{\\Delta R}{R} \\ll 1"
@@ -202,7 +202,7 @@ formulas:
     meaning:
       - {symbol: "V_2 - V_1", meaning: "bridge output (left midpoint minus right midpoint)", unit: "V"}
       - {symbol: "\\Delta R/R", meaning: "relative change of the one active gauge", unit: "1", when_it_goes_up: "|V_2 − V_1| grows (almost linearly)"}
-      - {symbol: "V_0", meaning: "bridge supply (V_b in the L01 notes)", unit: "V", when_it_goes_up: "output grows in proportion"}
+      - {symbol: "V_0", meaning: "bridge supply (V_b in the )", unit: "V", when_it_goes_up: "output grows in proportion"}
       - {symbol: "\\tfrac14", meaning: "only one of four arms is active, and it only moves one midpoint", unit: "1"}
 
   - id: quarter_approx_error
@@ -221,7 +221,7 @@ formulas:
     concept: bridge_loading
     module: C3
     status: supplemental
-    source: standard (Thevenin equivalent); motivated by Lecture 2 notes, p. 4
+    source: standard (Thevenin equivalent); motivated by notes
     evidence: [textbook, dimension_check]
     lecture_form: "V_\\text{read} \\approx V_\\text{open}\\,\\frac{R_\\text{in}}{R_\\text{in} + R}"
     lecture_check: {expr: "Vopen*Rin/(Rin + R)", symbols: {Vopen: V, Rin: ohm, R: ohm}, result_unit: V}
@@ -234,12 +234,12 @@ formulas:
     title: Microphone current (DC bias)
     module: C5
     status: needs_review
-    source: "Lecture 1 notes, p. 6"
+    source: "notes"
     evidence: [notes, dimension_check]
     known_issue: K1
     lecture_form: "\\hat I(t) = V_b C_0 \\frac{1}{(d-x)^2}\\, i\\omega\\hat x(t)"
     canonical_form: "\\hat I(t) = V_b C_0 \\frac{d}{(d-x)^2}\\, i\\omega\\hat x(t)"
-    issue: "Lecture form has wrong dimensions (A/m instead of A). dC/dx = C0·d/(d−x)²."
+    issue: "The written form has wrong dimensions (A/m instead of A). dC/dx = C0·d/(d−x)²."
     lecture_check: {expr: "Vb*C0*1/(d - x)^2*imath*omega*x", symbols: {Vb: V, C0: F, d: m, x: m, omega: "1/s"}, result_unit: A}
     canonical_check: {expr: "Vb*C0*d/(d - x)^2*imath*omega*x", symbols: {Vb: V, C0: F, d: m, x: m, omega: "1/s"}, result_unit: A}
     dimension_check: pass
@@ -250,12 +250,12 @@ formulas:
     title: Slope of the parallel-plate capacitance
     module: C4
     status: needs_review
-    source: "Lecture 1 notes, p. 4"
+    source: "notes"
     evidence: [notes, dimension_check]
     known_issue: K2
     lecture_form: "\\frac{\\partial C}{\\partial x} = \\frac{d}{(d-x)^2}"
     canonical_form: "\\frac{\\partial C}{\\partial x} = \\frac{\\varepsilon A}{(d-x)^2} = \\frac{C_0\\, d}{(d-x)^2}"
-    issue: "Lecture form has units 1/m, but dC/dx must be in F/m. The prefactor εA = C0·d is missing."
+    issue: "The written form has units 1/m, but dC/dx must be in F/m. The prefactor εA = C0·d is missing."
     lecture_check: {expr: "d/(d - x)^2", symbols: {d: m, x: m}, result_unit: "F/m"}
     canonical_check: {expr: "eps*A/(d - x)^2", symbols: {eps: "F/m", A: "m^2", d: m, x: m}, result_unit: "F/m"}
     dimension_check: pass
@@ -266,7 +266,7 @@ formulas:
     title: Transimpedance output, barometer case
     module: C11
     status: needs_review
-    source: "Lecture 1 notes, p. 5"
+    source: "notes"
     evidence: [notes, dimension_check]
     known_issue: K3
     lecture_form: "V_\\text{out} = -R\\,V_0\\,\\omega\\,\\sin(\\omega t)\\,C_0\\ldots"
@@ -282,7 +282,7 @@ formulas:
     title: Noise power in a frequency band
     module: C13
     status: needs_review
-    source: "Lecture 2 notes, p. 7"
+    source: "notes"
     evidence: [notes, dimension_check]
     known_issue: K4
     lecture_form: "P = S_V(\\omega)\\cdot(\\omega_2 - \\omega_1)"
@@ -298,7 +298,7 @@ formulas:
     title: Variance from the PSD
     module: C13
     status: needs_review
-    source: "Lecture 2 notes, p. 8"
+    source: "notes"
     evidence: [notes]
     known_issue: K5
     lecture_form: "\\sigma_x^2 = \\int_0^\\infty S_x(\\omega)\\,df"
@@ -311,7 +311,7 @@ formulas:
     title: Membrane strain vs pressure
     module: C2
     status: needs_review
-    source: "Lecture 1 notes, p. 2"
+    source: "notes"
     evidence: [notes, dimension_check]
     known_issue: K6
     lecture_form: "\\varepsilon(p) \\cong \\frac{A}{E h^2}\\,p = \\xi\\, p"
@@ -322,13 +322,13 @@ formulas:
     dimension_check: pass
     shown_in_exam_mode: canonical_with_flag
 
-  # --- L02: op-amp and the three approaches ---------------------------------------------------
+  # --- part 2: op-amp and the three approaches ---------------------------------------------------
   - id: opamp_output
     title: Op-amp output (general)
     concept: op_amp
     module: C8
     status: verified
-    source: "Lecture 2 notes, p. 1"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "V_\\text{out} = A_d\\,(V_+ - V_-) + A_{cm}\\,V_{cm}"
     lecture_check: {expr: "Ad*(Vp - Vm) + Acm*Vcm", symbols: {Ad: "1", Vp: V, Vm: V, Acm: "1", Vcm: V}, result_unit: V}
@@ -355,7 +355,7 @@ formulas:
     concept: non_inverting_amp
     module: C9
     status: verified
-    source: "Lecture 2 notes, p. 3"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "V_\\text{out} = V_\\text{in}\\left(1 + \\frac{R_1}{R_2}\\right)"
     lecture_check: {expr: "Vin*(1 + R1/R2)", symbols: {Vin: V, R1: ohm, R2: ohm}, result_unit: V}
@@ -368,7 +368,7 @@ formulas:
     concept: difference_amp
     module: C9
     status: verified
-    source: "Lecture 2 notes, p. 3"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "V_\\text{out} = A_d\\,(V_2 - V_1),\\qquad A_d = \\frac{R_2}{R_1} = \\frac{R_4}{R_3}"
     lecture_check: {expr: "R2/R1*(V2 - V1)", symbols: {R1: ohm, R2: ohm, V1: V, V2: V}, result_unit: V}
@@ -380,7 +380,7 @@ formulas:
     concept: difference_amp
     module: C9
     status: verified
-    source: "Lecture 2 notes, p. 3"
+    source: "notes"
     evidence: [notes, sympy]
     lecture_form: "\\frac{R_1}{R_2} = \\frac{R_3}{R_4} \\quad\\Rightarrow\\quad A_{cm} = 0"
     lecture_check: {expr: "R1/R2", symbols: {R1: ohm, R2: ohm}, result_unit: "1"}
@@ -412,7 +412,7 @@ formulas:
     concept: instrumentation_amp
     module: C10
     status: verified
-    source: "Lecture 2 notes, p. 4–5"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "A_d = 1 + \\frac{2R_2}{R_1},\\qquad A_{cm} = 1"
     lecture_check: {expr: "1 + 2*R2/R1", symbols: {R1: ohm, R2: ohm}, result_unit: "1"}
@@ -428,7 +428,7 @@ formulas:
     concept: instrumentation_amp
     module: C10
     status: verified
-    source: "Lecture 2 notes, p. 4"
+    source: "notes"
     evidence: [notes, sympy]
     lecture_form: "A_d = 1,\\qquad A_{cm} = 0 \\qquad (\\text{four equal resistors } R)"
     lecture_check: {expr: "R/R", symbols: {R: ohm}, result_unit: "1"}
@@ -439,14 +439,14 @@ formulas:
     concept: instrumentation_amp
     module: C10
     status: verified
-    source: "Lecture 2 notes, p. 5"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "V_\\text{out} = V_{o2} - V_{o1} = \\left(1 + \\frac{2R_2}{R_1}\\right)(V_2 - V_1)"
     lecture_check: {expr: "(1 + 2*R2/R1)*(V2 - V1)", symbols: {R1: ohm, R2: ohm, V1: V, V2: V}, result_unit: V}
     dimension_check: pass
     known_issue: K10
 
-  # --- L01: capacitive pressure sensor (M3) ----------------------------------------------------
+  # --- part 1: capacitive pressure sensor (M3) ----------------------------------------------------
   - id: pressure_force
     title: Pressure
     concept: force_pressure
@@ -466,7 +466,7 @@ formulas:
     concept: spring_hooke
     module: C4
     status: verified
-    source: "Lecture 1 notes, p. 3"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "F = 2k\\,x = p\\,A \\quad\\Rightarrow\\quad H_{p\\text{-}x} = \\frac{x}{p} = \\frac{A}{2k}"
     lecture_check: {expr: "A/(2*k)", symbols: {A: "m^2", k: "N/m"}, result_unit: "m/Pa"}
@@ -493,7 +493,7 @@ formulas:
     concept: capacitance
     module: C5
     status: verified
-    source: "Lecture 1 notes, p. 4"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "Q = V\\cdot C"
     lecture_check: {expr: "V*C", symbols: {V: V, C: F}, result_unit: C}
@@ -508,7 +508,7 @@ formulas:
     concept: capacitive_sensor
     module: C4
     status: verified
-    source: "Lecture 1 notes, p. 4"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "C(x) = \\frac{A\\,\\varepsilon}{d - x} = \\frac{\\varepsilon A}{d}\\,\\frac{1}{1 - \\frac{x}{d}} = \\frac{C_0}{1 - \\frac{x}{d}}"
     lecture_check: {expr: "eps*A/(d - x)", symbols: {eps: "F/m", A: "m^2", d: m, x: m}, result_unit: F}
@@ -527,7 +527,7 @@ formulas:
     concept: capacitor_current
     module: C5
     status: verified
-    source: "Lecture 1 notes, p. 4"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "I(t) = \\frac{dQ}{dt} = \\frac{d}{dt}\\big[V(t)\\,C(t)\\big] = C(t)\\,\\frac{dV}{dt} + V(t)\\,\\frac{dC}{dt}"
     lecture_check: {expr: "C*dVdt + V*dCdt", symbols: {C: F, dVdt: "V/s", V: V, dCdt: "F/s"}, result_unit: A}
@@ -542,7 +542,7 @@ formulas:
     concept: capacitor_current
     module: C5
     status: verified
-    source: "Lecture 1 notes, p. 4–5"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "\\hat V_b = V_0 e^{i\\omega t},\\quad \\hat I = V_0\\,i\\omega C\\,e^{i\\omega t},\\quad I(t) = \\text{Re}[\\hat I] = -V_0\\,\\omega\\,C\\sin\\omega t"
     lecture_check: {expr: "-V0*omega*C*sin(omega*t)", symbols: {V0: V, omega: "1/s", C: F, t: s}, result_unit: A}
@@ -558,7 +558,7 @@ formulas:
     concept: capacitor_current
     module: C5
     status: verified
-    source: "Lecture 1 notes, p. 6"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "I(t) \\cong V_b\\,\\frac{dC}{dt} = V_b\\,\\frac{dC}{dx}\\,\\frac{dx}{dt}"
     lecture_check: {expr: "Vb*dCdx*dxdt", symbols: {Vb: V, dCdx: "F/m", dxdt: "m/s"}, result_unit: A}
@@ -574,7 +574,7 @@ formulas:
     concept: small_signal
     module: C6
     status: verified
-    source: "Lecture 1 notes, p. 5"
+    source: "notes"
     evidence: [notes, sympy]
     lecture_form: "\\frac{1}{1 - \\frac{x}{d}} \\cong 1 + \\frac{x}{d} + \\frac{x^2}{d^2} + \\frac{x^3}{d^3} + \\dots"
     lecture_check: {expr: "1 + x/d + (x/d)^2 + (x/d)^3", symbols: {x: m, d: m}, result_unit: "1"}
@@ -586,7 +586,7 @@ formulas:
     concept: small_signal
     module: C6
     status: verified
-    source: "Lecture 1 notes, p. 5"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "x \\ll d:\\qquad V_\\text{out} \\cong V_{ft}\\left(1 + \\frac{x}{d}\\right)"
     lecture_check: {expr: "Vft*(1 + x/d)", symbols: {Vft: V, x: m, d: m}, result_unit: V}
@@ -601,7 +601,7 @@ formulas:
     concept: harmonic_distortion
     module: C6
     status: verified
-    source: "Lecture 1 notes, p. 6"
+    source: "notes"
     evidence: [notes, dimension_check, sympy]
     lecture_form: "\\frac{x}{\\left(1 - \\frac{x}{d}\\right)^2} \\approx 0 + x + 2\\,\\frac{x^2}{d} + 3\\,\\frac{x^3}{d^2} + \\dots"
     lecture_check: {expr: "x + 2*x^2/d + 3*x^3/d^2", symbols: {x: m, d: m}, result_unit: m}
@@ -613,7 +613,7 @@ formulas:
     concept: harmonic_distortion
     module: C6
     status: verified
-    source: "Lecture 1 notes, p. 6"
+    source: "notes"
     evidence: [notes]
     lecture_form: "\\hat x^2 = x_0^2\\,e^{i2\\omega t},\\qquad \\hat x^3 = x_0^3\\,e^{i3\\omega t}"
     dimension_check: not_applicable
@@ -623,7 +623,7 @@ formulas:
     concept: pull_in
     module: C7
     status: verified
-    source: "Lecture 1 notes, p. 5 (marked on the V_out(x) graph)"
+    source: "notes (marked on the V_out(x) graph)"
     evidence: [notes, sympy]
     lecture_form: "x = \\frac{d}{3}"
     lecture_check: {expr: "d/3", symbols: {d: m}, result_unit: m}
@@ -667,13 +667,13 @@ formulas:
     lecture_check: {expr: "sqrt(A2^2 + A3^2)/A1", symbols: {A1: A, A2: A, A3: A}, result_unit: "1"}
     dimension_check: pass
 
-  # --- L02: noise and PSD (M4) -------------------------------------------------------------------
+  # --- part 2: noise and PSD (M4) -------------------------------------------------------------------
   - id: noise_additive
     title: Additive noise
     concept: noise_types
     module: C13
     status: verified
-    source: "Lecture 2 notes, p. 7 (sketch)"
+    source: "notes (sketch)"
     evidence: [notes, dimension_check]
     lecture_form: "V_\\text{meas}(t) = V(t) + n(t)"
     lecture_check: {expr: "V + n", symbols: {V: V, n: V}, result_unit: V}
@@ -684,7 +684,7 @@ formulas:
     concept: noise_types
     module: C13
     status: verified
-    source: "Lecture 2 notes, p. 7 (sketch)"
+    source: "notes (sketch)"
     evidence: [notes, dimension_check]
     lecture_form: "V_\\text{meas}(t) = V(t)\\,\\big(1 + n(t)\\big)"
     lecture_check: {expr: "V*(1 + n)", symbols: {V: V, n: "1"}, result_unit: V}
@@ -707,7 +707,7 @@ formulas:
     concept: psd
     module: C13
     status: verified
-    source: "Lecture 2 notes, p. 7"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "S_V(\\omega)\\ \\text{in}\\ \\left[\\text{quantity}^2/\\text{Hz}\\right]"
     lecture_check: {expr: "V^2/f", symbols: {V: V, f: Hz}, result_unit: "V^2/Hz"}
@@ -720,7 +720,7 @@ formulas:
     concept: psd
     module: C13
     status: verified
-    source: "Lecture 2 notes, p. 8"
+    source: "notes"
     evidence: [notes, dimension_check]
     lecture_form: "X_V(f) = \\sqrt{S_V(f)}"
     lecture_check: {expr: "sqrt(S)", symbols: {S: "V^2/Hz"}, result_unit: "V/Hz^(1/2)"}
@@ -733,7 +733,7 @@ formulas:
     concept: psd
     module: C13
     status: needs_review
-    source: "Lecture 2 notes, p. 8"
+    source: "notes"
     evidence: [notes]
     known_issue: K8
     lecture_form: "S_x(f) = S_x(\\omega) = S_x(2\\pi f),\\quad \\text{both in } [\\text{m}^2/\\text{Hz}]"
@@ -771,7 +771,7 @@ formulas:
     concept: psd_sides
     module: C13
     status: verified
-    source: "Lecture 2 notes, p. 8"
+    source: "notes"
     evidence: [notes, sympy]
     lecture_form: "\\sigma_x^2 = \\int_0^\\infty S_x(f)\\,df = \\int_{-\\infty}^{\\infty} S''_x(f)\\,df,\\qquad S''(\\omega) = \\tfrac12\\,S(\\omega)"
     lecture_check: {expr: "2*(S/2)*f", symbols: {S: "V^2/Hz", f: Hz}, result_unit: "V^2"}

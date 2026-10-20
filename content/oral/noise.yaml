@@ -9,7 +9,7 @@ questions:
       - {label: mechanism, text: "The **power spectral density** $S_V(f)$: noise power per hertz of bandwidth, units $[\\text{quantity}]^2/\\text{Hz}$, e.g. $\\text{V}^2/\\text{Hz}$."}
       - {label: key equation, text: "White: $S = S_0$ (flat). $1/f$: $S = S_1/f$. Spectral amplitude $X_V(f) = \\sqrt{S_V(f)}$ in $\\text{V}/\\sqrt{\\text{Hz}}$. Variance $\\sigma^2 = \\int_0^\\infty S(f)\\,df$."}
       - {label: physical meaning, text: "A measurement that only looks at a band $[f_1, f_2]$ only collects the noise power in that band — narrow bands collect less noise."}
-      - {label: limitations, text: "Watch the notation: the lecture writes $S_x(f) = S_x(\\omega)$ — one per-hertz density in two variables (K8)."}
+      - {label: limitations, text: "Watch the notation: one written form gives $S_x(f) = S_x(\\omega)$. One per-hertz density in two variables (K8)."}
       - {label: application, text: "Choosing the measurement bandwidth; why lock-in detection (narrow band around a known frequency) works."}
     expected_points:
       - {id: definition, text: "Random fluctuation adding uncertainty"}
@@ -33,17 +33,17 @@ questions:
     structure:
       - {label: definition, text: "Band power = area under the PSD: $\\sigma^2 = \\int_{f_1}^{f_2} S(f)\\,df$, RMS $= \\sqrt{\\sigma^2}$."}
       - {label: key equation, text: "White: $S_0\\,(f_2 - f_1)$. $1/f$: $S_1\\ln(f_2/f_1)$. Over $\\omega$: $\\frac{1}{2\\pi}\\int S\\,d\\omega$."}
-      - {label: limitations, text: "The lecture's $S_V(\\omega)\\,(\\omega_2 - \\omega_1)$ is valid only for white noise, and with a per-hertz $S$ it lacks $1/2\\pi$ (K4)."}
+      - {label: limitations, text: "The written $S_V(\\omega)\\,(\\omega_2 - \\omega_1)$ is valid only for white noise, and with a per-hertz $S$ it lacks $1/2\\pi$ (K4)."}
       - {label: assumptions, text: "$S$ one-sided ($f \\ge 0$). Two-sided $S'' = S/2$ integrated over $-\\infty\\dots\\infty$ gives the same $\\sigma^2$."}
       - {label: physical meaning, text: "Narrowing the band reduces white noise power in proportion to the width, its RMS with the square root."}
     expected_points:
       - {id: integral, text: "$\\sigma^2 = \\int_{f_1}^{f_2} S\\,df$"}
-      - {id: white, text: "White shortcut $S_0(f_2 - f_1)$ — and only for white"}
+      - {id: white, text: "White shortcut $S_0(f_2 - f_1)$, and only for white"}
       - {id: sqrt, text: "RMS is the square root"}
       - {id: omega, text: "$1/2\\pi$ when integrating over ω"}
       - {id: sides, text: "One- vs two-sided: factor 2, same variance if consistent"}
     followups:
-      - {when_missing: omega, ask: "The lecture writes S(ω)·(ω₂ − ω₁). Is that right?", hint: "Only for white noise, and a per-hertz S needs 1/2π (K4)."}
+      - {when_missing: omega, ask: "One written form gives S(ω)·(ω₂ − ω₁). Is that right?", hint: "Only for white noise, and a per-hertz S needs 1/2π (K4)."}
       - {when_missing: sides, ask: "What changes if the PSD is two-sided?", hint: "$S'' = S/2$ over ±f: same variance; integrating $S''$ over $f \\ge 0$ only halves it."}
       - {always: true, ask: "Compute the noise for 1/f noise between 10 Hz and 1 kHz.", hint: "$S_1\\ln 100$."}
     traps:

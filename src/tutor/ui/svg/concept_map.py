@@ -101,7 +101,7 @@ def concept_map(g: ConceptGraph, selected: str | None = None, states: dict[str, 
             label = label[:19] + "…"
         c.add(text(x + 42, y + bh / 2 + 6, label, "lbl" if is_sel else "", "start",
                    f'style="font-size:15px;fill:{INK if in_path or not selected else MUTED}"'))
-    c.add(text(20, 16, "Tags: M math · P physics · E electrical · L1/L2 lecture topics", "small", "start"))
+    c.add(text(20, 16, "Tags: M math · P physics · E electrical · L1/L2 topic groups", "small", "start"))
     c.add(text(20, 33, "Border: dotted = not started · dashed = shaky · solid = solid · thick = exam-ready",
                "small", "start"))
     return c.render()

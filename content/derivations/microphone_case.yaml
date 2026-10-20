@@ -2,7 +2,7 @@ id: microphone_case
 title: Microphone — DC bias and the chain rule
 concept: capacitor_current
 figure: capacitor
-source: "Lecture 1 notes, p. 6 (the 1/(d − x)² factor is K1)"
+source: "notes (the 1/(d − x)² factor is K1)"
 symbols: {I: A, Vb: V, dCdt: F/s, dCdx: F/m, dxdt: m/s, C0: F, eps: F/m, A: m^2, d: m, x: m, xh: m, omega: 1/s}
 steps:
   - id: fast
@@ -46,7 +46,7 @@ steps:
     annotated: |-
       \frac{dC}{dx} = \frac{d}{dx}\left[\frac{\varepsilon A}{d - x}\right] = \frac{\overbrace{\varepsilon A}^{\text{F·m}}}{\underbrace{(d - x)^2}_{\text{m}^2}} = \frac{C_0\,d}{(d - x)^2}
     changed: "Slope of the parallel-plate capacitance."
-    why: "Differentiate εA·(d − x)⁻¹. Units: F·m / m² = F/m. The lecture writes d/(d − x)² without εA (K2): that has units 1/m."
+    why: "Differentiate εA·(d − x)⁻¹. Units: F·m / m² = F/m. One written form gives d/(d − x)² without εA (K2): that has units 1/m."
     law: "Derivative of 1/(d − x)"
     highlight: [gap]
     check: {kind: define, name: dCdx, expr: "C0*d/(d - x)^2"}
@@ -69,7 +69,7 @@ steps:
   - id: result
     latex: "\\hat I(t) = V_b\\,C_0\\,\\frac{d}{(d - x)^2}\\,i\\omega\\,\\hat x(t)"
     changed: "Put the pieces together (canonical form)."
-    why: "The lecture writes V_b C_0 · 1/(d − x)² · iω x̂, which has units A/m: the factor d is missing (known issue K1). Both forms agree that the current is proportional to the bias, the frequency and the deflection."
+    why: "One written form gives V_b C_0 · 1/(d − x)² · iω x̂, which has units A/m: the factor d is missing (known issue K1). Both forms agree that the current is proportional to the bias, the frequency and the deflection."
     law: "Substitution"
     highlight: [I, meter, gap]
     check: {kind: equals, lhs: "I", expr: "Vb*C0*d/(d - x)^2*imath*omega*xh"}

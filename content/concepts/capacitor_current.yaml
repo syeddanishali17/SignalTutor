@@ -10,7 +10,7 @@ prerequisites:
 - phasor
 status: verified
 source_refs:
-- Lecture 1 notes, p. 4–6 (marked as a case to study closely)
+- notes (marked as a case to study closely)
 one_liner: '$I = \dfrac{dQ}{dt} = C\dfrac{dV}{dt} + V\dfrac{dC}{dt}$. **Barometer** (slow pressure): $dC/dt \approx
   0$, so drive an **AC** bias. **Microphone** (fast pressure): drive a **DC** bias, the moving membrane makes $dC/dt$.'
 plain_words: a current flows only if the voltage changes or the capacitor changes

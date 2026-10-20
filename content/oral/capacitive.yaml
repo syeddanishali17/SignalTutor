@@ -22,7 +22,7 @@ questions:
       - {when_missing: why, ask: "What happens if you connect the barometer to a constant 5 V?", hint: "$dV/dt = 0$ and $dC/dt \\approx 0$: no current at all."}
       - {when_missing: mic, ask: "Write the microphone current with the chain rule.", hint: "$V_b\\,\\dfrac{dC}{dx}\\,\\dfrac{dx}{dt}$ with $\\dfrac{dC}{dx} = \\dfrac{C_0\\,d}{(d - x)^2}$."}
       - {always: true, ask: "Derive the barometer current from the AC bias $V_0 e^{i\\omega t}$, including taking the real part."}
-      - {always: true, ask: "Check the units of the microphone current in the lecture notes. What do you notice?", hint: "$V_b C_0\\,\\frac{1}{(d-x)^2}\\,i\\omega\\hat x$ has units A/m; a factor $d$ is missing (K1)."}
+      - {always: true, ask: "Check the units of the microphone current in the written form. What do you notice?", hint: "$V_b C_0\\,\\frac{1}{(d-x)^2}\\,i\\omega\\hat x$ has units A/m; a factor $d$ is missing (K1)."}
     traps:
       - "Barometer = AC bias, microphone = DC bias — not the other way round."
       - "$\\omega = 2\\pi f$, not $f$."
@@ -34,7 +34,7 @@ questions:
     question: "Walk me through the capacitive pressure sensor from pressure to current. Why is there no transfer function any more?"
     structure:
       - {label: definition, text: "Chain: $p$ → membrane → $x(p)$ → capacitive transducer → $I(x)$ → transimpedance amplifier → $V_\\text{out}$."}
-      - {label: mechanism, text: "Membrane on two springs: $2k\\,x = p\\,A$, so $H_{p\\text{-}x} = A/(2k)$ — linear. Then $C(x) = \\dfrac{\\varepsilon A}{d - x}$."}
+      - {label: mechanism, text: "Membrane on two springs: $2k\\,x = p\\,A$, so $H_{p\\text{-}x} = A/(2k)$. Linear. Then $C(x) = \\dfrac{\\varepsilon A}{d - x}$."}
       - {label: key equation, text: "$C(x) = \\dfrac{C_0}{1 - x/d}$ with $C_0 = \\varepsilon A/d$; slope $\\dfrac{dC}{dx} = \\dfrac{\\varepsilon A}{(d - x)^2}$."}
       - {label: physical meaning, text: "Equal steps in $x$ give growing steps in $C$: the slope depends on the operating point, so no single number $H$ describes the stage."}
       - {label: limitations, text: "Linear only for $x \\ll d$: $C \\approx C_0(1 + x/d)$."}
@@ -46,7 +46,7 @@ questions:
       - {id: small, text: "Small-signal: $C \\approx C_0(1 + x/d)$ for $x \\ll d$"}
     followups:
       - {when_missing: small, ask: "So when may you treat it as linear?"}
-      - {always: true, ask: "What is $dC/dx$? Check its units.", hint: "$\\varepsilon A/(d - x)^2$ in F/m. The lecture's $d/(d - x)^2$ has 1/m (K2)."}
+      - {always: true, ask: "What is $dC/dx$? Check its units.", hint: "$\\varepsilon A/(d - x)^2$ in F/m. The written $d/(d - x)^2$ has 1/m (K2)."}
     traps:
       - "The gap is $d - x$, not $x$."
 
@@ -110,7 +110,7 @@ questions:
       - {id: slope, text: "Correct $dC/dx$ with units F/m"}
       - {id: result, text: "Final expression with $i\\omega\\hat x$"}
     followups:
-      - {always: true, ask: "Compare your result with the lecture's form. Which one has the right units?", hint: "K1: the lecture misses the factor $d$."}
+      - {always: true, ask: "Compare your result with the written form. Which one has the right units?", hint: "K1: that form misses the factor $d$."}
     traps:
       - "$dC/dx$ needs the prefactor $\\varepsilon A = C_0 d$."
 

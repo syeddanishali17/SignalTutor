@@ -126,7 +126,7 @@ def formula_card(f: Formula, show_meaning: bool = True) -> None:
         with st.container(key=f"box-flag-{f.id}"):
             st.markdown("⚠ " + v.flag.lstrip("⚠ "))
     if v.lecture_latex:
-        st.caption("As written in the lecture notes:")
+        st.caption("As written:")
         st.latex(v.lecture_latex)
     if show_meaning and (f.meaning or f.assumptions or f.comes_from) and state.mode() != "exam":
         with st.expander("Meaning card — every symbol, its unit, what happens when it goes up"):

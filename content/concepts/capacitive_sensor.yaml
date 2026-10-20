@@ -10,7 +10,7 @@ prerequisites:
 - ratios
 status: verified
 source_refs:
-- Lecture 1 notes, p. 3–5
+- notes
 one_liner: 'Pressure deflects a membrane by $x$, shrinking the gap: $C(x) = \dfrac{\varepsilon A}{d - x} = \dfrac{C_0}{1
   - x/d}$. The response is **nonlinear from the start** — no constant transfer function.'
 plain_words: pressure pushes the plates closer, so the capacitance rises — faster and faster

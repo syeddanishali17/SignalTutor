@@ -4,4 +4,4 @@ In sensors the slope is called the **sensitivity** or **transfer function** $H$:
 
 $$H = \frac{\Delta(\text{output})}{\Delta(\text{input})}$$
 
-Ohm's law is the first example: $I = \frac{1}{R}\,V$ — current is proportional to voltage with slope $1/R$.
+Ohm's law is the first example: $I = \frac{1}{R}\,V$. Current is proportional to voltage with slope $1/R$.

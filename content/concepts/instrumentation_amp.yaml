@@ -5,7 +5,7 @@ code: C10
 track: course_l02
 prerequisites: [difference_amp, non_inverting_amp, kcl, cmrr]
 status: verified
-source_refs: ["Lecture 2 notes, p. 4–5"]
+source_refs: ["notes"]
 one_liner: "Three op-amps: stage 1 buffers and amplifies the difference ($A_d = 1 + 2R_2/R_1$, $A_{cm} = 1$); stage 2 removes the common mode ($A_d = 1$, $A_{cm} = 0$)."
 plain_words: "the right tool for a bridge"
 explanation_md: instrumentation_amp.md

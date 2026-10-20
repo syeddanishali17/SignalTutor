@@ -16,5 +16,5 @@ symbol: p
 misconceptions:
 - id: pressure_is_force
   text: Pressure and force are the same thing.
-  correction: 'Pressure is force **per area**, $p = F/A$. The membrane feels the force $F = pA$: a larger membrane
+  correction: 'Pressure is force **per area**, $p = F/A$. The membrane feels the force $F = pA$. A larger membrane
     collects more force from the same pressure.'

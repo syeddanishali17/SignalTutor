@@ -37,7 +37,7 @@ scenes:
         Multiplicative noise is $V\,(1 + n)$: the random part is a **fraction** of the signal, so it grows with it
         (1 V / 0.3 V ≈ 3 ×). **Additive** noise $V + n$ keeps the same size everywhere. Switch the mode and compare.
     inspect:
-      - {id: signal, label: "Clean signal V(t)", concept: noise_types, role: "What the physics produces (here: a smooth rise, as in the lecture's sketch)."}
+      - {id: signal, label: "Clean signal V(t)", concept: noise_types, role: "What the physics produces (here: a smooth rise)."}
       - {id: noise, label: "Noise n(t)", concept: noise_types, role: "Random fluctuation: unpredictable sample by sample.", controls: [level]}
       - {id: op, label: "+ or ×", concept: noise_types, role: "**Additive**: $V + n$. **Multiplicative**: $V\\,(1 + n)$.", controls: [mode]}
       - {id: out, label: "Measured output", concept: noise_types, role: "What the instrument reads. The noise makes every single reading uncertain."}
@@ -53,7 +53,7 @@ scenes:
         - "Multiplicative: $V\\,(1 + n)$, grows with the signal"
         - "Random → described statistically, not predicted"
     notes_md: |
-      Lecture 2, p. 7 sketches exactly these three panels: the clean $V_\text{out}(t)$, the same curve with additive noise, and with multiplicative noise.
+      notes sketches exactly these three panels: the clean $V_\text{out}(t)$, the same curve with additive noise, and with multiplicative noise.
 
   - id: stats
     title: "How big is the noise? Variance and RMS"
@@ -70,11 +70,11 @@ scenes:
       correct: zero
       reveal: >-
         Positive and negative wiggles cancel: the **mean** is ≈ 0 and tells you nothing about the size. Square first,
-        then average: the **variance** $\sigma^2$. Its square root $\sigma$ — for zero-mean noise equal to the **RMS** — is
+        then average: the **variance** $\sigma^2$. Its square root is $\sigma$. For zero-mean noise that is the **RMS**,
         the typical size. About 68 % of the samples lie within $\pm\sigma$.
     inspect:
       - {id: out, label: "Noise samples", concept: variance_rms, role: "Each point is one reading."}
-      - {id: mean, label: "Mean", concept: variance_rms, role: "Average value $\\bar x$ — where the wiggles are centred."}
+      - {id: mean, label: "Mean", concept: variance_rms, role: "Average value $\\bar x$, where the wiggles are centred."}
       - {id: sigma, label: "± σ band", concept: variance_rms, role: "One standard deviation either side of the mean.", controls: [level]}
       - {id: noise, label: "Noise source", concept: noise_types, role: "Sets how big the wiggles are.", controls: [level]}
     terms:
@@ -156,7 +156,7 @@ scenes:
         - "White: flat; 1/f: falls with frequency"
         - "Spectral amplitude $\\sqrt{S}$ in $\\text{V}/\\sqrt{\\text{Hz}}$"
     notes_md: |
-      The thin grey trace is the PSD **estimated** from the generated noise (Welch's method: average the spectra of many short pieces). The thick line is the model it was generated from. The lecture's $S_x(f) = S_x(\omega)$ notation is flagged as K8.
+      The thin grey trace is the PSD **estimated** from the generated noise (Welch's method: average the spectra of many short pieces). The thick line is the model it was generated from. The written $S_x(f) = S_x(\omega)$ notation is flagged as K8.
 
   - id: band
     title: "Noise in a band: the area under the PSD"
@@ -187,12 +187,12 @@ scenes:
     explain:
       prompt: "Without the picture: how do you get the noise in a band from the PSD, and when is S·Δf allowed?"
       points:
-        - "$\\sigma^2 = \\int_{f_1}^{f_2} S(f)\\,df$: the area"
+        - "$\\sigma^2 = \\int_{f_1}^{f_2} S(f)\\,df$. The area"
         - "White only: $S_0\\,(f_2 - f_1)$"
         - "1/f: $S_1\\ln(f_2/f_1)$"
         - "RMS $= \\sqrt{\\sigma^2}$; over ω divide by 2π"
     notes_md: |
-      The check on the right filters the generated noise to $[f_1, f_2]$ and measures the variance of what is left — it matches the area under the PSD. The lecture's $S_V(\omega)\cdot(\omega_2 - \omega_1)$ is flagged as K4.
+      The check on the right filters the generated noise to $[f_1, f_2]$ and measures the variance of what is left — it matches the area under the PSD. The written $S_V(\omega)\cdot(\omega_2 - \omega_1)$ is flagged as K4.
 
   - id: sides
     title: "One-sided vs two-sided PSD"
@@ -200,7 +200,7 @@ scenes:
     concepts: [psd_sides]
     problem: >-
       Some books draw the PSD over negative frequencies too, at half the height. **Does that change the amount of noise?**
-      (Lecture notes: watch the factor 2.)
+      (Watch the factor of 2.)
     predict:
       question: "Integrated over all its frequencies, the two-sided PSD gives a variance that is…"
       options:
@@ -212,9 +212,9 @@ scenes:
         Half the height over twice the range: the **same area**. Errors of exactly 2 appear only when the conventions are
         mixed — e.g. integrating a two-sided density over $f \ge 0$ only.
     inspect:
-      - {id: one, label: "One-sided S", concept: psd_sides, role: "All the power drawn at $f \\ge 0$ — what instruments and datasheets use."}
-      - {id: two, label: "Two-sided S''", concept: psd_sides, role: "Half the height, over $-\\infty\\dots\\infty$ — what the mathematics uses."}
-      - {id: half, label: "Half height, twice width", concept: psd_sides, role: "$S'' = S/2$: the area (variance) is unchanged."}
+      - {id: one, label: "One-sided S", concept: psd_sides, role: "All the power drawn at $f \\ge 0$, what instruments and datasheets use."}
+      - {id: two, label: "Two-sided S''", concept: psd_sides, role: "Half the height, over $-\\infty\\dots\\infty$, what the mathematics uses."}
+      - {id: half, label: "Half height, twice width", concept: psd_sides, role: "$S'' = S/2$. The area (variance) is unchanged."}
     terms:
       - {id: S, symbol: nz_S, highlight: [one]}
       - {id: Spp, symbol: nz_Spp, highlight: [two, half]}
@@ -238,9 +238,9 @@ break_it:
   - id: omega_factor
     title: "Integrating over ω without 1/2π"
     cause: "A per-hertz density integrated over angular frequency: $d\\omega = 2\\pi\\,df$."
-    condition: "Using $S(\\omega)(\\omega_2 - \\omega_1)$ as written in the lecture (K4)."
+    condition: "Using $S(\\omega)(\\omega_2 - \\omega_1)$ as written (K4)."
     consequence: "The noise power comes out 2π ≈ 6.3 × too large (RMS 2.5 × too large)."
-    recovery: "$\\int S\\,df = \\frac{1}{2\\pi}\\int S\\,d\\omega$ — or simply integrate over f."
+    recovery: "$\\int S\\,df = \\frac{1}{2\\pi}\\int S\\,d\\omega$. Or simply integrate over f."
   - id: mixed_sides
     title: "Mixing one- and two-sided conventions"
     cause: "A two-sided density integrated over positive frequencies only (or a one-sided over both)."

@@ -435,7 +435,7 @@ def _band(lesson, scene) -> None:
         result=(rf"\begin{{aligned}}&\sigma^2 = {_tex_sci(p_model)}\,\text{{V}}^2\\"
                 rf"&V_\text{{rms}} = {vrms * 1e3:.3g}\,\text{{mV}}\end{{aligned}}"),
         selectable=["sigma2", "S", "df", "f1", "f2", "S0", "rms"],
-        caption=(f"The lecture's form S(ω)·(ω₂ − ω₁) would give {_sci(p_lecture, 'V²')} — {2 * math.pi:.2f}× too "
+        caption=(f"The written form S(ω)·(ω₂ − ω₁) would give {_sci(p_lecture, 'V²')} — {2 * math.pi:.2f}× too "
                  "large (K4), and it assumes white noise."),
         stacked=True,
     )
@@ -525,6 +525,6 @@ def _sides(lesson, scene) -> None:
                     "the two-sided form appears in theory. Convert with $S = 2S''$ for $f \\ge 0$.")
         with st.container(key="box-note-lockin"):
             st.markdown("**Next: lock-in detection.** It measures a signal in a very narrow band around a known "
-                        "frequency — exactly the band-power idea above. Its lesson follows once the lecture-3 "
-                        "material is available; the demodulator building blocks are already in place.")
+                        "frequency — exactly the band-power idea above. That lesson is not built yet; "
+                        "the demodulator building blocks are already in place.")
     L.deeper(scope, lesson, scene, derive=_derive(scope, ["psd_sides", "band_power"]))

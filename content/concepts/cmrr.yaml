@@ -4,7 +4,7 @@ short: "CMRR"
 track: course_l02
 prerequisites: [common_mode, amplifier_gain]
 status: supplemental
-source_refs: ["standard (datasheet definition)", "Lecture 2 notes, p. 3–4 (CMR)"]
+source_refs: ["standard (datasheet definition)", "notes (CMR)"]
 one_liner: "How well an amplifier ignores what both inputs share: $\\text{CMRR} = A_d / A_{cm}$, often quoted in decibels, $20\\log_{10}(A_d/A_{cm})$."
 plain_words: "how well it ignores what both wires share"
 explanation_md: cmrr.md

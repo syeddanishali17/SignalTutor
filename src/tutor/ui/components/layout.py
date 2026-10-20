@@ -16,6 +16,7 @@ import streamlit as st
 from tutor import branding
 from tutor.engine.mastery import RULES, STATE_LABEL
 from tutor.ui import state
+from tutor.ui.components import prose
 
 MAP_STAGES = [
     ("stimulus", "stimulus"),
@@ -61,10 +62,15 @@ def mode_switch() -> None:
 def sensor_map(stage: str | None, note: str | None = None) -> None:
     """stimulus → … → communication, current block highlighted (spec 7)."""
     parts = []
+    passed = False
     for i, (key, label) in enumerate(MAP_STAGES):
-        on = " on" if key == stage else ""
-        marker = "▶ " if on else ""
-        parts.append(f'<span class="blk{on}">{marker}{html.escape(label)}</span>')
+        if key == stage:
+            kind, marker, passed = " on", "▶ ", True
+        elif passed:
+            kind, marker = " later", ""
+        else:
+            kind, marker = "", ""
+        parts.append(f'<span class="blk{kind}">{marker}{html.escape(label)}</span>')
         if i < len(MAP_STAGES) - 1:
             parts.append('<span class="arr">→</span>')
     if note:
@@ -88,7 +94,7 @@ def box(kind: str, body_md: str, title: str | None = None) -> None:
     with st.container(key=f"box-{kind}-{next(_box_counter)}"):
         if title:
             st.markdown(f'<p class="mst-boxtitle">{html.escape(title)}</p>', unsafe_allow_html=True)
-        st.markdown(body_md)
+        prose.show(body_md)
 
 
 def analogy(text_md: str) -> None:

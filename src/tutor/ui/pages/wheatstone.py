@@ -62,7 +62,7 @@ def _r(v: float) -> str:
 def render() -> None:
     lesson = state.bundle().lessons[LESSON_ID]
     layout.page_header("Wheatstone Bridge Lab", "Wheatstone bridge",
-                       "From a bending membrane to quarter and full bridges — with the lecture's derivation.")
+                       "From a bending membrane to quarter and full bridges — with a step-by-step derivation.")
     scenes = {s.id: s for s in lesson.scenes}
     deep = st.query_params.get("scene")
     if "wb_scene" not in st.session_state:
@@ -164,8 +164,8 @@ def _scene(lesson, scene) -> None:
 
     def note() -> None:
         if sid == "quarter" and state.mode() != "exam":
-            st.caption("The gauge sits in the upper-left arm so that the lecture's $V_2 = I_2 R$ holds. "
-                       "The lecture-2 drawing puts it lower-left, which flips the sign — known issue K9 (Sources page).")
+            st.caption("The gauge sits in the upper-left arm so that $V_2 = I_2 R$ holds. "
+                       "A common drawing puts it lower-left, which flips the sign — known issue K9 (Sources page).")
 
     L.main_row(scope, scene, svg, below_visual=note)
     _tray(scope, sid, defaults, unlocked, v)
@@ -274,10 +274,10 @@ def _equation(scope: str, scene, res: bridge.BridgeResult, mode: str, x: float, 
     caption = "Exact two-divider form, valid for every bridge (resistances in Ω). "
     if mode == "quarter" and sid in ("quarter", "temperature", "loading") and x > 0:
         approx = bridge.quarter_approx(res.V0, x)
-        caption += (rf"Lecture form for small changes: $-\tfrac14\,\tfrac{{\Delta R}}{{R}}\,V_0 = "
+        caption += (rf"Written form for small changes: $-\tfrac14\,\tfrac{{\Delta R}}{{R}}\,V_0 = "
                     rf"{q(approx, 'V', 4)}$ (overestimates by $\tfrac12\,\Delta R/R = {x / 2 * 100:.3g}\,\%$).")
     elif mode == "full" and x > 0:
-        caption += (rf"Lecture form: $|V_\text{{out}}| = \tfrac{{\Delta R}}{{R}}\,V_b = G\,\varepsilon\,V_b = "
+        caption += (rf"Written form: $|V_\text{{out}}| = \tfrac{{\Delta R}}{{R}}\,V_b = G\,\varepsilon\,V_b = "
                     rf"{q(abs(bridge.full_output(res.V0, x)), 'V', 4)}$ — exact.")
     elif sid == "build":
         ok = bridge.balance_condition(a, rel_tol=1e-9)

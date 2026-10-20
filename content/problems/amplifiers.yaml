@@ -22,7 +22,7 @@ problems:
       - {id: same, text: "stays the same"}
       - {id: up, text: "goes up"}
     correct: down
-    solution: "$V_\\text{out} = A_d\\,(V_+ - V_-)$: raising $V_-$ makes the difference smaller, so the output goes down — that is why it is called *inverting*."
+    solution: "$V_\\text{out} = A_d\\,(V_+ - V_-)$. Raising $V_-$ makes the difference smaller, so the output goes down — that is why it is called *inverting*."
 
   - id: opamp_open_loop
     concept: op_amp
@@ -102,7 +102,7 @@ problems:
       - {fn: noninv.only_signal, misconception: noninv_rejects_cm}
     solution: >-
       It amplifies the **whole** node voltage, common mode included: $[[G]] \times [[V2]]\,\text{V}$ is far beyond the rails,
-      so the output sits at $+[[Vs]]\,\text{V}$ — the 1 mV signal is lost.
+      so the output sits at $+[[Vs]]\,\text{V}$, the 1 mV signal is lost.
 
   - id: diffamp_out
     concept: difference_amp
@@ -143,7 +143,7 @@ problems:
       - {id: one, text: "just $R_2$", misconception: diffamp_change_one_resistor}
       - {id: none, text: "nothing — the op-amp sets the gain"}
     correct: two
-    solution: "Gain and CMR are coupled: both ratios must stay equal. That is the lecture's first problem with approach 2."
+    solution: "Gain and CMR are coupled: both ratios must stay equal. That is the first problem with approach 2."
 
   - id: diffamp_loading
     concept: difference_amp
@@ -222,7 +222,7 @@ problems:
       - {id: cmr, text: "high common-mode rejection"}
       - {id: gain, text: "gain set by a single resistor $R_1$"}
     correct: rails
-    solution: "No amplifier output can go beyond its rails. The other three are exactly the lecture's three ticks for approach 3."
+    solution: "No amplifier output can go beyond its rails. The other three are exactly the three checks for approach 3."
 
   - id: cmrr_meaning
     concept: cmrr
@@ -233,7 +233,7 @@ problems:
       - {id: b, text: "B (bigger is better)"}
       - {id: a, text: "A (smaller is better)", misconception: cmrr_small_good}
     correct: b
-    solution: "CMRR $= A_d/A_{cm}$: larger means the common mode is amplified relatively less. 100 dB = $10^5$, 60 dB = $10^3$."
+    solution: "CMRR $= A_d/A_{cm}$. Larger means the common mode is amplified relatively less. 100 dB = $10^5$, 60 dB = $10^3$."
 
   - id: impedance_meter
     concept: impedance

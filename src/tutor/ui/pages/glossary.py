@@ -6,14 +6,14 @@ import streamlit as st
 
 from tutor.engine.mastery import SKILLS, is_mastered
 from tutor.ui import state
-from tutor.ui.components import layout
+from tutor.ui.components import layout, prose
 from tutor.ui.components.equation import formula_card
 from tutor.ui.components.inspector import concept_card
 from tutor.ui.svg.concept_map import concept_map
 from tutor.ui.svg.core import as_img
 
 TRACK_NAME = {"math": "Math toolkit", "physics": "Physics toolkit", "electrical": "Electrical foundations",
-              "course_l01": "Lecture 1", "course_l02": "Lecture 2", "course_l03": "Lecture 3"}
+              "course_l01": "Part 1", "course_l02": "Part 2", "course_l03": "Part 3"}
 ORDER = ["not_started", "shaky", "solid", "exam_ready"]
 
 
@@ -56,9 +56,10 @@ def render() -> None:
         concept_card(c, compact=True)
         if c.explanation:
             st.divider()
-            st.markdown(c.explanation)
+            prose.show(c.explanation)
         for m in c.misconceptions[1:]:
-            st.markdown(f"**Another common mistake:** *“{m.text}”* — {m.correction}")
+            st.markdown(f"**Another common mistake:** *“{m.text}”*")
+            prose.show(m.correction)
         fs = [f for f in bundle.formulas.values() if f.concept == cid]
         if fs:
             layout.kicker("Formulas")
