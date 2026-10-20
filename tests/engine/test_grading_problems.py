@@ -73,6 +73,19 @@ def test_missing_unit_is_not_counted(bundle):
     assert g.status == "invalid" and not g.counts
 
 
+@pytest.mark.parametrize("text", ["1e309 A", "-1e999 V", "9e308 mV", "1e308 GV", "1×10^999 V", "9" * 400 + " V"])
+def test_overflow_is_invalid_and_not_counted(bundle, text):
+    with pytest.raises(ParseError, match="finite range"):
+        parse_quantity(text)
+    p, inst = _inst(bundle, "ohm_current", {"V": 9., "R_k": 1.})
+    g = grade(p, inst, text, bundle)
+    assert g.status == "invalid" and not g.counts
+
+
+def test_large_exponent_with_small_mantissa_is_finite():
+    assert parse_quantity("0.01e309 V").value == pytest.approx(1e307)
+
+
 def test_unit_mismatch_is_wrong(bundle):
     p, inst = _inst(bundle, "full_bridge_output", {"G": 2.0, "eps_ue": 500.0, "Vb": 5.0})
     g = grade(p, inst, "5 mA", bundle)

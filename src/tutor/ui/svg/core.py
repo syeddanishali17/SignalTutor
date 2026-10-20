@@ -57,7 +57,7 @@ STYLE = f"""
 .mst .bob {{ animation: mst-bob 2.4s ease-in-out infinite; }}
 .mst .bob-rev {{ animation: mst-bob 2.4s ease-in-out infinite reverse; }}
 @keyframes mst-bob {{ 0%, 100% {{ transform: translateY(-9px); }} 50% {{ transform: translateY(9px); }} }}
-@media (prefers-reduced-motion: reduce) {{ .mst .flow, .mst .bob, .mst .bob-rev {{ animation: none; }} }}
+@media (prefers-reduced-motion: reduce) {{ .mst * {{ animation: none !important; }} }}
 .mst .halo {{ fill: {HILITE}; fill-opacity: .8; stroke: {HILITE_EDGE}; stroke-width: 1.5; stroke-dasharray: 5 3; }}
 </style>
 """
@@ -107,9 +107,22 @@ def as_img(svg: str, max_width: int | None = None) -> str:
     m_w = re.search(r'viewBox="0 0 (\d+(?:\.\d+)?) ', svg)
     mw = max_width or (int(float(m_w.group(1)) * 1.35) if m_w else 900)
     data = base64.b64encode(svg.encode("utf-8")).decode("ascii")
+    # A media query inside a data-URL SVG is not reliably refreshed by every
+    # browser when the device preference changes. Let the parent document
+    # choose an explicitly static image as well (including for Safari).
+    still = svg.replace("</svg>", '<style>.mst * { animation: none !important; }</style></svg>')
+    still_data = base64.b64encode(still.encode("utf-8")).decode("ascii")
+    sizing = f"width:100%;max-width:{mw}px;height:auto;display:block;margin:0 auto"
+    # DOMPurify strips data-URL srcset on <source>. Both <img> sources are
+    # supported, and display:none also removes the inactive image from the
+    # accessibility tree. The media query now belongs to the parent document.
     return (
-        f'<img src="data:image/svg+xml;base64,{data}" alt="{alt}" '
-        f'style="width:100%;max-width:{mw}px;height:auto;display:block;margin:0 auto"/>'
+        '<style>.mst-motion-static {display:none!important;}'
+        '@media (prefers-reduced-motion:reduce) {'
+        '.mst-motion-animated {display:none!important;}'
+        '.mst-motion-static {display:block!important;}}</style>'
+        f'<img class="mst-motion-animated" src="data:image/svg+xml;base64,{data}" alt="{alt}" style="{sizing}"/>'
+        f'<img class="mst-motion-static" src="data:image/svg+xml;base64,{still_data}" alt="{alt}" style="{sizing}"/>'
     )
 
 

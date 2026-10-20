@@ -10,7 +10,7 @@ from __future__ import annotations
 import math
 from typing import Callable, Iterable
 
-from tutor.sim.bridge import BridgeResult, gauge_flags
+from tutor.sim.bridge import BridgeResult, balance_condition, gauge_flags
 from tutor.sim.units import format_si
 from tutor.ui.svg.core import (
     BAD,
@@ -343,7 +343,8 @@ def bridge(res: BridgeResult | None, mode: str, *, layout: str = "dividers", sel
         return format_si(res.arms.as_dict()[name], "ohm", sig=5)
 
     ideal = res is None or math.isinf(res.R_meter)
-    imax = i_max or (res.V0 / (2 * res.arms.R1) if res else 1.0)
+    imax = i_max if i_max is not None else (abs(res.V0) / (2 * res.arms.R1) if res else 1.0)
+    imax = imax if imax > 0 else 1.0  # zero excitation: zero flow, finite normalisation
 
     if layout == "diamond":
         geo = _bridge_diamond(c, res, flags, sel, rval, show_currents, thermal, symbolic, imax, ideal)
@@ -372,9 +373,11 @@ def bridge(res: BridgeResult | None, mode: str, *, layout: str = "dividers", sel
     else:
         c.add(text(mx, my - 32, f"meter R_in = {_ohm(res.R_meter)}", "tag", "middle", f'fill="{BAD}"'))  # type: ignore[union-attr]
 
-    if res is not None and not symbolic and show_scale:
+    if res is not None and not symbolic and show_scale and res.V0 != 0:
         _bridge_scale(c, 640, 70, 370, res, sel)
-    if res is not None and not symbolic and abs(res.Vout) < 1e-12:
+    elif res is not None and not symbolic and show_scale:
+        c.add(text(350, 425, "No excitation: all node voltages and currents are zero.", "small"))
+    if res is not None and not symbolic and balance_condition(res.arms):
         c.add(text(mx, my + 64, "balanced", "tag", "middle", f'style="fill:{OK}"'))
     if any(flags.values()) or legend:
         gauge_legend(c, 458)

@@ -27,6 +27,10 @@ html, body, .stApp {{ color-scheme: light; background-color: var(--paper) !impor
   background-size: 24px 24px;
 }}
 .block-container {{ padding-top: 3.2rem; padding-bottom: 4rem; max-width: 1240px; }}
+/* Cloud actions are not learner navigation. Keep the toolbar itself: it also
+   owns Today/Learn/Practice. The theme menu is hidden while the notebook theme
+   is intentionally light-only. Recheck these selectors on Streamlit upgrades. */
+[data-testid="stToolbarActionButton"], [data-testid="stMainMenu"] {{ display: none !important; }}
 h1, h2, h3 {{ font-family: Georgia, Cambria, "Times New Roman", serif !important; color: var(--ink); letter-spacing: -.01em; font-weight: 700 !important; }}
 h1 {{ font-size: 2.0rem !important; }}
 h2 {{ font-size: 1.45rem !important; }}
@@ -153,6 +157,17 @@ button[aria-label^="Help for"] {{ min-width: 44px; min-height: 44px; }}
 
 /* hide the anchor-link icons next to headings */
 [data-testid="stHeaderActionElements"] {{ display: none; }}
+.mst-reference-index {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));
+  gap:2px 18px; border-block:1px solid var(--rule); padding:12px 0; margin:12px 0; }}
+.mst-reference-index a {{ color:var(--cur); min-height:44px; display:flex; align-items:center; line-height:1.35;
+  text-decoration:underline; text-underline-offset:3px; }}
+.mst-reference-index a:focus-visible {{ outline:3px dashed var(--hl-edge); outline-offset:2px; }}
+.st-key-handbook h2 {{ border-top:1px solid var(--rule); padding-top:1.25rem; margin-top:1rem; scroll-margin-top:7rem; }}
+.st-key-handbook p {{ max-width:85ch; }}
+.st-key-handbook [data-testid="stHtml"] {{ margin-block:.5rem 1rem; }}
+[class*="st-key-reference-example-"] {{ border-left:3px solid var(--rule); padding:8px 14px; margin-block:8px 20px; }}
+[class*="st-key-reference-example-"] .katex-display {{ margin:.3em 0; }}
+#handbook-top {{ scroll-margin-top:7rem; }}
 </style>
 """
 

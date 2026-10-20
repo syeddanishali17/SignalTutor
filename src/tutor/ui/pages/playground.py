@@ -192,7 +192,8 @@ def scene_ohm(lesson, scene) -> None:
             ys = [0, min(12 / rk, 25)]
             xs = [0, 12 if 12 / rk <= 25 else 25 * rk]
             plots.line(fig, xs, ys, f"{rk:g} kΩ", color=plots.COLORS["cur"] if is_now else "#c9c3b6",
-                       width=3.4 if is_now else 1.4)
+                       width=3.4 if is_now else 1.4,
+                       label_y_shift=8 if rk == 4 else -8 if rk == 8 else 0)
         if closed:
             plots.point(fig, V, I * 1e3, format_si(I, "A"), color=plots.COLORS["volt"])
         plots.show(fig, key="pgB_plot")

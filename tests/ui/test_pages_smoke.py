@@ -48,7 +48,7 @@ def _run(name: str, **query) -> AppTest:
     return at
 
 
-@pytest.mark.parametrize("name", ["home", "practice_page", "oral_page", "progress", "glossary", "sources", "dev_gallery"])
+@pytest.mark.parametrize("name", ["home", "practice_page", "oral_page", "progress", "glossary", "sources", "dev_gallery", "circuit_fundamentals"])
 def test_page_renders(name):
     _run(name)
 

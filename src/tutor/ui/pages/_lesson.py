@@ -19,7 +19,7 @@ import streamlit as st
 from tutor.engine.mastery import Attempt
 from tutor.models.content import Lesson, Scene
 from tutor.ui import state, theme
-from tutor.ui.components import equation, inspector, layout, predict, prose
+from tutor.ui.components import diagram, equation, inspector, layout, predict, prose
 from tutor.ui.components.feedback import break_it_banner
 from tutor.ui.components.oral import oral_dock, whiteboard_drill
 from tutor.ui.components.practice import problem_card
@@ -61,11 +61,15 @@ def main_row(scope: str, scene: Scene, svg: str, below_visual: Callable[[], None
         left, right = st.columns(list(ratio), gap="medium")
         with left:
             with st.container(key="visual"):
-                st.html(as_img(svg))
+                animate = diagram.motion_control(f"motion_{scope}")
+                diagram.show(svg, animate=animate)
                 if below_visual:
                     below_visual()
+                st.caption("Select a part using the Parts controls or equation symbols.")
         with right:
             inspector.inspector_panel(scope, scene)
+    with st.expander("Full-width diagram"):
+        diagram.show(svg, animate=animate, max_width=1400)
 
 
 def tray_header(locked: bool) -> None:

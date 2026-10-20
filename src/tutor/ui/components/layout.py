@@ -45,20 +45,24 @@ def page_header(kicker_text: str, title: str, subtitle: str | None = None, show_
 
 def mode_switch() -> None:
     current = state.mode()
-    choice = st.segmented_control(
+    st.segmented_control(
         "Teaching mode",
         options=list(state.MODE_LABELS),
         format_func=lambda m: state.MODE_LABELS[m],
         default=current,
         key="mode_switch",
+        on_change=_change_mode,
         help="Beginner: plain words, labelled fractions, worked derivations, predictions. "
         "Course: lecture notation, faded derivations. "
         "Exam: scaffolding removed, derivations hidden until you reveal them.",
     )
     st.caption("Beginner labels the fractions. Course uses standard notation. Exam hides the scaffolding.")
-    if choice and choice != current:
+
+
+def _change_mode() -> None:
+    choice = st.session_state.get("mode_switch")
+    if choice in state.MODE_LABELS:
         state.set_mode(choice)
-        st.rerun()
 
 
 def sensor_map(stage: str | None, note: str | None = None) -> None:

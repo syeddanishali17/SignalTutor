@@ -27,6 +27,8 @@ def problem_card(p: Problem, scope: str, show_concept: bool = True) -> Grade | N
     seed_key = _k(scope, p.id, "seed")
     if seed_key not in st.session_state:
         st.session_state[seed_key] = random.randrange(1_000_000)
+    # A fresh frontend form identity prevents the browser retaining an old answer.
+    instance_key = str(st.session_state.get(_k(scope, p.id, "revision"), 0))
     inst = generate(p, st.session_state[seed_key])
     res_key, rec_key = _k(scope, p.id, "grade"), _k(scope, p.id, "recorded")
     result: Grade | None = st.session_state.get(res_key)
@@ -39,9 +41,10 @@ def problem_card(p: Problem, scope: str, show_concept: bool = True) -> Grade | N
             st.markdown(inst.text)
 
         if p.kind == "numeric":
-            with st.form(_k(scope, p.id, "form"), clear_on_submit=False, border=False):
+            with st.form(_k(scope, p.id, "form") + instance_key, clear_on_submit=False, border=False):
                 c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
-                answer = c1.text_input("Your answer (with unit)", placeholder="e.g. 1.25 mV", key=_k(scope, p.id, "in"))
+                answer = c1.text_input("Your answer (with unit)", placeholder="e.g. 1.25 mV",
+                                       key=_k(scope, p.id, "in") + instance_key)
                 submitted = c2.form_submit_button("Check", type="primary", use_container_width=True)
             if submitted:
                 result = grade(p, inst, answer, bundle)
@@ -79,6 +82,10 @@ def problem_card(p: Problem, scope: str, show_concept: bool = True) -> Grade | N
 
 
 def _new_instance(scope: str, pid: str) -> None:
+    revision_key = _k(scope, pid, "revision")
+    old_revision = st.session_state.get(revision_key, 0)
+    st.session_state.pop(_k(scope, pid, "in") + str(old_revision), None)
+    st.session_state[revision_key] = old_revision + 1
     st.session_state[_k(scope, pid, "seed")] = random.randrange(1_000_000)
     for what in ("grade", "recorded", "in", "queued", "choice"):
         st.session_state.pop(_k(scope, pid, what), None)

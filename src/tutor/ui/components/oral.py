@@ -224,7 +224,7 @@ def _mock_revealed(bundle: ContentBundle, q: OralQuestion, scope: str, last: boo
         with st.expander(title, expanded=title == "Explain it"):
             for part in parts:
                 st.markdown(f"**{part.label.capitalize()}.**")
-            prose.show(part.text)
+                prose.show(part.text)
     st.markdown("**Tick only the points you actually said:**")
     ticked = {p.id for p in q.expected_points if st.checkbox(p.text, key=_k(scope, f"pt_{p.id}"))}
     cov = coverage(q, ticked)

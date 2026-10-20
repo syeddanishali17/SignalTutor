@@ -55,12 +55,12 @@ def prompt(scope: str, lesson_id: str, predict: Predict | None) -> None:
                     st.rerun()
             st.caption("The controls unlock once you commit — guessing wrong is part of the point.")
         return
-    observed = labels[predict.correct]
+    expected = labels[predict.correct]
     if done == "__skipped":
-        kind, tag, head = "miss", "Skipped — here is what happens", f"Observed: **{observed}**."
+        kind, tag, head = "miss", "Skipped — expected outcome", f"Expected in this scenario: **{expected}**."
     elif done == predict.correct:
-        kind, tag, head = "hit", "Prediction confirmed", f"You predicted **{labels[done]}** — observed: **{observed}**."
+        kind, tag, head = "hit", "Prediction matches the expected outcome", f"You predicted **{labels[done]}** — expected: **{expected}**."
     else:
-        kind, tag, head = "miss", "Surprise — look closer", f"You predicted **{labels[done]}**, but observed: **{observed}**."
+        kind, tag, head = "miss", "Reconsider your prediction", f"You predicted **{labels[done]}** — expected: **{expected}**."
     # Blank line: the verdict, the equation and the explanation stay separate lines.
-    layout.box(kind, f"{head}\n\n{predict.reveal}", title=tag)
+    layout.box(kind, f"{head}\n\n{predict.reveal}\n\nNow use the controls to try the scenario; the diagram shows the current control values.", title=tag)

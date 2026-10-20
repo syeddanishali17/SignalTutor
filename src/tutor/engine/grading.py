@@ -36,6 +36,10 @@ class Quantity:
     unit: str | None  # canonical SI symbol, "1" for %/ppm/µε, None if no unit was given
     raw: str
 
+    def __post_init__(self) -> None:
+        if not math.isfinite(self.value):
+            raise ParseError("That number is outside the supported finite range. Check the exponent and unit.")
+
 
 class ParseError(ValueError):
     pass
@@ -71,10 +75,10 @@ def parse_quantity(text: str) -> Quantity:
         if "." in mant:
             raise ParseError("Use either a decimal point or a decimal comma, not both.")
         mant = mant.replace(",", ".")
-    value = float(mant)
     exp = m.group("exp") or m.group("exp2")
-    if exp:
-        value *= 10.0 ** int(exp)
+    # Parse the whole scientific number: a large exponent must become a normal
+    # validation error, never OverflowError from an intermediate power of ten.
+    value = float(mant + ("e" + exp if exp else ""))
     if m.group("sign") == "-":
         value = -value
     rest = s[m.end() :].strip().replace(" ", "")

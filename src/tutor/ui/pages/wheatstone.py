@@ -110,6 +110,7 @@ def _sensor(lesson, scene) -> None:
                  rf"\times\left({p_kpa:g}\times10^{{3}}\,\text{{Pa}}\right)"),
         result=rf"\frac{{\Delta R}}{{R}} = \pm{x * 100:.3g}\,\%",
         selectable=["p", "xi", "eps", "G", "x"],
+        stacked=True,
         caption=f"Strain on each gauge: ±{eps * 1e6:.0f} µε. On a 350 Ω gauge that is ΔR = ±{x * 350:.3g} Ω — "
                 "far too small to read with an ohmmeter. Next step: a circuit that turns this into a clean voltage.",
     )
@@ -130,7 +131,7 @@ def _sensor(lesson, scene) -> None:
         for pos, name, col in ((-r_rim, "R₁", plots.COLORS["plus"]), (-r_mid, "R₄", plots.COLORS["minus"]),
                                (r_mid, "R₂", plots.COLORS["minus"]), (r_rim, "R₃", plots.COLORS["plus"])):
             fig.add_vline(x=pos, line=dict(color=col, dash="dot"))
-            fig.add_annotation(x=pos, y=1, yref="paper", text=name, showarrow=False, yanchor="bottom",
+            fig.add_annotation(x=pos, y=1, yref="paper", text=name, showarrow=False, yanchor="top", yshift=-4,
                                font=dict(color=col, size=13))
         if eps:
             for y_val, col in ((eps * 1e6, plots.COLORS["plus"]), (-eps * 1e6, plots.COLORS["minus"])):

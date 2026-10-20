@@ -17,7 +17,7 @@ def render() -> None:
     bundle = state.bundle()
     mastery = state.mastery_cached()
 
-    with st.expander("The rules (spec section 9)", expanded=not mastery):
+    with st.expander("How mastery works", expanded=not mastery):
         rows = "\n".join(f"| **{s}** | {RULES[s]['solid']} | {RULES[s]['exam_ready']} |" for s in SKILLS)
         st.markdown("| skill | → solid | → exam-ready |\n|---|---|---|\n" + rows)
         st.caption("Shaky = attempted but not yet solid. Not started = no attempt yet.")

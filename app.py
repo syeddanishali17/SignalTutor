@@ -21,6 +21,7 @@ from tutor.ui.components import layout  # noqa: E402
 from tutor.ui.pages import (  # noqa: E402
     amplifiers,
     capacitive,
+    circuit_fundamentals,
     dev_gallery,
     glossary,
     home,
@@ -61,6 +62,10 @@ pages = {
     "Practice": [
         st.Page(practice_page.render, title="Problems & review", icon=":material/calculate:", url_path="practice"),
         st.Page(oral_page.render, title="Oral & whiteboard", icon=":material/record_voice_over:", url_path="oral"),
+    ],
+    "Basic Circuit Fundamentals": [
+        st.Page(circuit_fundamentals.render, title="Basic Circuit Fundamentals", icon=":material/electrical_services:",
+                url_path="circuit-fundamentals"),
     ],
     "Reference": [
         st.Page(progress.render, title="Progress", icon=":material/insights:", url_path="progress"),

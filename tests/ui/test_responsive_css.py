@@ -17,3 +17,5 @@ def test_svg_images_scale_to_their_container():
     img = as_img(svg)
     assert "width:100%" in img
     assert "height:auto" in img
+    assert '@media (prefers-reduced-motion:reduce)' in img
+    assert 'class="mst-motion-static"' in img

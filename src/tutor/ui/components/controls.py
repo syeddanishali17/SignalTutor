@@ -21,7 +21,9 @@ def wkey(scope: str, cid: str) -> str:
 
 def ensure_defaults(scope: str, defaults: dict[str, Any]) -> None:
     for cid, v in defaults.items():
-        st.session_state.setdefault(wkey(scope, cid), v)
+        # Reassign to retain conditionally hidden controls through widget cleanup.
+        key = wkey(scope, cid)
+        st.session_state[key] = st.session_state.get(key, v)
 
 
 def reset(scope: str, defaults: dict[str, Any], extra: dict[str, Any] | None = None) -> None:
@@ -35,26 +37,26 @@ def reset(scope: str, defaults: dict[str, Any], extra: dict[str, Any] | None = N
 def slider(scope: str, cid: str, label: str, lo: float, hi: float, step: float, fmt: str,
            help: str | None = None, disabled: bool = False) -> float:
     with st.container(key=ctl_key(scope, cid)):
-        return st.slider(label, min_value=lo, max_value=hi, step=step, format=fmt,
+        return st.slider(label, min_value=lo, max_value=hi, step=step, format=fmt, value=value(scope, cid),
                          key=wkey(scope, cid), help=help, disabled=disabled)
 
 
 def select_slider(scope: str, cid: str, label: str, options: list, fmt=str, help: str | None = None,
                   disabled: bool = False):
     with st.container(key=ctl_key(scope, cid)):
-        return st.select_slider(label, options=options, format_func=fmt, key=wkey(scope, cid), help=help,
+        return st.select_slider(label, options=options, value=value(scope, cid), format_func=fmt, key=wkey(scope, cid), help=help,
                                 disabled=disabled)
 
 
 def toggle(scope: str, cid: str, label: str, help: str | None = None, disabled: bool = False) -> bool:
     with st.container(key=ctl_key(scope, cid)):
-        return st.toggle(label, key=wkey(scope, cid), help=help, disabled=disabled)
+        return st.toggle(label, value=value(scope, cid), key=wkey(scope, cid), help=help, disabled=disabled)
 
 
 def segmented(scope: str, cid: str, label: str, options: list, fmt=str, help: str | None = None,
               disabled: bool = False):
     with st.container(key=ctl_key(scope, cid)):
-        val = st.segmented_control(label, options, format_func=fmt, key=wkey(scope, cid), help=help,
+        val = st.segmented_control(label, options, default=value(scope, cid), format_func=fmt, key=wkey(scope, cid), help=help,
                                    disabled=disabled, required=True)
     return val
 

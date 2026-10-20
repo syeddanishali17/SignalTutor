@@ -56,7 +56,12 @@ def stepper(d: Derivation, scope: str) -> None:
     st.markdown(f'<p class="mst-kicker">Step {i + 1} of {n} · {d.title}</p>', unsafe_allow_html=True)
     st.progress((i + 1) / n)
     beginner = state.mode() == "beginner"
-    left, right = st.columns([1, 1], gap="medium")
+    # This derivation's setup remains in the three-line history too. Give its
+    # algebra a full row without changing other established derivation layouts.
+    if d.id == "quarter_bridge":
+        left, right = st.container(), st.container()
+    else:
+        left, right = st.columns([1, 1], gap="medium")
     with left:
         st.html(as_img(FIGURES[d.figure](step.highlight)))
         if step.highlight:
