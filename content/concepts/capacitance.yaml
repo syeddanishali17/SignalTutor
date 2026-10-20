@@ -1,0 +1,26 @@
+id: capacitance
+title: Capacitance and Q = C·V
+short: Capacitance
+code: E9
+track: electrical
+prerequisites:
+- charge_field
+- fractions
+status: verified
+source_refs:
+- Lecture 1 notes, p. 4 (Q = V·C, C(x) = Aε/(d − x))
+one_liner: '**Capacitance** $C = \dfrac{Q}{V}$ is how much charge two plates store per volt. For parallel plates
+  $C = \dfrac{\varepsilon A}{\text{gap}}$: bigger area or smaller gap → more capacitance.'
+plain_words: how much charge the plates hold for each volt
+explanation_md: capacitance.md
+units: farad, F (pF = 10⁻¹² F)
+symbol: C
+misconceptions:
+- id: capacitance_gap_bigger
+  text: A bigger gap gives a bigger capacitance.
+  correction: 'The gap is in the **denominator** of $C = \varepsilon A/\text{gap}$: a bigger gap gives a **smaller**
+    capacitance.'
+- id: capacitance_depends_on_V
+  text: A higher voltage increases the capacitance.
+  correction: $C$ is set by geometry ($\varepsilon A/\text{gap}$). A higher voltage stores more **charge**, $Q =
+    CV$, with the same $C$.

@@ -10,9 +10,10 @@ Each function receives the problem's parameter dict *as shown to the learner*
 
 from __future__ import annotations
 
+import math
 from typing import Callable
 
-from tutor.sim import amplifiers, bridge, circuits
+from tutor.sim import amplifiers, bridge, capacitive, circuits
 
 Params = dict[str, float]
 AnswerFn = Callable[[Params], float]
@@ -222,3 +223,103 @@ def _ina_vout(p: Params) -> float:
 @misconception_value("ina.vout_forgot_two")
 def _ina_vout_forgot_two(p: Params) -> float:
     return (1.0 + p["R2_k"] / p["R1_k"]) * p["dV_mV"] * 1e-3
+
+
+# --- capacitive sensor -----------------------------------------------------------------
+
+
+def _geom(p: Params) -> capacitive.Geometry:
+    return capacitive.Geometry(A=p.get("A_mm2", 1.0) * 1e-6, d=p.get("d_um", 2.0) * 1e-6,
+                               k=p.get("k_N", 2500.0))
+
+
+@answer("cap.force")
+def _cap_force(p: Params) -> float:
+    return p["p_kPa"] * 1e3 * p["A_mm2"] * 1e-6
+
+
+@misconception_value("cap.force_divided")
+def _cap_force_divided(p: Params) -> float:
+    return p["p_kPa"] * 1e3 / (p["A_mm2"] * 1e-6)
+
+
+@answer("cap.membrane_x")
+def _cap_x(p: Params) -> float:
+    return capacitive.displacement(p["p_kPa"] * 1e3, _geom(p))
+
+
+@misconception_value("cap.membrane_one_spring")
+def _cap_x_one_spring(p: Params) -> float:
+    return p["p_kPa"] * 1e3 * p["A_mm2"] * 1e-6 / p["k_N"]
+
+
+@answer("cap.capacitance")
+def _cap_c(p: Params) -> float:
+    return capacitive.capacitance(capacitive.EPS0, p["A_mm2"] * 1e-6, p["g_um"] * 1e-6)
+
+
+@misconception_value("cap.capacitance_gap_times")
+def _cap_c_times(p: Params) -> float:
+    return capacitive.EPS0 * p["A_mm2"] * 1e-6 * p["g_um"] * 1e-6
+
+
+@answer("cap.charge")
+def _cap_q(p: Params) -> float:
+    return capacitive.charge(p["C_pF"] * 1e-12, p["V"])
+
+
+@answer("cap.c_of_x")
+def _cap_cx(p: Params) -> float:
+    c0 = p["C0_pF"] * 1e-12
+    return c0 / (1.0 - p["u_pct"] / 100)
+
+
+@misconception_value("cap.c_of_x_linear")
+def _cap_cx_linear(p: Params) -> float:
+    return p["C0_pF"] * 1e-12 * (1.0 + p["u_pct"] / 100)
+
+
+@answer("cap.barometer_amp")
+def _cap_baro(p: Params) -> float:
+    return p["V0"] * 2 * math.pi * p["f_kHz"] * 1e3 * p["C_pF"] * 1e-12
+
+
+@misconception_value("cap.barometer_no_2pi")
+def _cap_baro_no2pi(p: Params) -> float:
+    return p["V0"] * p["f_kHz"] * 1e3 * p["C_pF"] * 1e-12
+
+
+@answer("cap.mic_amp")
+def _cap_mic(p: Params) -> float:
+    return p["Vb"] * p["C0_pF"] * 1e-12 / (p["d_um"] * 1e-6) * 2 * math.pi * p["f_kHz"] * 1e3 * p["x0_nm"] * 1e-9
+
+
+@misconception_value("cap.mic_no_2pi")
+def _cap_mic_no2pi(p: Params) -> float:
+    return p["Vb"] * p["C0_pF"] * 1e-12 / (p["d_um"] * 1e-6) * p["f_kHz"] * 1e3 * p["x0_nm"] * 1e-9
+
+
+@answer("cap.ss_error")
+def _cap_ss_error(p: Params) -> float:
+    return capacitive.relative_error(p["u_pct"] / 100, 1)
+
+
+@answer("cap.pullin_x")
+def _cap_pullin_x(p: Params) -> float:
+    return p["d_um"] * 1e-6 / 3
+
+
+@misconception_value("cap.pullin_half")
+def _cap_pullin_half(p: Params) -> float:
+    return p["d_um"] * 1e-6 / 2
+
+
+@answer("cap.pullin_v")
+def _cap_pullin_v(p: Params) -> float:
+    return capacitive.pullin_voltage(_geom(p))
+
+
+@misconception_value("cap.pullin_v_one_spring")
+def _cap_pullin_v_one(p: Params) -> float:
+    g = _geom(p)
+    return math.sqrt(8.0 * g.k * g.d**3 / (27.0 * g.eps * g.A))

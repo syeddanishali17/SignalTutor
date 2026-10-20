@@ -230,6 +230,7 @@ formulas:
 
   # --- seeded needs_review forms (spec 11, K1–K6) ---------------------------------------
   - id: mic_current
+    concept: capacitor_current
     title: Microphone current (DC bias)
     module: C5
     status: needs_review
@@ -245,6 +246,7 @@ formulas:
     shown_in_exam_mode: canonical_with_flag
 
   - id: dC_dx
+    concept: capacitive_sensor
     title: Slope of the parallel-plate capacitance
     module: C4
     status: needs_review
@@ -260,6 +262,7 @@ formulas:
     shown_in_exam_mode: canonical_with_flag
 
   - id: tia_output_barometer
+    concept: capacitor_current
     title: Transimpedance output, barometer case
     module: C11
     status: needs_review
@@ -440,3 +443,224 @@ formulas:
     lecture_check: {expr: "(1 + 2*R2/R1)*(V2 - V1)", symbols: {R1: ohm, R2: ohm, V1: V, V2: V}, result_unit: V}
     dimension_check: pass
     known_issue: K10
+
+  # --- L01: capacitive pressure sensor (M3) ----------------------------------------------------
+  - id: pressure_force
+    title: Pressure
+    concept: force_pressure
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check]
+    lecture_form: "p = \\frac{F}{A}"
+    lecture_check: {expr: "F/A", symbols: {F: N, A: "m^2"}, result_unit: Pa}
+    dimension_check: pass
+    meaning:
+      - {symbol: "p", meaning: "pressure", unit: "Pa", when_it_goes_up: "result"}
+      - {symbol: "F", meaning: "force on the surface", unit: "N", when_it_goes_up: "p rises in proportion"}
+      - {symbol: "A", meaning: "area the force is spread over", unit: "m²", when_it_goes_up: "p falls"}
+
+  - id: membrane_hpx
+    title: Membrane on two springs (pressure → displacement)
+    concept: spring_hooke
+    module: C4
+    status: verified
+    source: "Lecture 1 notes, p. 3"
+    evidence: [notes, dimension_check]
+    lecture_form: "F = 2k\\,x = p\\,A \\quad\\Rightarrow\\quad H_{p\\text{-}x} = \\frac{x}{p} = \\frac{A}{2k}"
+    lecture_check: {expr: "A/(2*k)", symbols: {A: "m^2", k: "N/m"}, result_unit: "m/Pa"}
+    dimension_check: pass
+    comes_from: "Force balance: the two springs push back with 2k·x, the pressure pushes with p·A."
+    assumptions: ["Membrane modelled as a rigid plate on two linear springs", "Static (slow) pressure"]
+    meaning:
+      - {symbol: "x", meaning: "membrane displacement toward the fixed plate", unit: "m", when_it_goes_up: "result"}
+      - {symbol: "A", meaning: "membrane area", unit: "m²", when_it_goes_up: "more force from the same pressure → x rises"}
+      - {symbol: "k", meaning: "stiffness of each spring", unit: "N/m", when_it_goes_up: "x falls"}
+
+  - id: hooke
+    title: Hooke's law
+    concept: spring_hooke
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check]
+    lecture_form: "F = k\\,x"
+    lecture_check: {expr: "k*x", symbols: {k: "N/m", x: m}, result_unit: N}
+    dimension_check: pass
+
+  - id: charge_qcv
+    title: Charge on a capacitor
+    concept: capacitance
+    module: C5
+    status: verified
+    source: "Lecture 1 notes, p. 4"
+    evidence: [notes, dimension_check]
+    lecture_form: "Q = V\\cdot C"
+    lecture_check: {expr: "V*C", symbols: {V: V, C: F}, result_unit: C}
+    dimension_check: pass
+    meaning:
+      - {symbol: "Q", meaning: "charge stored (+Q on one plate, −Q on the other)", unit: "C (coulomb)", when_it_goes_up: "result"}
+      - {symbol: "V", meaning: "voltage across the plates", unit: "V", when_it_goes_up: "Q rises in proportion"}
+      - {symbol: "C", meaning: "capacitance", unit: "F", when_it_goes_up: "Q rises in proportion"}
+
+  - id: parallel_plate
+    title: Parallel-plate capacitance with deflection x
+    concept: capacitive_sensor
+    module: C4
+    status: verified
+    source: "Lecture 1 notes, p. 4"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "C(x) = \\frac{A\\,\\varepsilon}{d - x} = \\frac{\\varepsilon A}{d}\\,\\frac{1}{1 - \\frac{x}{d}} = \\frac{C_0}{1 - \\frac{x}{d}}"
+    lecture_check: {expr: "eps*A/(d - x)", symbols: {eps: "F/m", A: "m^2", d: m, x: m}, result_unit: F}
+    dimension_check: pass
+    assumptions: ["Plates parallel and much wider than the gap (fringe fields neglected)"]
+    meaning:
+      - {symbol: "C(x)", meaning: "capacitance at deflection x", unit: "F", when_it_goes_up: "result"}
+      - {symbol: "\\varepsilon", meaning: "permittivity of the gap (ε₀ = 8.85·10⁻¹² F/m for air)", unit: "F/m", when_it_goes_up: "C rises"}
+      - {symbol: "A", meaning: "plate area", unit: "m²", when_it_goes_up: "C rises"}
+      - {symbol: "d", meaning: "gap at rest", unit: "m", when_it_goes_up: "C falls"}
+      - {symbol: "x", meaning: "deflection (the gap is d − x)", unit: "m", when_it_goes_up: "C rises, faster and faster"}
+      - {symbol: "C_0", meaning: "capacitance at rest, εA/d", unit: "F"}
+
+  - id: capacitor_current
+    title: Capacitor current (product rule)
+    concept: capacitor_current
+    module: C5
+    status: verified
+    source: "Lecture 1 notes, p. 4"
+    evidence: [notes, dimension_check]
+    lecture_form: "I(t) = \\frac{dQ}{dt} = \\frac{d}{dt}\\big[V(t)\\,C(t)\\big] = C(t)\\,\\frac{dV}{dt} + V(t)\\,\\frac{dC}{dt}"
+    lecture_check: {expr: "C*dVdt + V*dCdt", symbols: {C: F, dVdt: "V/s", V: V, dCdt: "F/s"}, result_unit: A}
+    dimension_check: pass
+    comes_from: "Q = V·C differentiated with the product rule."
+    meaning:
+      - {symbol: "C\\,dV/dt", meaning: "current because the voltage changes (barometer, AC bias)", unit: "A"}
+      - {symbol: "V\\,dC/dt", meaning: "current because the capacitor changes (microphone, moving membrane)", unit: "A"}
+
+  - id: barometer_current
+    title: Barometer case (AC bias)
+    concept: capacitor_current
+    module: C5
+    status: verified
+    source: "Lecture 1 notes, p. 4–5"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "\\hat V_b = V_0 e^{i\\omega t},\\quad \\hat I = V_0\\,i\\omega C\\,e^{i\\omega t},\\quad I(t) = \\text{Re}[\\hat I] = -V_0\\,\\omega\\,C\\sin\\omega t"
+    lecture_check: {expr: "-V0*omega*C*sin(omega*t)", symbols: {V0: V, omega: "1/s", C: F, t: s}, result_unit: A}
+    dimension_check: pass
+    assumptions: ["Quasi-static pressure: dC/dt ≈ 0 during a period of the bias"]
+    meaning:
+      - {symbol: "V_0", meaning: "amplitude of the AC bias", unit: "V", when_it_goes_up: "current rises in proportion"}
+      - {symbol: "\\omega", meaning: "angular frequency of the bias, 2πf", unit: "rad/s", when_it_goes_up: "current rises in proportion"}
+      - {symbol: "C", meaning: "quasi-static capacitance — carries the pressure", unit: "F", when_it_goes_up: "current rises in proportion"}
+
+  - id: mic_current_chain
+    title: Microphone case (DC bias, chain rule)
+    concept: capacitor_current
+    module: C5
+    status: verified
+    source: "Lecture 1 notes, p. 6"
+    evidence: [notes, dimension_check]
+    lecture_form: "I(t) \\cong V_b\\,\\frac{dC}{dt} = V_b\\,\\frac{dC}{dx}\\,\\frac{dx}{dt}"
+    lecture_check: {expr: "Vb*dCdx*dxdt", symbols: {Vb: V, dCdx: "F/m", dxdt: "m/s"}, result_unit: A}
+    dimension_check: pass
+    assumptions: ["Constant (DC) bias: dV/dt = 0"]
+    meaning:
+      - {symbol: "V_b", meaning: "DC bias voltage", unit: "V", when_it_goes_up: "current rises in proportion"}
+      - {symbol: "dC/dx", meaning: "slope of C(x) at the operating point", unit: "F/m", when_it_goes_up: "current rises"}
+      - {symbol: "dx/dt", meaning: "membrane velocity (sound)", unit: "m/s", when_it_goes_up: "current rises"}
+
+  - id: small_signal_series
+    title: Small-signal (geometric) series
+    concept: small_signal
+    module: C6
+    status: verified
+    source: "Lecture 1 notes, p. 5"
+    evidence: [notes, sympy]
+    lecture_form: "\\frac{1}{1 - \\frac{x}{d}} \\cong 1 + \\frac{x}{d} + \\frac{x^2}{d^2} + \\frac{x^3}{d^3} + \\dots"
+    lecture_check: {expr: "1 + x/d + (x/d)^2 + (x/d)^3", symbols: {x: m, d: m}, result_unit: "1"}
+    dimension_check: pass
+    assumptions: ["|x/d| < 1; truncation valid for x ≪ d"]
+
+  - id: small_signal_output
+    title: Linearised sensor output
+    concept: small_signal
+    module: C6
+    status: verified
+    source: "Lecture 1 notes, p. 5"
+    evidence: [notes, dimension_check]
+    lecture_form: "x \\ll d:\\qquad V_\\text{out} \\cong V_{ft}\\left(1 + \\frac{x}{d}\\right)"
+    lecture_check: {expr: "Vft*(1 + x/d)", symbols: {Vft: V, x: m, d: m}, result_unit: V}
+    dimension_check: pass
+    assumptions: ["x ≪ d: second- and higher-order terms dropped"]
+    meaning:
+      - {symbol: "V_{ft}", meaning: "feed-through output at x = 0 (present without any pressure)", unit: "V"}
+      - {symbol: "x/d", meaning: "relative deflection — the useful signal", unit: "1"}
+
+  - id: mic_taylor
+    title: Microphone nonlinearity (Taylor series around x = 0)
+    concept: harmonic_distortion
+    module: C6
+    status: verified
+    source: "Lecture 1 notes, p. 6"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "\\frac{x}{\\left(1 - \\frac{x}{d}\\right)^2} \\approx 0 + x + 2\\,\\frac{x^2}{d} + 3\\,\\frac{x^3}{d^2} + \\dots"
+    lecture_check: {expr: "x + 2*x^2/d + 3*x^3/d^2", symbols: {x: m, d: m}, result_unit: m}
+    dimension_check: pass
+    assumptions: ["Expansion around x = 0, |x/d| < 1"]
+
+  - id: harmonics_terms
+    title: Higher powers create harmonics
+    concept: harmonic_distortion
+    module: C6
+    status: verified
+    source: "Lecture 1 notes, p. 6"
+    evidence: [notes]
+    lecture_form: "\\hat x^2 = x_0^2\\,e^{i2\\omega t},\\qquad \\hat x^3 = x_0^3\\,e^{i3\\omega t}"
+    dimension_check: not_applicable
+
+  - id: pullin_point
+    title: Point of instability at constant voltage
+    concept: pull_in
+    module: C7
+    status: verified
+    source: "Lecture 1 notes, p. 5 (marked on the V_out(x) graph)"
+    evidence: [notes, sympy]
+    lecture_form: "x = \\frac{d}{3}"
+    lecture_check: {expr: "d/3", symbols: {d: m}, result_unit: m}
+    dimension_check: pass
+    assumptions: ["Constant bias voltage (not constant charge)", "Linear springs"]
+
+  - id: electrostatic_force
+    title: Attraction between the plates (constant voltage)
+    concept: pull_in
+    module: C7
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check]
+    lecture_form: "F_\\text{el} = \\frac{\\varepsilon A\\,V^2}{2\\,(d - x)^2}"
+    lecture_check: {expr: "eps*A*V^2/(2*(d - x)^2)", symbols: {eps: "F/m", A: "m^2", V: V, d: m, x: m}, result_unit: N}
+    dimension_check: pass
+    meaning:
+      - {symbol: "F_\\text{el}", meaning: "force pulling the membrane toward the fixed plate", unit: "N"}
+      - {symbol: "V", meaning: "bias voltage (enters squared)", unit: "V", when_it_goes_up: "force rises with V²"}
+      - {symbol: "d - x", meaning: "remaining gap (enters squared, in the denominator)", unit: "m", when_it_goes_up: "force falls with 1/gap²"}
+
+  - id: pullin_voltage
+    title: Pull-in voltage
+    concept: pull_in
+    module: C7
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check, sympy]
+    lecture_form: "V_\\text{PI} = \\sqrt{\\frac{8\\,k_\\text{eff}\\,d^3}{27\\,\\varepsilon A}},\\qquad k_\\text{eff} = 2k"
+    lecture_check: {expr: "sqrt(8*k*d^3/(27*eps*A))", symbols: {k: "N/m", d: m, eps: "F/m", A: "m^2"}, result_unit: V}
+    dimension_check: pass
+    comes_from: "Force balance k_eff·x = εAV²/(2(d−x)²) and equal slopes k_eff = εAV²/(d−x)³ → x = d/3; substitute back."
+
+  - id: thd_def
+    title: Total harmonic distortion
+    concept: harmonic_distortion
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook]
+    lecture_form: "\\text{THD} = \\frac{\\sqrt{A_2^2 + A_3^2 + \\dots}}{A_1}"
+    lecture_check: {expr: "sqrt(A2^2 + A3^2)/A1", symbols: {A1: A, A2: A, A3: A}, result_unit: "1"}
+    dimension_check: pass

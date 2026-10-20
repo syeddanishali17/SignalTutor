@@ -20,6 +20,7 @@ from tutor.ui import state, theme  # noqa: E402
 from tutor.ui.components import layout  # noqa: E402
 from tutor.ui.pages import (  # noqa: E402
     amplifiers,
+    capacitive,
     dev_gallery,
     glossary,
     home,
@@ -52,6 +53,8 @@ pages = {
         st.Page(wheatstone.render, title="Wheatstone Bridge Lab", icon=":material/electric_meter:", url_path="wheatstone"),
         st.Page(amplifiers.render, title="Amplifier Lab", icon=":material/settings_input_component:",
                 url_path="amplifiers"),
+        st.Page(capacitive.render, title="Capacitive Sensor Lab", icon=":material/compress:",
+                url_path="capacitive"),
     ],
     "Practice": [
         st.Page(practice_page.render, title="Problems & review", icon=":material/calculate:", url_path="practice"),
@@ -68,3 +71,4 @@ pages = {
 
 st.session_state["_pages"] = {p.url_path: p for group in pages.values() for p in group}
 st.navigation(pages, position="top").run()
+layout.footer()  # after the page body: never overlaps the teaching area

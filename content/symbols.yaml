@@ -423,3 +423,155 @@ symbols:
       Ideally 0; for the difference amplifier $A_{cm} = \dfrac{R_4}{R_3 + R_4}\left(1 + \dfrac{R_2}{R_1}\right) - \dfrac{R_2}{R_1}$,
       which is 0 only when $R_4/R_3 = R_2/R_1$.
     concept: cmrr
+
+  # --- capacitive sensor (M3) ---------------------------------------------------------------
+  - id: cap_p
+    latex: "p"
+    label: "p"
+    meaning: "**Pressure** on the membrane: force per area, $p = F/A$."
+    unit: Pa
+    concept: force_pressure
+  - id: cap_A
+    latex: "A"
+    label: "A"
+    meaning: "**Area** of the membrane and of the plates. More area collects more force from the same pressure, and holds more charge."
+    unit: "m²"
+    concept: capacitance
+  - id: cap_k
+    latex: "k"
+    label: "k"
+    meaning: "**Stiffness of each spring**: newtons of push-back per metre of squeeze. The lecture's membrane sits on two of them, $2k$ in total."
+    unit: "N/m"
+    concept: spring_hooke
+  - id: cap_x
+    latex: "x"
+    label: "x"
+    meaning: "**Deflection**: how far the membrane has moved toward the fixed plate, measured from rest."
+    unit: m
+    concept: capacitive_sensor
+  - id: cap_d
+    latex: "d"
+    label: "d"
+    meaning: "**Gap at rest** between the two plates (no pressure)."
+    unit: m
+    concept: capacitive_sensor
+  - id: cap_gap
+    latex: "d - x"
+    label: "d − x"
+    meaning: "**Remaining gap** after the membrane moved by $x$. It is what sets the capacitance."
+    unit: m
+    concept: capacitive_sensor
+  - id: cap_eps
+    latex: "\\varepsilon"
+    label: "ε"
+    meaning: "**Permittivity** of the gap: how strongly the material between the plates helps store charge. Air: $\\varepsilon \\approx \\varepsilon_0 = 8.85\\times10^{-12}\\,\\text{F/m}$."
+    unit: "F/m"
+    concept: capacitance
+  - id: cap_C
+    latex: "C"
+    label: "C"
+    meaning: "**Capacitance**: charge stored per volt, $C = Q/V$. Sensor values are picofarads."
+    unit: F
+    concept: capacitance
+  - id: cap_C0
+    latex: "C_0"
+    label: "C₀"
+    meaning: "**Capacitance at rest**, $C_0 = \\varepsilon A/d$ (no deflection)."
+    unit: F
+    concept: capacitive_sensor
+  - id: cap_Q
+    latex: "Q"
+    label: "Q"
+    meaning: "**Charge** on the plates: $+Q$ on one, $-Q$ on the other."
+    unit: "C (coulomb)"
+    concept: capacitance
+  - id: cap_V
+    latex: "V"
+    label: "V"
+    meaning: "**Bias voltage** across the capacitor, supplied by the readout circuit."
+    unit: V
+    concept: capacitance
+  - id: cap_I
+    latex: "I"
+    label: "I"
+    meaning: "**Current** in the wires: charge flowing onto one plate and off the other, $I = dQ/dt$."
+    unit: A
+    concept: capacitor_current
+  - id: cap_dVdt
+    latex: "\\frac{dV}{dt}"
+    label: "dV/dt"
+    meaning: "**How fast the bias voltage changes** (volts per second). Zero for a DC bias; large for a fast AC bias."
+    unit: "V/s"
+    concept: derivative_rate
+  - id: cap_dCdt
+    latex: "\\frac{dC}{dt}"
+    label: "dC/dt"
+    meaning: "**How fast the capacitance changes** — only while the membrane moves. Nearly zero for a barometer, large for a microphone."
+    unit: "F/s"
+    concept: derivative_rate
+  - id: cap_dCdx
+    latex: "\\frac{dC}{dx}"
+    label: "dC/dx"
+    meaning: "**Slope of $C(x)$**: how much the capacitance changes per metre of deflection, $\\varepsilon A/(d-x)^2$. It grows as the gap closes."
+    unit: "F/m"
+    concept: chain_rule
+  - id: cap_dxdt
+    latex: "\\frac{dx}{dt}"
+    label: "dx/dt"
+    meaning: "**Speed of the membrane**. Sound shakes it quickly; a weather change moves it slowly."
+    unit: "m/s"
+    concept: chain_rule
+  - id: cap_CdV
+    latex: "C\\,\\frac{dV}{dt}"
+    label: "C·dV/dt"
+    meaning: "**Current because the voltage changes** (with the capacitor fixed). The barometer's term."
+    unit: A
+    concept: product_rule
+  - id: cap_VdC
+    latex: "V\\,\\frac{dC}{dt}"
+    label: "V·dC/dt"
+    meaning: "**Current because the capacitor changes** (with the voltage fixed). The microphone's term."
+    unit: A
+    concept: product_rule
+  - id: cap_u
+    latex: "\\frac{x}{d}"
+    label: "x/d"
+    meaning: "**Relative deflection**: the fraction of the gap the membrane has closed. Small-signal means $x/d \\ll 1$."
+    unit: "1"
+    concept: small_signal
+  - id: cap_Fs
+    latex: "F_\\text{spring}"
+    label: "F_spring"
+    meaning: "**Spring force** pushing the membrane back up, $2k\\,x$: grows in a straight line with $x$."
+    unit: N
+    concept: spring_hooke
+  - id: cap_Fe
+    latex: "F_\\text{el}"
+    label: "F_el"
+    meaning: "**Electrostatic pull** of the charged plates, $\\varepsilon A V^2/(2(d-x)^2)$: grows ever faster as the gap closes."
+    unit: N
+    concept: pull_in
+  - id: cap_V0
+    latex: "V_0"
+    label: "V₀"
+    meaning: "**Amplitude of the AC bias** $V_0\\cos\\omega t$ (barometer readout)."
+    unit: V
+    concept: capacitor_current
+  - id: cap_Vb
+    latex: "V_b"
+    label: "V_b"
+    meaning: "**DC bias voltage** (microphone readout). Also the voltage that pulls the plates together."
+    unit: V
+    concept: capacitor_current
+  - id: cap_omega
+    latex: "\\omega"
+    label: "ω"
+    meaning: "**Angular frequency**, $\\omega = 2\\pi f$: how fast the oscillation turns, in radians per second."
+    unit: "rad/s"
+    concept: phasor
+  - id: cap_Hpx
+    latex: "H_{p\\text{-}x}"
+    label: "H_p-x"
+    meaning: "**Transfer function pressure → deflection**: metres of deflection per pascal, $A/(2k)$ for the lecture's two-spring membrane."
+    unit: "m/Pa"
+    concept: transfer_function

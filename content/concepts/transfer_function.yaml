@@ -1,0 +1,20 @@
+id: transfer_function
+title: Transfer function H = output / input
+short: Transfer function
+code: C1
+track: course_l01
+prerequisites:
+- proportionality
+status: verified
+source_refs:
+- Lecture 1 notes, p. 1–3
+one_liner: A **transfer function** $H = \dfrac{Y}{X}$ says how much output you get per unit of input. In a chain
+  of stages the transfer functions **multiply**.
+plain_words: how much comes out for each unit that goes in
+explanation_md: transfer_function.md
+symbol: H = Y/X
+misconceptions:
+- id: transfer_function_always
+  text: Every sensor has one constant transfer function.
+  correction: Only a **linear** stage has a constant $H = Y/X$. The capacitive sensor's $C(x)$ is curved, so its
+    slope — the sensitivity — depends on where you are.

@@ -1,0 +1,84 @@
+id: microphone_case
+title: Microphone — DC bias and the chain rule
+concept: capacitor_current
+figure: capacitor
+source: "Lecture 1 notes, p. 6 (the 1/(d − x)² factor is K1)"
+symbols: {I: A, Vb: V, dCdt: F/s, dCdx: F/m, dxdt: m/s, C0: F, eps: F/m, A: m^2, d: m, x: m, xh: m, omega: 1/s}
+steps:
+  - id: fast
+    latex: "\\hat p(t) = p\\,e^{i\\omega t} \\;\\rightarrow\\; \\hat x(t) = x_0\\,e^{i\\omega t}"
+    changed: "Sound: the pressure oscillates quickly, so the membrane oscillates with it."
+    why: "The membrane follows the pressure (x = A·p/2k), so a sinusoidal pressure gives a sinusoidal deflection of amplitude x0."
+    law: "Membrane transfer function"
+    highlight: [membrane, pressure, x]
+
+  - id: dc_bias
+    latex: "V = V_b = \\text{const}\\;\\Rightarrow\\; I \\cong V_b\\,\\frac{dC}{dt}"
+    annotated: |-
+      I = \underbrace{C\,\frac{dV}{dt}}_{=\,0\ (\text{DC bias})} + V_b\,\frac{dC}{dt} \;\cong\; V_b\,\frac{dC}{dt}
+    changed: "Use a constant (DC) bias: the C·dV/dt term vanishes."
+    why: "Now the capacitor itself changes fast, so V·dC/dt is large on its own — no AC bias needed."
+    law: "Product rule with dV/dt = 0"
+    assumption: "Constant bias voltage"
+    highlight: [source, I]
+    check: {kind: define, name: I, expr: "Vb*dCdt"}
+
+  - id: chain
+    latex: "\\frac{dC}{dt} = \\frac{dC}{dx}\\,\\frac{dx}{dt}"
+    annotated: |-
+      \frac{dC}{dt} = \underbrace{\frac{dC}{dx}}_{\text{F per metre: slope of } C(x)}\cdot\underbrace{\frac{dx}{dt}}_{\text{m/s: membrane speed}}
+    changed: "C changes because x changes."
+    why: "C depends on time only through the gap. Chain rule: sensitivity of C to x times the speed of x."
+    law: "Chain rule"
+    highlight: [gap, x]
+    check: {kind: define, name: dCdt, expr: "dCdx*dxdt"}
+
+  - id: c0
+    latex: "C_0 = \\frac{\\varepsilon A}{d}"
+    changed: "Name the capacitance at rest."
+    why: "It keeps the formulas short."
+    law: "Definition"
+    highlight: [d]
+    check: {kind: define, name: C0, expr: "eps*A/d"}
+
+  - id: slope
+    latex: "\\frac{dC}{dx} = \\frac{\\varepsilon A}{(d - x)^2} = \\frac{C_0\\,d}{(d - x)^2}"
+    annotated: |-
+      \frac{dC}{dx} = \frac{d}{dx}\left[\frac{\varepsilon A}{d - x}\right] = \frac{\overbrace{\varepsilon A}^{\text{F·m}}}{\underbrace{(d - x)^2}_{\text{m}^2}} = \frac{C_0\,d}{(d - x)^2}
+    changed: "Slope of the parallel-plate capacitance."
+    why: "Differentiate εA·(d − x)⁻¹. Units: F·m / m² = F/m. The lecture writes d/(d − x)² without εA (K2): that has units 1/m."
+    law: "Derivative of 1/(d − x)"
+    highlight: [gap]
+    check: {kind: define, name: dCdx, expr: "C0*d/(d - x)^2"}
+    fade:
+      prompt: "Slope dC/dx of C(x) = εA/(d − x)?"
+      correct: 2
+      options:
+        - {latex: "\\frac{d}{(d - x)^2}", expr: "d/(d - x)^2"}
+        - {latex: "\\frac{\\varepsilon A}{d - x}", expr: "eps*A/(d - x)"}
+        - {latex: "\\frac{\\varepsilon A}{(d - x)^2}", expr: "eps*A/(d - x)^2"}
+
+  - id: speed
+    latex: "\\frac{d\\hat x}{dt} = i\\omega\\,\\hat x(t)"
+    changed: "Speed of the oscillating membrane."
+    why: "Differentiating e^{iωt} multiplies by iω."
+    law: "Derivative of e^{iωt}"
+    highlight: [membrane]
+    check: {kind: define, name: dxdt, expr: "imath*omega*xh"}
+
+  - id: result
+    latex: "\\hat I(t) = V_b\\,C_0\\,\\frac{d}{(d - x)^2}\\,i\\omega\\,\\hat x(t)"
+    changed: "Put the pieces together (canonical form)."
+    why: "The lecture writes V_b C_0 · 1/(d − x)² · iω x̂, which has units A/m: the factor d is missing (known issue K1). Both forms agree that the current is proportional to the bias, the frequency and the deflection."
+    law: "Substitution"
+    highlight: [I, meter, gap]
+    check: {kind: equals, lhs: "I", expr: "Vb*C0*d/(d - x)^2*imath*omega*xh"}
+
+  - id: small
+    latex: "x \\ll d:\\quad \\hat I \\cong V_b\\,\\frac{C_0}{d}\\,i\\omega\\,\\hat x"
+    changed: "For small deflections the slope is the one at rest."
+    why: "With x ≈ 0 in (d − x)², the current is simply proportional to x̂: a linear microphone. For larger x the 1/(d − x)² factor bends the response — harmonic distortion."
+    law: "Small-signal approximation"
+    assumption: "x ≪ d"
+    highlight: [I]
+    check: {kind: equals, lhs: "I", expr: "Vb*C0/d*imath*omega*xh", subs: {x: "0"}}

@@ -1,0 +1,21 @@
+id: charge_field
+title: Charge on plates and the force between them
+short: Charge on plates
+code: P5
+track: physics
+prerequisites:
+- voltage
+- charge_current
+status: supplemental
+source_refs:
+- standard
+one_liner: 'A voltage across two facing plates moves charge: $+Q$ collects on one plate, $-Q$ on the other. Opposite
+  charges **attract**, so the plates pull on each other.'
+plain_words: a voltage piles + on one plate and − on the other, and they attract
+explanation_md: charge_field.md
+units: charge Q in coulomb, C
+misconceptions:
+- id: charge_crosses_gap
+  text: In a capacitor, current flows across the gap between the plates.
+  correction: No charge crosses the gap. Charge flows **in the wires** onto one plate and off the other while the
+    stored charge changes — that is the capacitor current.

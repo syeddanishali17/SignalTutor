@@ -13,6 +13,7 @@ import itertools
 
 import streamlit as st
 
+from tutor import branding
 from tutor.engine.mastery import RULES, STATE_LABEL
 from tutor.ui import state
 
@@ -107,6 +108,17 @@ def badge_html(skill_state: str, skill: str | None = None) -> str:
         title = "Next: " + RULES[skill]["solid"]
     prefix = f"{skill}: " if skill else ""
     return f'<span class="mst-badge {skill_state}" title="{html.escape(title)}">{html.escape(prefix + label)}</span>'
+
+
+def footer() -> None:
+    """Global app footer with the creator signature (shortened on narrow screens). Rendered after the page body."""
+    st.markdown(f'<div class="mst-sign" role="contentinfo"><span class="long">{html.escape(branding.SIGNATURE)}</span>'
+                f'<span class="short">{html.escape(branding.SIGNATURE_SHORT)}</span></div>', unsafe_allow_html=True)
+
+
+def signature_inline(short: bool = False) -> None:
+    """The signature as a quiet line inside a page (home/about)."""
+    st.markdown(f'<p class="mst-sign-inline">{html.escape(branding.signature(short))}</p>', unsafe_allow_html=True)
 
 
 def reset_box_counter() -> None:

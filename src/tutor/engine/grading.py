@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass
 
 PREFIX = {"p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3, "": 1.0, "k": 1e3, "M": 1e6, "G": 1e9}
-UNITS = {"v": "V", "a": "A", "ohm": "ohm", "w": "W", "f": "F", "hz": "Hz", "s": "s"}
+UNITS = {"v": "V", "a": "A", "ohm": "ohm", "w": "W", "f": "F", "hz": "Hz", "s": "s", "m": "m", "n": "N", "c": "C"}
 DIMENSIONLESS = {"%": 1e-2, "ppm": 1e-6, "ue": 1e-6}
 UNIT_NAMES = {
     "V": "a voltage (V)",
@@ -17,6 +17,10 @@ UNIT_NAMES = {
     "F": "a capacitance (F)",
     "Hz": "a frequency (Hz)",
     "s": "a time (s)",
+    "m": "a length (m)",
+    "N": "a force (N)",
+    "C": "a charge (C)",
+    "Pa": "a pressure (Pa)",
     "1": "a pure number (no unit)",
 }
 
@@ -81,6 +85,10 @@ def parse_quantity(text: str) -> Quantity:
         return Quantity(value * DIMENSIONLESS[low], "1", raw)
     if low in ("ohms", "ohm"):
         return Quantity(value, "ohm", raw)
+    if rest.endswith("Pa"):  # case-sensitive: "pA" is picoampere, "Pa" is pascal
+        prefix = rest[:-2].replace("K", "k")
+        if prefix in PREFIX:
+            return Quantity(value * PREFIX[prefix], "Pa", raw)
     # prefix (case-sensitive except K -> k) + unit (case-insensitive)
     for unit_key in sorted(UNITS, key=len, reverse=True):
         if low.endswith(unit_key):
@@ -92,7 +100,7 @@ def parse_quantity(text: str) -> Quantity:
     if low.endswith("ohms") and rest[:-4] in PREFIX:
         return Quantity(value * PREFIX[rest[:-4]], "ohm", raw)
     raise ParseError(
-        f"Unknown unit “{rest}”. Try V, mV, µV, A, mA, Ω, kΩ, % — e.g. “1.25 mV”."
+        f"Unknown unit “{rest}”. Try V, mV, µA, nA, Ω, pF, µm, mN, kPa, % — e.g. “1.25 mV”."
     )
 
 

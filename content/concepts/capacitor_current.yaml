@@ -1,0 +1,30 @@
+id: capacitor_current
+title: 'Capacitor current: barometer vs microphone'
+short: Barometer vs microphone
+code: C5
+track: course_l01
+prerequisites:
+- capacitive_sensor
+- product_rule
+- chain_rule
+- phasor
+status: verified
+source_refs:
+- Lecture 1 notes, p. 4–6 (marked as a case to study closely)
+one_liner: '$I = \dfrac{dQ}{dt} = C\dfrac{dV}{dt} + V\dfrac{dC}{dt}$. **Barometer** (slow pressure): $dC/dt \approx
+  0$, so drive an **AC** bias. **Microphone** (fast pressure): drive a **DC** bias, the moving membrane makes $dC/dt$.'
+plain_words: a current flows only if the voltage changes or the capacitor changes
+explanation_md: capacitor_current.md
+units: I in A (typically nA–µA)
+misconceptions:
+- id: dc_bias_barometer
+  text: A barometer can be read with a DC bias voltage.
+  correction: 'With constant $V$ **and** (almost) constant $C$, both terms vanish: no current. The barometer needs
+    an **AC** bias so that $C\,dV/dt$ is non-zero.'
+- id: mic_needs_ac
+  text: The microphone also needs an AC bias.
+  correction: The fast-moving membrane already changes $C$, so $V_b\,dC/dt$ is non-zero with a **DC** bias.
+- id: capacitor_dc_current
+  text: A constant voltage on a capacitor drives a constant current.
+  correction: 'Once charged, a capacitor at constant voltage and constant capacitance carries **no** current: $dQ/dt
+    = 0$.'

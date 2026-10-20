@@ -1,0 +1,26 @@
+id: capacitive_sensor
+title: Capacitive pressure sensor and C(x)
+short: Capacitive sensor
+code: C4
+track: course_l01
+prerequisites:
+- capacitance
+- spring_hooke
+- transfer_function
+- ratios
+status: verified
+source_refs:
+- Lecture 1 notes, p. 3–5
+one_liner: 'Pressure deflects a membrane by $x$, shrinking the gap: $C(x) = \dfrac{\varepsilon A}{d - x} = \dfrac{C_0}{1
+  - x/d}$. The response is **nonlinear from the start** — no constant transfer function.'
+plain_words: pressure pushes the plates closer, so the capacitance rises — faster and faster
+explanation_md: capacitive_sensor.md
+symbol: C(x)
+misconceptions:
+- id: capacitive_linear
+  text: The capacitance changes in proportion to the deflection x.
+  correction: '$C = C_0/(1 - x/d)$ is curved: the same extra $\Delta x$ changes $C$ more when the plates are already
+    close. Only for $x \ll d$ is it close to a straight line.'
+- id: gap_is_x
+  text: The gap of the capacitor is x.
+  correction: '$x$ is how far the membrane has **moved**. The gap is what is **left**: $d - x$.'

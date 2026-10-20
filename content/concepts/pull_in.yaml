@@ -1,0 +1,31 @@
+id: pull_in
+title: Pull-in instability at x = d/3
+short: Pull-in
+code: C7
+track: course_l01
+prerequisites:
+- equilibrium_stability
+- spring_hooke
+- charge_field
+- capacitive_sensor
+status: verified
+source_refs:
+- Lecture 1 notes, p. 5 (point of instability at d/3 for constant V)
+- 'force balance: standard (supplemental)'
+one_liner: 'At a constant bias voltage the plate attraction grows like $1/(d - x)^2$, the springs only like $x$.
+  Beyond $x = d/3$ no stable balance exists: the membrane **snaps** onto the fixed plate.'
+plain_words: past one third of the gap, the pull wins and the plates snap together
+explanation_md: pull_in.md
+symbol: x = d/3
+misconceptions:
+- id: pullin_at_d
+  text: The plates only snap together when x reaches d.
+  correction: At constant voltage the balance is lost already at $x = d/3$; beyond that the membrane accelerates
+    onto the plate.
+- id: pullin_d2
+  text: Pull-in happens at half the gap, x = d/2.
+  correction: The tangency of $2kx$ and $\varepsilon A V^2/(2(d-x)^2)$ gives $d - x = 2x$, i.e. $x = d/3$.
+- id: pullin_spring_independent_voltage
+  text: A stiffer spring does not change the pull-in voltage.
+  correction: $x = d/3$ is independent of $k$, but $V_\text{PI} = \sqrt{8 k_\text{eff} d^3/(27\varepsilon A)}$ grows
+    with the stiffness.

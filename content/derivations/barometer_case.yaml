@@ -1,0 +1,82 @@
+id: barometer_case
+title: Barometer — why an AC bias, and the current it gives
+concept: capacitor_current
+figure: capacitor_ac
+source: "Lecture 1 notes, p. 4–5"
+symbols: {Q: C, V: V, C: F, I: A, dVdt: V/s, dCdt: F/s, V0: V, omega: 1/s, t: s}
+steps:
+  - id: charge
+    latex: "Q = V\\cdot C"
+    annotated: |-
+      \underbrace{Q}_{\text{charge on the plates}} = \underbrace{V}_{\text{bias voltage}}\cdot\underbrace{C}_{\text{capacitance}}
+    changed: "Start from the stored charge."
+    why: "A capacitor holds charge in proportion to the voltage across it; the factor is its capacitance."
+    law: "Definition of capacitance"
+    highlight: [charges, source]
+    check: {kind: define, name: Q, expr: "V*C"}
+
+  - id: current
+    latex: "I = \\frac{dQ}{dt} = C\\,\\frac{dV}{dt} + V\\,\\frac{dC}{dt}"
+    annotated: |-
+      I = \frac{dQ}{dt} = \underbrace{C\,\frac{dV}{dt}}_{\text{the voltage changes}} + \underbrace{V\,\frac{dC}{dt}}_{\text{the capacitor changes}}
+    changed: "Differentiate the product: two terms."
+    why: "Current is the rate at which charge flows onto the plates. Both factors of Q = V·C can change, so the product rule gives one term for each."
+    law: "Product rule"
+    highlight: [I, meter]
+    check: {kind: define, name: I, expr: "C*dVdt + V*dCdt"}
+
+  - id: quasistatic
+    latex: "\\frac{dC}{dt} \\cong 0 \\quad\\Rightarrow\\quad I \\cong C\\,\\frac{dV}{dt}"
+    changed: "Barometer: the pressure changes very slowly, so C is (almost) constant."
+    why: "Weather pressure drifts over minutes or hours. During one period of a kHz bias, the membrane does not move: V·dC/dt is negligible."
+    law: "Quasi-static approximation"
+    assumption: "Pressure changes much more slowly than the bias oscillates"
+    highlight: [membrane, gap]
+    check: {kind: define, name: dCdt, expr: "0"}
+
+  - id: dc_fails
+    latex: "V = \\text{const} \\;\\Rightarrow\\; \\frac{dV}{dt} = 0 \\;\\Rightarrow\\; I = 0"
+    changed: "So a DC bias would give no current at all."
+    why: "Both terms vanish: nothing changes, nothing flows. We must make V change on purpose — an AC bias."
+    law: "Consequence"
+    highlight: [source]
+
+  - id: ac_bias
+    latex: "\\hat V_b = V_0\\,e^{i\\omega t} \\quad\\Rightarrow\\quad \\frac{d\\hat V_b}{dt} = i\\omega\\,V_0\\,e^{i\\omega t}"
+    changed: "Apply an AC bias, written as a rotating arrow."
+    why: "Differentiating e^{iωt} just multiplies by iω — that is why engineers use the complex form."
+    law: "Derivative of e^{iωt}"
+    highlight: [source]
+    check: {kind: define, name: dVdt, expr: "imath*omega*V0*exp(imath*omega*t)"}
+
+  - id: complex_current
+    latex: "\\hat I(t) = V_0\\,i\\omega\\,C\\,e^{i\\omega t}"
+    changed: "Insert into I ≅ C dV/dt."
+    why: "The current is the capacitance times the rate of change of the bias."
+    law: "Substitution"
+    highlight: [I, meter]
+    check: {kind: equals, lhs: "I", expr: "V0*imath*omega*C*exp(imath*omega*t)"}
+
+  - id: real_part
+    latex: "I(t) = \\text{Re}\\big[\\hat I(t)\\big] = -V_0\\,\\omega\\,C\\,\\sin\\omega t"
+    annotated: |-
+      I(t) = \text{Re}\big[\,i\,V_0\omega C\,(\cos\omega t + i\sin\omega t)\,\big] = \underbrace{-V_0\,\omega\,C}_{\text{amplitude} \,\propto\, C}\,\sin\omega t
+    changed: "Take the real part — the measurable current."
+    why: "e^{iωt} = cos ωt + i sin ωt; multiplied by i, the real part is −sin ωt. The amplitude V0·ω·C is proportional to C, so it carries the pressure."
+    law: "Euler's formula, real part"
+    highlight: [I, meter, gap]
+    check: {kind: equals, lhs: "re(I)", expr: "-V0*omega*C*sin(omega*t)"}
+    fade:
+      prompt: "The measurable current Re[Î]?"
+      correct: 1
+      options:
+        - {latex: "V_0\\,\\omega\\,C\\cos\\omega t", expr: "V0*omega*C*cos(omega*t)"}
+        - {latex: "-V_0\\,\\omega\\,C\\sin\\omega t", expr: "-V0*omega*C*sin(omega*t)"}
+        - {latex: "V_0\\,C\\sin\\omega t", expr: "V0*C*sin(omega*t)"}
+
+  - id: lockin
+    latex: "|I| = V_0\\,\\omega\\,C(x) \\quad\\text{at the known frequency } \\omega"
+    changed: "Read the amplitude at the bias frequency."
+    why: "We chose ω ourselves, so we know exactly where to look: a lock-in amplifier picks out that frequency and ignores everything else (lecture 3). A transimpedance amplifier turns the current into V_out = −R·I (sign: known issue K3)."
+    law: "Interpretation"
+    highlight: [meter]

@@ -1,0 +1,24 @@
+id: phasor
+title: The rotating arrow e^{iωt}
+short: e^{iωt}
+code: M9
+track: math
+prerequisites:
+- sine_wave
+status: supplemental
+source_refs:
+- standard; used in Lecture 1 notes, p. 4–6
+one_liner: $e^{i\omega t} = \cos\omega t + i\sin\omega t$ is an arrow of length 1 turning at angular speed $\omega$.
+  The measurable signal is its **real part**, $\cos\omega t$.
+plain_words: a spinning arrow whose shadow is the sine wave
+explanation_md: phasor.md
+units: ω in rad/s, ω = 2πf
+misconceptions:
+- id: omega_is_f
+  text: The angular frequency ω equals the frequency f.
+  correction: '$\omega = 2\pi f$: a 10 kHz bias has $\omega = 6.28\times10^4\,\text{rad/s}$. Forgetting $2\pi$ makes
+    currents 6.3 × too small.'
+- id: complex_current_real
+  text: The sensor current is a complex number.
+  correction: The hat quantities are a bookkeeping trick. The physical current is the **real part**, $I = \text{Re}[\hat
+    I]$.

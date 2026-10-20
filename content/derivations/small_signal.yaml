@@ -1,0 +1,71 @@
+id: small_signal
+title: Small-signal approximation and its error
+concept: small_signal
+figure: capacitor
+source: "Lecture 1 notes, p. 5–6"
+symbols: {C: F, C0: F, x: m, d: m}
+steps:
+  - id: cx
+    latex: "C(x) = \\frac{C_0}{1 - \\frac{x}{d}}"
+    annotated: |-
+      C(x) = \frac{\overbrace{C_0}^{\text{at rest}}}{\underbrace{1 - x/d}_{\text{shrinks as the gap closes}}}
+    changed: "Start from the exact capacitance."
+    why: "The gap is d − x; dividing top and bottom by d brings out C0 = εA/d and the ratio x/d."
+    law: "Parallel-plate capacitor"
+    highlight: [gap, x]
+    check: {kind: define, name: C, expr: "C0/(1 - x/d)"}
+
+  - id: series
+    latex: "\\frac{1}{1 - \\frac{x}{d}} \\cong 1 + \\frac{x}{d} + \\frac{x^2}{d^2} + \\frac{x^3}{d^3} + \\dots"
+    changed: "Expand the fraction in powers of x/d."
+    why: "The geometric series 1/(1 − u) = 1 + u + u² + … holds for |u| < 1. Each term is smaller than the last when u = x/d is small."
+    law: "Geometric (Taylor) series"
+    assumption: "|x/d| < 1"
+    highlight: [x, d]
+
+  - id: first_order
+    latex: "x \\ll d:\\qquad C \\cong C_0\\left(1 + \\frac{x}{d}\\right)"
+    changed: "Keep only the first two terms."
+    why: "For x ≪ d, x²/d² and beyond are tiny. What is left is a straight line: the tangent of C(x) at x = 0."
+    law: "Small-signal approximation"
+    assumption: "x ≪ d"
+    highlight: [x]
+    check: {kind: approx, lhs: "C", small: "x", expr: "C0*(1 + x/d)"}
+    fade:
+      prompt: "C(x) to first order in x?"
+      correct: 0
+      options:
+        - {latex: "C_0\\left(1 + \\frac{x}{d}\\right)", expr: "C0*(1 + x/d)"}
+        - {latex: "C_0\\left(1 - \\frac{x}{d}\\right)", expr: "C0*(1 - x/d)"}
+        - {latex: "C_0\\,\\frac{x}{d}", expr: "C0*x/d"}
+
+  - id: error
+    latex: "\\frac{C - C_0\\left(1 + \\frac{x}{d}\\right)}{C} = \\left(\\frac{x}{d}\\right)^2"
+    changed: "How wrong is the straight line?"
+    why: "Exactly the first dropped term, relative to the exact value: 1 % at x/d = 0.1, 9 % at 0.3, 25 % at 0.5."
+    law: "Algebra"
+    highlight: [x]
+    check: {kind: equals, lhs: "(C - C0*(1 + x/d))/C", expr: "(x/d)^2"}
+
+  - id: output
+    latex: "V_\\text{out} \\cong V_{ft}\\left(1 + \\frac{x}{d}\\right)"
+    changed: "The sensor output inherits the same factor."
+    why: "V_out is proportional to C (barometer readout), so the output is the feed-through V_ft plus a small part proportional to x/d — the signal."
+    law: "Lecture 1, p. 5"
+    highlight: [meter]
+
+  - id: mic
+    latex: "\\frac{x}{\\left(1 - \\frac{x}{d}\\right)^2} \\approx 0 + x + 2\\,\\frac{x^2}{d} + 3\\,\\frac{x^3}{d^2} + \\dots"
+    annotated: |-
+      \frac{x}{(1 - x/d)^2} \approx \underbrace{0 + x}_{\text{linear response}} + \underbrace{2\,\frac{x^2}{d} + 3\,\frac{x^3}{d^2} + \dots}_{\text{nonlinear response}}
+    changed: "The microphone current contains x/(1 − x/d)²; expand it too."
+    why: "Same idea, around x = 0: the first term is linear, the rest bend the response."
+    law: "Taylor series"
+    highlight: [x]
+
+  - id: harmonics
+    latex: "\\hat x^2 = x_0^2\\,e^{i2\\omega t},\\qquad \\hat x^3 = x_0^3\\,e^{i3\\omega t}"
+    changed: "For larger x the squared and cubed terms matter."
+    why: "Squaring an oscillation at ω gives one at 2ω, cubing gives 3ω: new frequencies that were not in the sound — harmonic distortion. They grow like x0² and x0³."
+    law: "Powers of e^{iωt}"
+    highlight: [membrane]

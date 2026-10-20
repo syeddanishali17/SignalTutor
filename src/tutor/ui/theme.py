@@ -113,6 +113,13 @@ h3 {{ font-size: 1.15rem !important; }}
 .st-key-termchips button p {{ white-space: nowrap; overflow: visible; text-overflow: clip; }}
 .st-key-eqterms > div {{ flex: 0 0 auto !important; width: auto !important; }}
 
+/* creator signature: small, muted, outside the teaching area */
+.mst-sign {{ margin: 64px 0 4px 0; padding: 14px 0 6px 0; border-top: 1px solid var(--rule); text-align: center;
+             font-size: .74rem; letter-spacing: .05em; color: var(--muted); opacity: .85; }}
+.mst-sign .short {{ display: none; }}
+.mst-sign-inline {{ font-size: .78rem; letter-spacing: .04em; color: var(--muted); margin: .4rem 0 0 0; }}
+@media (max-width: 560px) {{ .mst-sign .long {{ display: none; }} .mst-sign .short {{ display: inline; }} }}
+
 /* hide the anchor-link icons next to headings */
 [data-testid="stHeaderActionElements"] {{ display: none; }}
 </style>

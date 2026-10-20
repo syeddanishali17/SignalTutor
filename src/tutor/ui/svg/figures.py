@@ -619,3 +619,6 @@ FIGURES: dict[str, Callable[[list[str]], str]] = {
 from tutor.ui.svg import amp_figures as _amp  # noqa: E402
 
 FIGURES.update(_amp.FIGURES)
+from tutor.ui.svg import cap_figures as _cap  # noqa: E402
+
+FIGURES.update(_cap.FIGURES)

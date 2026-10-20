@@ -98,3 +98,29 @@ def test_amplifier_variants(scene, ctl, value):
     at.session_state[f"w_amp_{scene}_{ctl}"] = value
     at.run()
     assert not at.exception, [e.message for e in at.exception]
+
+
+CAP_SEL = {"membrane": "H", "capacitance": "gap", "cx": "u", "current": "VdC", "smallsignal": "u", "pullin": "Fe"}
+
+
+@pytest.mark.parametrize("scene", list(CAP_SEL))
+def test_capacitive_scenes(scene):
+    from tutor.models.loader import load_or_raise
+
+    title = next(s.title for s in load_or_raise().lessons["capacitive_lab"].scenes if s.id == scene)
+    at = _run("capacitive", scene=scene, unlock="1", sel=CAP_SEL[scene])
+    assert any(title in m.value for m in at.markdown), "deep-linked scene was not rendered"
+    assert len(at.latex) >= 3
+
+
+@pytest.mark.parametrize("scene,ctl,value", [("current", "mode", "microphone"), ("current", "dc", True),
+                                             ("pullin", "V", 44.0), ("pullin", "mode", "feedback"),
+                                             ("smallsignal", "a", 0.0), ("smallsignal", "a", 0.6),
+                                             ("cx", "p", 9.0)])
+def test_capacitive_variants(scene, ctl, value):
+    at = AppTest.from_function(_page, args=("capacitive",), default_timeout=60)
+    at.query_params["scene"] = scene
+    at.query_params["unlock"] = "1"
+    at.session_state[f"w_cap_{scene}_{ctl}"] = value
+    at.run()
+    assert not at.exception, [e.message for e in at.exception]

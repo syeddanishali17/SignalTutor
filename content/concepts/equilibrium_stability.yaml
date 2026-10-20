@@ -1,0 +1,21 @@
+id: equilibrium_stability
+title: Stable and unstable equilibrium
+short: Stability
+code: P6
+track: physics
+prerequisites:
+- force_pressure
+status: supplemental
+source_refs:
+- standard
+one_liner: At an **equilibrium** the forces balance. It is **stable** if a small nudge creates a force pushing back,
+  **unstable** if the nudge creates a force pushing further away.
+plain_words: a ball in a bowl comes back; a ball on a hill rolls away
+explanation_md: equilibrium_stability.md
+analogy:
+  text: A ball in a bowl (stable) versus a ball balanced on top of a hill (unstable).
+  breaks_when: it explains the idea, but the membrane's 'hill' changes shape with the bias voltage
+misconceptions:
+- id: equilibrium_is_stable
+  text: Wherever the forces balance, the system stays put.
+  correction: Balance is necessary but not enough. At an **unstable** equilibrium any tiny disturbance grows.

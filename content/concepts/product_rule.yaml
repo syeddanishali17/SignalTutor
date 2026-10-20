@@ -1,0 +1,19 @@
+id: product_rule
+title: Product rule
+short: Product rule
+code: M6
+track: math
+prerequisites:
+- derivative_rate
+status: supplemental
+source_refs:
+- standard
+one_liner: If $Q = V\cdot C$ and **both** change, then $\dfrac{dQ}{dt} = C\,\dfrac{dV}{dt} + V\,\dfrac{dC}{dt}$
+  — one term for each factor that changes.
+plain_words: a product changes when either factor changes — add both effects
+explanation_md: product_rule.md
+misconceptions:
+- id: product_rule_one_term
+  text: The rate of change of V·C is (dV/dt)·(dC/dt).
+  correction: 'There are **two terms, added**: $C\,dV/dt + V\,dC/dt$. Each factor''s change is multiplied by the
+    *other* factor''s value.'

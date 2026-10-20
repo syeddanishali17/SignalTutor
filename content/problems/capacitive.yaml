@@ -1,0 +1,282 @@
+# Templates and solutions are Markdown + $LaTeX$. Placeholders are [[name]].
+problems:
+  - id: cap_force
+    concept: force_pressure
+    kind: numeric
+    level: 3
+    template: "A pressure difference of $[[p_kPa]]\\,\\text{kPa}$ acts on a membrane of area $[[A_mm2]]\\,\\text{mm}^2$. What force does it exert?"
+    params:
+      p_kPa: {choices: [0.5, 1, 2, 5]}
+      A_mm2: {choices: [0.25, 1, 4]}
+    answer: {fn: cap.force, unit: N, tolerance_rel: 0.02, display_prefix: m}
+    misconception_checks:
+      - {fn: cap.force_divided, misconception: pressure_is_force}
+    solution: "$F = p\\,A = [[p_kPa]]\\times10^{3}\\,\\text{Pa}\\times[[A_mm2]]\\times10^{-6}\\,\\text{m}^2$ (1 mm² = 10⁻⁶ m²)."
+
+  - id: cap_membrane_x
+    concept: spring_hooke
+    kind: numeric
+    level: 4
+    template: >-
+      The lecture's membrane (area $[[A_mm2]]\,\text{mm}^2$) sits on **two** springs of stiffness $k = [[k_N]]\,\text{N/m}$ each.
+      How far does a pressure of $[[p_kPa]]\,\text{kPa}$ push it?
+    params:
+      A_mm2: {choices: [1]}
+      k_N: {choices: [1250, 2500, 5000]}
+      p_kPa: {choices: [0.5, 1, 2]}
+    answer: {fn: cap.membrane_x, unit: m, tolerance_rel: 0.02, display_prefix: µ}
+    misconception_checks:
+      - {fn: cap.membrane_one_spring, misconception: two_springs_forgotten}
+    solution: "$2k\\,x = p\\,A \\Rightarrow x = \\dfrac{p\\,A}{2k} = \\dfrac{[[p_kPa]]\\times10^3 \\times [[A_mm2]]\\times10^{-6}}{2\\times[[k_N]]}\\,\\text{m}$."
+
+  - id: cap_capacitance
+    concept: capacitance
+    kind: numeric
+    level: 3
+    template: "Two plates of area $[[A_mm2]]\\,\\text{mm}^2$ face each other across an air gap of $[[g_um]]\\,\\mu\\text{m}$ ($\\varepsilon_0 = 8.85\\times10^{-12}\\,\\text{F/m}$). What is the capacitance?"
+    params:
+      A_mm2: {choices: [0.5, 1, 2]}
+      g_um: {choices: [1, 2, 4]}
+    answer: {fn: cap.capacitance, unit: F, tolerance_rel: 0.02, display_prefix: p}
+    misconception_checks:
+      - {fn: cap.capacitance_gap_times, misconception: capacitance_gap_bigger}
+    solution: "$C = \\dfrac{\\varepsilon_0 A}{\\text{gap}} = \\dfrac{8.85\\times10^{-12}\\times[[A_mm2]]\\times10^{-6}}{[[g_um]]\\times10^{-6}}\\,\\text{F}$."
+
+  - id: cap_gap_direction
+    concept: capacitance
+    kind: direction
+    level: 1
+    template: "The gap between two capacitor plates is halved. The capacitance…"
+    options:
+      - {id: up, text: "doubles"}
+      - {id: same, text: "stays the same", misconception: capacitance_depends_on_V}
+      - {id: down, text: "halves", misconception: capacitance_gap_bigger}
+    correct: up
+    solution: "The gap is in the **denominator** of $C = \\varepsilon A/\\text{gap}$: half the gap, twice the capacitance."
+
+  - id: cap_charge
+    concept: capacitance
+    kind: numeric
+    level: 2
+    template: "A $[[C_pF]]\\,\\text{pF}$ sensor capacitor is biased at $[[V]]\\,\\text{V}$. How much charge sits on each plate?"
+    params:
+      C_pF: {choices: [2, 4.4, 10]}
+      V: {choices: [1, 5, 10]}
+    answer: {fn: cap.charge, unit: C, tolerance_rel: 0.02, display_prefix: p}
+    solution: "$Q = C\\,V = [[C_pF]]\\,\\text{pF}\\times[[V]]\\,\\text{V}$ — $+Q$ on one plate, $-Q$ on the other."
+
+  - id: cap_c_of_x
+    concept: capacitive_sensor
+    kind: numeric
+    level: 4
+    template: "A capacitive sensor has $C_0 = [[C0_pF]]\\,\\text{pF}$ at rest. Pressure closes $[[u_pct]]\\,\\%$ of the gap ($x/d = [[u_pct]]\\,\\%$). What is $C$ now?"
+    params:
+      C0_pF: {choices: [4.4, 10]}
+      u_pct: {choices: [10, 25, 50]}
+    answer: {fn: cap.c_of_x, unit: F, tolerance_rel: 0.01, display_prefix: p}
+    misconception_checks:
+      - {fn: cap.c_of_x_linear, misconception: capacitive_linear}
+    solution: "$C = \\dfrac{C_0}{1 - x/d} = \\dfrac{[[C0_pF]]\\,\\text{pF}}{1 - [[u_pct]]/100}$. Not $C_0(1 + x/d)$ — that is only the small-signal tangent."
+
+  - id: cap_no_h
+    concept: transfer_function
+    kind: mc
+    level: 3
+    template: "Why does the lecture say the capacitive pressure sensor has **no constant transfer function**?"
+    options:
+      - {id: curved, text: "$C(x) = C_0/(1 - x/d)$ is curved: the change per unit deflection depends on where you are"}
+      - {id: ac, text: "because it needs an AC bias"}
+      - {id: has, text: "it does have one: $H = C_0/d$", misconception: transfer_function_always}
+    correct: curved
+    solution: "A transfer function is one number, output/input. That only exists if the response is a straight line. $C(x)$ bends from the very start, so its slope changes with $x$."
+
+  - id: cap_product_rule
+    concept: product_rule
+    kind: mc
+    level: 2
+    template: "$Q = V\\,C$ and **both** $V$ and $C$ change in time. Which is the current $I = dQ/dt$?"
+    options:
+      - {id: two, text: "$C\\,\\dfrac{dV}{dt} + V\\,\\dfrac{dC}{dt}$"}
+      - {id: prod, text: "$\\dfrac{dV}{dt}\\cdot\\dfrac{dC}{dt}$", misconception: product_rule_one_term}
+      - {id: one, text: "$C\\,\\dfrac{dV}{dt}$ only"}
+    correct: two
+    solution: "Product rule: each factor's change, multiplied by the other factor — like the two strips added to a growing rectangle."
+
+  - id: cap_dc_barometer
+    concept: capacitor_current
+    kind: mc
+    level: 2
+    template: "A barometer capacitor (pressure changing over hours) is connected to a **constant** 5 V. What current flows?"
+    options:
+      - {id: zero, text: "practically none"}
+      - {id: const, text: "a constant current proportional to $C$", misconception: capacitor_dc_current}
+      - {id: works, text: "a current that tracks the pressure well", misconception: dc_bias_barometer}
+    correct: zero
+    solution: "$dV/dt = 0$ (DC) and $dC/dt \\approx 0$ (slow pressure): both terms vanish. That is why the barometer needs an **AC** bias."
+
+  - id: cap_mic_term
+    concept: capacitor_current
+    kind: mc
+    level: 2
+    template: "A capacitive microphone runs on a **DC** bias $V_b$. Which term of $I = C\\,\\frac{dV}{dt} + V\\,\\frac{dC}{dt}$ carries the sound?"
+    options:
+      - {id: vdc, text: "$V_b\\,\\dfrac{dC}{dt}$"}
+      - {id: cdv, text: "$C\\,\\dfrac{dV}{dt}$", misconception: mic_needs_ac}
+      - {id: both, text: "both equally"}
+    correct: vdc
+    solution: "With a DC bias $dV/dt = 0$. The membrane moves fast, so $dC/dt = \\frac{dC}{dx}\\frac{dx}{dt}$ is large: $I \\cong V_b\\,dC/dt$."
+
+  - id: cap_chain_still
+    concept: chain_rule
+    kind: mc
+    level: 3
+    template: "A microphone membrane is held **still** at a deflection where $dC/dx$ is large. With a DC bias, the current is…"
+    options:
+      - {id: zero, text: "zero"}
+      - {id: large, text: "large, because $dC/dx$ is large", misconception: chain_rule_forget_speed}
+    correct: zero
+    solution: "$\\dfrac{dC}{dt} = \\dfrac{dC}{dx}\\,\\dfrac{dx}{dt}$ and $\\dfrac{dx}{dt} = 0$: no motion, no current."
+
+  - id: cap_barometer_amp
+    concept: capacitor_current
+    kind: numeric
+    level: 4
+    template: >-
+      Barometer readout: AC bias of amplitude $V_0 = [[V0]]\,\text{V}$ at $f = [[f_kHz]]\,\text{kHz}$, sensor capacitance
+      $C = [[C_pF]]\,\text{pF}$. What is the **amplitude** of the current $I(t) = -V_0\,\omega\,C\sin\omega t$?
+    params:
+      V0: {choices: [1, 2]}
+      f_kHz: {choices: [10, 100]}
+      C_pF: {choices: [4.4, 10]}
+    answer: {fn: cap.barometer_amp, unit: A, tolerance_rel: 0.02, display_prefix: µ}
+    misconception_checks:
+      - {fn: cap.barometer_no_2pi, misconception: omega_is_f}
+    solution: "$|I| = V_0\\,\\omega\\,C$ with $\\omega = 2\\pi f = 2\\pi\\times[[f_kHz]]\\times10^3\\,\\text{s}^{-1}$."
+
+  - id: cap_mic_amp
+    concept: capacitor_current
+    kind: numeric
+    level: 5
+    template: >-
+      Microphone, small signal: $V_b = [[Vb]]\,\text{V}$, $C_0 = [[C0_pF]]\,\text{pF}$, gap $d = [[d_um]]\,\mu\text{m}$. A tone at
+      $[[f_kHz]]\,\text{kHz}$ moves the membrane with amplitude $x_0 = [[x0_nm]]\,\text{nm}$. Amplitude of the current?
+    params:
+      Vb: {choices: [5, 10]}
+      C0_pF: {choices: [4.4]}
+      d_um: {choices: [2]}
+      f_kHz: {choices: [1, 2]}
+      x0_nm: {choices: [10, 50]}
+    answer: {fn: cap.mic_amp, unit: A, tolerance_rel: 0.02, display_prefix: n}
+    misconception_checks:
+      - {fn: cap.mic_no_2pi, misconception: omega_is_f}
+    solution: "$|I| \\cong V_b\\,\\dfrac{dC}{dx}\\Big|_{x=0}\\,\\omega\\,x_0 = V_b\\,\\dfrac{C_0}{d}\\,2\\pi f\\,x_0$."
+
+  - id: cap_ss_error
+    concept: small_signal
+    kind: numeric
+    level: 4
+    template: "You use $C \\approx C_0(1 + x/d)$ at $x/d = [[u_pct]]\\,\\%$. By what percentage is the exact $C$ larger than the approximation? Answer with a % sign."
+    params:
+      u_pct: {choices: [5, 10, 20, 30]}
+    answer: {fn: cap.ss_error, unit: "1", tolerance_rel: 0.03}
+    solution: "Relative error $= \\dfrac{C - C_0(1 + u)}{C} = u^2$ with $u = x/d$: $([[u_pct]]\\,\\%)^2$."
+
+  - id: cap_small_meaning
+    concept: small_signal
+    kind: mc
+    level: 2
+    template: "In the lecture, 'small-signal approximation' means…"
+    options:
+      - {id: defl, text: "the deflection is small compared with the gap, $x \\ll d$"}
+      - {id: volt, text: "the output voltage is small", misconception: small_signal_voltage}
+      - {id: freq, text: "the frequency is low"}
+    correct: defl
+    solution: "Only then may the $x^2/d^2$, $x^3/d^3$ … terms be dropped."
+
+  - id: cap_harmonic_growth
+    concept: harmonic_distortion
+    kind: mc
+    level: 3
+    template: "A microphone tone doubles in amplitude ($x_0 \\to 2x_0$). The $2\\omega$ component of the current grows about…"
+    options:
+      - {id: four, text: "4 ×"}
+      - {id: two, text: "2 ×", misconception: harmonic_linear_growth}
+      - {id: same, text: "not at all"}
+    correct: four
+    solution: "The $2\\omega$ part comes from the $x^2$ term: $(2x_0)^2 = 4x_0^2$."
+
+  - id: cap_harmonic_source
+    concept: harmonic_distortion
+    kind: mc
+    level: 2
+    template: "Where do the $2\\omega$ and $3\\omega$ components in the microphone output come from?"
+    options:
+      - {id: nonlin, text: "the curved $C(x)$: the $x^2$ and $x^3$ terms of the Taylor series"}
+      - {id: noise, text: "noise picked up by the cable", misconception: harmonics_from_noise}
+      - {id: bias, text: "the DC bias"}
+    correct: nonlin
+    solution: "$\\hat x^2 = x_0^2 e^{i2\\omega t}$, $\\hat x^3 = x_0^3 e^{i3\\omega t}$ — new frequencies created by the nonlinearity."
+
+  - id: cap_pullin_x
+    concept: pull_in
+    kind: numeric
+    level: 3
+    template: "The gap at rest is $d = [[d_um]]\\,\\mu\\text{m}$. At constant bias voltage, at which deflection is the membrane's equilibrium lost?"
+    params:
+      d_um: {choices: [1.5, 2, 3]}
+    answer: {fn: cap.pullin_x, unit: m, tolerance_rel: 0.02, display_prefix: µ}
+    misconception_checks:
+      - {fn: cap.pullin_half, misconception: pullin_d2}
+    solution: "$x = d/3$ (lecture: point of instability for constant $V$)."
+
+  - id: cap_pullin_v
+    concept: pull_in
+    kind: numeric
+    level: 5
+    template: >-
+      Supplemental: a membrane of $[[A_mm2]]\,\text{mm}^2$ on two springs of $k = [[k_N]]\,\text{N/m}$ each, air gap
+      $d = [[d_um]]\,\mu\text{m}$. What is the pull-in voltage $V_\text{PI} = \sqrt{8 k_\text{eff} d^3/(27\varepsilon_0 A)}$?
+    params:
+      A_mm2: {choices: [1]}
+      k_N: {choices: [1250, 2500, 5000]}
+      d_um: {choices: [2]}
+    answer: {fn: cap.pullin_v, unit: V, tolerance_rel: 0.02}
+    misconception_checks:
+      - {fn: cap.pullin_v_one_spring, misconception: two_springs_forgotten}
+    solution: "$k_\\text{eff} = 2k$. $V_\\text{PI} = \\sqrt{\\dfrac{8\\times 2\\times[[k_N]]\\times([[d_um]]\\times10^{-6})^3}{27\\times8.85\\times10^{-12}\\times[[A_mm2]]\\times10^{-6}}}$."
+
+  - id: cap_pullin_where
+    concept: pull_in
+    kind: mc
+    level: 2
+    template: "At constant bias voltage, the membrane can be held stably only up to a deflection of…"
+    options:
+      - {id: d3, text: "$d/3$"}
+      - {id: d2, text: "$d/2$", misconception: pullin_d2}
+      - {id: d, text: "$d$ (until the plates touch)", misconception: pullin_at_d}
+    correct: d3
+    solution: "Force balance and equal slopes give $d - x = 2x$, so $x = d/3$. Beyond it the pull outgrows the springs."
+
+  - id: cap_stability
+    concept: equilibrium_stability
+    kind: mc
+    level: 3
+    template: "Below pull-in, the spring line and the electrostatic curve cross **twice**. Which crossing does the membrane sit at?"
+    options:
+      - {id: lower, text: "the one closer to rest (smaller $x$) — it is stable"}
+      - {id: upper, text: "the one closer to the plate"}
+      - {id: both, text: "either: forces balance at both", misconception: equilibrium_is_stable}
+    correct: lower
+    solution: "At the lower crossing the spring stiffens faster than the pull grows (restoring). At the upper one any nudge toward the plate makes the pull win."
+
+  - id: cap_feedback
+    concept: pull_in
+    kind: mc
+    level: 3
+    template: "How can a capacitive sensor be operated beyond $x = d/3$ without collapsing?"
+    options:
+      - {id: fb, text: "with feedback that controls the membrane (a counter-force, or controlling the charge instead of the voltage)"}
+      - {id: bigger_v, text: "by increasing the bias voltage"}
+      - {id: none, text: "it cannot — the plates always collapse at d/3"}
+    correct: fb
+    solution: "$d/3$ is the limit for a **constant voltage**. A feedback loop keeps the membrane where you want it; at constant charge the attraction no longer grows with $x$ (supplemental)."

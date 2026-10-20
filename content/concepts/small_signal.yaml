@@ -1,0 +1,20 @@
+id: small_signal
+title: Small-signal approximation
+short: Small signal
+code: C6
+track: course_l01
+prerequisites:
+- taylor_series
+- capacitive_sensor
+status: verified
+source_refs:
+- Lecture 1 notes, p. 5
+one_liner: 'For $x \ll d$: $\dfrac{1}{1 - x/d} \approx 1 + \dfrac{x}{d}$, so the sensor output is **approximately
+  linear**: $V_\text{out} \approx V_{ft}\left(1 + \dfrac{x}{d}\right)$.'
+plain_words: zoom in far enough and every curve looks straight
+explanation_md: small_signal.md
+misconceptions:
+- id: small_signal_voltage
+  text: '''Small signal'' means the output voltage is small.'
+  correction: It means the **deflection** is small relative to the gap, $x/d \ll 1$, so the higher powers of $x/d$
+    can be dropped.

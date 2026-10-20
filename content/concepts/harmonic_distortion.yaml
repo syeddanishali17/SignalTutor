@@ -1,0 +1,24 @@
+id: harmonic_distortion
+title: 'Harmonic distortion: 2ω and 3ω'
+short: Harmonic distortion
+code: C6
+track: course_l01
+prerequisites:
+- small_signal
+- sine_wave
+status: verified
+source_refs:
+- Lecture 1 notes, p. 6
+one_liner: For larger deflections the $x^2$ and $x^3$ terms matter. A sine input $x_0\cos\omega t$ then produces
+  new frequencies $2\omega$ and $3\omega$ — **harmonic distortion**.
+plain_words: a curved response turns a pure tone into a tone plus its overtones
+explanation_md: harmonic_distortion.md
+misconceptions:
+- id: harmonics_from_noise
+  text: The 2ω and 3ω components come from noise.
+  correction: 'They come from the **nonlinearity** of $C(x)$: $x^2$ contains $2\omega$, $x^3$ contains $3\omega$.
+    They are exactly predictable.'
+- id: harmonic_linear_growth
+  text: The 2ω component grows in proportion to the input amplitude.
+  correction: 'It comes from the $x^2$ term, so it grows like $x_0^2$: twice the input gives four times the second
+    harmonic.'

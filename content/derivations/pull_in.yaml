@@ -1,0 +1,73 @@
+id: pull_in
+title: Pull-in — why the instability sits at x = d/3
+concept: pull_in
+figure: capacitor_forces
+source: "Lecture 1 notes, p. 5 (d/3 for constant V); force balance: standard (supplemental)"
+symbols: {Fs: N, Fe: N, dFe: N/m, k: N/m, x: m, d: m, eps: F/m, A: m^2, V: V}
+steps:
+  - id: spring
+    latex: "F_\\text{spring} = 2k\\,x"
+    changed: "The springs push the membrane back up."
+    why: "Two springs, each obeying Hooke's law (the lecture's membrane model)."
+    law: "Hooke's law"
+    highlight: [springs, Fs]
+    check: {kind: define, name: Fs, expr: "2*k*x"}
+
+  - id: electric
+    latex: "F_\\text{el} = \\frac{\\varepsilon A\\,V^2}{2\\,(d - x)^2}"
+    annotated: |-
+      F_\text{el} = \frac{\overbrace{\varepsilon A\,V^2}^{\text{grows with the bias}}}{\underbrace{2\,(d - x)^2}_{\text{shrinks as the gap closes}}}
+    changed: "The charged plates pull the membrane down."
+    why: "Opposite charges attract. At constant V the charge grows as the gap shrinks, so the pull grows like 1/(d − x)² (supplemental, standard result)."
+    law: "Electrostatic force, constant voltage"
+    assumption: "Constant bias voltage"
+    highlight: [charges, Fe]
+    check: {kind: define, name: Fe, expr: "eps*A*V^2/(2*(d - x)^2)"}
+
+  - id: balance
+    latex: "2k\\,x = \\frac{\\varepsilon A\\,V^2}{2\\,(d - x)^2}"
+    changed: "Equilibrium: the two forces cancel."
+    why: "Where the two curves cross, the membrane can rest. For small V they cross twice."
+    law: "Force balance"
+    highlight: [Fs, Fe]
+
+  - id: stability
+    latex: "\\text{stable} \\iff 2k > \\frac{dF_\\text{el}}{dx} = \\frac{\\varepsilon A\\,V^2}{(d - x)^3}"
+    changed: "Nudge the membrane down a little: which force grows faster?"
+    why: "If the spring stiffens faster than the pull grows, the nudge is pushed back (stable). Otherwise it runs away (unstable)."
+    law: "Stability of an equilibrium"
+    highlight: [Fs, Fe, gap]
+    check: {kind: define, name: dFe, expr: "eps*A*V^2/(d - x)^3"}
+
+  - id: tangent
+    latex: "\\frac{F_\\text{el}}{dF_\\text{el}/dx} = \\frac{F_\\text{spring}}{2k} \\;\\Rightarrow\\; \\frac{d - x}{2} = x"
+    annotated: |-
+      \text{at the edge: } \underbrace{F_\text{el} = F_\text{spring}}_{\text{forces equal}} \text{ and } \underbrace{\tfrac{dF_\text{el}}{dx} = 2k}_{\text{slopes equal}} \;\Rightarrow\; \frac{d - x}{2} = x
+    changed: "At the last possible balance, forces and slopes are equal. Divide one condition by the other."
+    why: "V, ε and A cancel: what is left depends only on the geometry."
+    law: "Algebra"
+    highlight: [gap, x]
+    check: {kind: equals, lhs: "Fe/dFe", expr: "(d - x)/2"}
+
+  - id: d3
+    latex: "x = \\frac{d}{3}"
+    changed: "Solve: 2x = d − x."
+    why: "The lecture's point of instability for constant V. It does not depend on the spring stiffness or the bias."
+    law: "Algebra"
+    highlight: [x, d]
+    check: {kind: define, name: x, expr: "d/3"}
+    fade:
+      prompt: "Where is the last stable position?"
+      correct: 1
+      options:
+        - {latex: "\\frac{d}{2}", expr: "d/2"}
+        - {latex: "\\frac{d}{3}", expr: "d/3"}
+        - {latex: "d", expr: "d + 0*x"}
+
+  - id: vpi
+    latex: "V_\\text{PI} = \\sqrt{\\frac{8\\,(2k)\\,d^3}{27\\,\\varepsilon A}}"
+    changed: "Put x = d/3 back into the force balance (supplemental)."
+    why: "Above this bias no balance exists and the membrane snaps onto the fixed plate. A feedback loop that controls x (or the charge) avoids it."
+    law: "Substitution"
+    highlight: [source]
+    check: {kind: equals, lhs: "Fs", expr: "Fe", subs: {V: "sqrt(16*k*d^3/(27*eps*A))"}}

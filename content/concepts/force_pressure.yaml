@@ -1,0 +1,20 @@
+id: force_pressure
+title: Force and pressure
+short: Pressure
+code: P1
+track: physics
+prerequisites:
+- si_prefixes
+status: supplemental
+source_refs:
+- standard
+one_liner: '**Pressure** is force spread over an area: $p = \dfrac{F}{A}$, measured in pascal ($1\,\text{Pa} = 1\,\text{N/m}^2$).'
+plain_words: how hard something pushes on each square metre
+explanation_md: force_pressure.md
+units: pascal, Pa = N/m²
+symbol: p
+misconceptions:
+- id: pressure_is_force
+  text: Pressure and force are the same thing.
+  correction: 'Pressure is force **per area**, $p = F/A$. The membrane feels the force $F = pA$: a larger membrane
+    collects more force from the same pressure.'

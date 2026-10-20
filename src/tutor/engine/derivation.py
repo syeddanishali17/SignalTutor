@@ -26,7 +26,11 @@ def check_derivation(d: Derivation) -> list[str]:
     env: dict[sp.Symbol, sp.Expr] = {}
 
     def S(text: str) -> sp.Expr:
-        return _sub(to_sympy(text, syms), env)
+        # substitute earlier definitions while building the tree, so functions such as re()
+        # act on the defined expression and not on a bare (real) symbol
+        known = dict(syms)
+        known.update({s.name: _sub(v, env) for s, v in env.items()})
+        return _sub(to_sympy(text, known), env)
 
     for step in d.steps:
         where = f"{d.id}/{step.id}"

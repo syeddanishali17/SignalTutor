@@ -1,0 +1,142 @@
+questions:
+  - id: barometer_vs_microphone
+    concepts: [capacitor_current, capacitive_sensor]
+    priority: very_high
+    question: "A capacitive pressure sensor can work as a barometer or as a microphone. Explain both readout cases. Why AC bias in one and DC bias in the other?"
+    structure:
+      - {label: definition, text: "Membrane and fixed plate form a capacitor $C(x) = \\dfrac{\\varepsilon A}{d - x} = \\dfrac{C_0}{1 - x/d}$; pressure changes $x$, and the charge is $Q = V\\,C$."}
+      - {label: mechanism, text: "Current is $I = \\dfrac{dQ}{dt} = C\\,\\dfrac{dV}{dt} + V\\,\\dfrac{dC}{dt}$ (product rule): either the voltage or the capacitor must change."}
+      - {label: key equation, text: "**Barometer** (slow $p$, $dC/dt \\approx 0$): AC bias $V_0 e^{i\\omega t}$ → $I = -V_0\\,\\omega\\,C\\sin\\omega t$, amplitude $\\propto C$. **Microphone** (fast $p$): DC bias → $I \\cong V_b\\,\\dfrac{dC}{dx}\\,\\dfrac{dx}{dt}$."}
+      - {label: physical meaning, text: "The barometer needs us to wiggle the voltage, because the capacitor does not move. The microphone's membrane wiggles by itself, so a constant bias is enough."}
+      - {label: assumptions, text: "Quasi-static barometer (pressure much slower than the bias); parallel plates; small deflections for a linear response."}
+      - {label: limitations, text: "Both are nonlinear ($C \\propto 1/(d - x)$); large signals give harmonics; the bias pulls the plates together (pull-in at $d/3$)."}
+      - {label: application, text: "The barometer amplitude is read with a lock-in amplifier at the known frequency; a transimpedance amplifier turns $I$ into a voltage."}
+    expected_points:
+      - {id: qcv, text: "Starts from $Q = VC$ and $I = dQ/dt$"}
+      - {id: product, text: "Product rule: $I = C\\,dV/dt + V\\,dC/dt$"}
+      - {id: baro, text: "Barometer: $dC/dt \\approx 0$, so AC bias; $I = -V_0\\omega C\\sin\\omega t$"}
+      - {id: mic, text: "Microphone: DC bias, $I \\cong V_b\\,dC/dt = V_b\\,(dC/dx)(dx/dt)$"}
+      - {id: why, text: "Explains why: with DC bias and constant C nothing flows"}
+      - {id: lockin, text: "Mentions reading the barometer amplitude at the known frequency (lock-in)"}
+    followups:
+      - {when_missing: why, ask: "What happens if you connect the barometer to a constant 5 V?", hint: "$dV/dt = 0$ and $dC/dt \\approx 0$: no current at all."}
+      - {when_missing: mic, ask: "Write the microphone current with the chain rule.", hint: "$V_b\\,\\dfrac{dC}{dx}\\,\\dfrac{dx}{dt}$ with $\\dfrac{dC}{dx} = \\dfrac{C_0\\,d}{(d - x)^2}$."}
+      - {always: true, ask: "Derive the barometer current from the AC bias $V_0 e^{i\\omega t}$, including taking the real part."}
+      - {always: true, ask: "Check the units of the microphone current in the lecture notes. What do you notice?", hint: "$V_b C_0\\,\\frac{1}{(d-x)^2}\\,i\\omega\\hat x$ has units A/m; a factor $d$ is missing (K1)."}
+    traps:
+      - "Barometer = AC bias, microphone = DC bias — not the other way round."
+      - "$\\omega = 2\\pi f$, not $f$."
+      - "Take the real part: $\\text{Re}[i\\,e^{i\\omega t}] = -\\sin\\omega t$."
+
+  - id: capacitive_nonlinear
+    concepts: [capacitive_sensor, transfer_function]
+    priority: high
+    question: "Walk me through the capacitive pressure sensor from pressure to current. Why is there no transfer function any more?"
+    structure:
+      - {label: definition, text: "Chain: $p$ → membrane → $x(p)$ → capacitive transducer → $I(x)$ → transimpedance amplifier → $V_\\text{out}$."}
+      - {label: mechanism, text: "Membrane on two springs: $2k\\,x = p\\,A$, so $H_{p\\text{-}x} = A/(2k)$ — linear. Then $C(x) = \\dfrac{\\varepsilon A}{d - x}$."}
+      - {label: key equation, text: "$C(x) = \\dfrac{C_0}{1 - x/d}$ with $C_0 = \\varepsilon A/d$; slope $\\dfrac{dC}{dx} = \\dfrac{\\varepsilon A}{(d - x)^2}$."}
+      - {label: physical meaning, text: "Equal steps in $x$ give growing steps in $C$: the slope depends on the operating point, so no single number $H$ describes the stage."}
+      - {label: limitations, text: "Linear only for $x \\ll d$: $C \\approx C_0(1 + x/d)$."}
+    expected_points:
+      - {id: chain, text: "States the chain p → x → C → I → V"}
+      - {id: hpx, text: "$H_{p\\text{-}x} = A/(2k)$ from the force balance"}
+      - {id: cx, text: "$C(x) = C_0/(1 - x/d)$"}
+      - {id: nonlinear, text: "Explains: curved from the start, slope changes → no constant H"}
+      - {id: small, text: "Small-signal: $C \\approx C_0(1 + x/d)$ for $x \\ll d$"}
+    followups:
+      - {when_missing: small, ask: "So when may you treat it as linear?"}
+      - {always: true, ask: "What is $dC/dx$? Check its units.", hint: "$\\varepsilon A/(d - x)^2$ in F/m. The lecture's $d/(d - x)^2$ has 1/m (K2)."}
+    traps:
+      - "The gap is $d - x$, not $x$."
+
+  - id: small_signal_harmonics
+    concepts: [small_signal, harmonic_distortion, taylor_series]
+    priority: high
+    question: "What is the small-signal approximation for the capacitive sensor, and what goes wrong when the signal is large?"
+    structure:
+      - {label: definition, text: "Expand $\\dfrac{1}{1 - x/d} \\cong 1 + \\dfrac{x}{d} + \\dfrac{x^2}{d^2} + \\dots$ and keep the first order for $x \\ll d$: $V_\\text{out} \\cong V_{ft}(1 + x/d)$."}
+      - {label: mechanism, text: "The dropped terms are powers of $x/d$; the relative error of first order is $(x/d)^2$."}
+      - {label: key equation, text: "Microphone: $\\dfrac{x}{(1 - x/d)^2} \\approx x + 2\\dfrac{x^2}{d} + 3\\dfrac{x^3}{d^2}$; with $\\hat x = x_0 e^{i\\omega t}$, $\\hat x^2 \\to 2\\omega$, $\\hat x^3 \\to 3\\omega$."}
+      - {label: physical meaning, text: "A pure tone comes out with overtones: harmonic distortion, growing like $x_0^2$ and $x_0^3$."}
+      - {label: limitations, text: "Not noise — deterministic; can be reduced by keeping $x \\ll d$ or by feedback."}
+    expected_points:
+      - {id: series, text: "Writes the geometric/Taylor series"}
+      - {id: condition, text: "States $x \\ll d$"}
+      - {id: linear, text: "$V_\\text{out} \\cong V_{ft}(1 + x/d)$"}
+      - {id: harm, text: "Squared and cubed terms give $2\\omega$ and $3\\omega$"}
+      - {id: growth, text: "Harmonics grow faster than the signal ($x_0^2$, $x_0^3$)"}
+    followups:
+      - {when_missing: condition, ask: "How large may $x/d$ be for a 1 % error?", hint: "Error $\\approx (x/d)^2 = 1\\,\\% \\Rightarrow x/d = 0.1$."}
+      - {when_missing: harm, ask: "Why does an $x^2$ term create a new frequency?", hint: "$\\cos^2\\omega t = \\tfrac12 + \\tfrac12\\cos 2\\omega t$."}
+    traps:
+      - "'Small signal' refers to the deflection relative to the gap."
+
+  - id: pull_in_q
+    concepts: [pull_in, equilibrium_stability]
+    priority: high
+    question: "What is the pull-in instability of a capacitive sensor, and where does the critical point x = d/3 come from?"
+    structure:
+      - {label: definition, text: "The bias voltage attracts the plates; at constant $V$ this force grows like $1/(d - x)^2$ while the springs grow like $x$."}
+      - {label: mechanism, text: "Below the pull-in voltage the curves cross twice: stable (low $x$) and unstable (high $x$). They merge at the critical point; above it no balance exists and the membrane snaps."}
+      - {label: key equation, text: "$2k\\,x = \\dfrac{\\varepsilon A V^2}{2(d - x)^2}$ and $2k = \\dfrac{\\varepsilon A V^2}{(d - x)^3}$ → $x = d/3$; $V_\\text{PI} = \\sqrt{\\dfrac{8 k_\\text{eff} d^3}{27\\varepsilon A}}$ (supplemental)."}
+      - {label: physical meaning, text: "The usable range at constant voltage ends at a third of the gap — independent of stiffness."}
+      - {label: application, text: "Feedback (controlling the membrane or the charge) keeps it stable beyond $d/3$."}
+    expected_points:
+      - {id: forces, text: "Names the spring force and the electrostatic force"}
+      - {id: growth, text: "Electrostatic force grows like $1/(d - x)^2$, spring only like $x$"}
+      - {id: stable, text: "Distinguishes stable and unstable equilibrium"}
+      - {id: d3, text: "Critical point $x = d/3$ at constant voltage"}
+      - {id: feedback, text: "Feedback avoids the instability"}
+    followups:
+      - {when_missing: d3, ask: "Where exactly is the critical point, and does it depend on the spring constant?", hint: "$x = d/3$, independent of $k$ (the voltage at which it happens does depend on $k$)."}
+      - {when_missing: stable, ask: "At which of the two crossings does the membrane rest, and why?"}
+      - {always: true, ask: "Why is the instability specific to constant voltage?"}
+    traps:
+      - "Pull-in is at $d/3$, not $d/2$ or $d$."
+
+  - id: derive_mic
+    concepts: [capacitor_current, chain_rule]
+    priority: high
+    question: "Derive the current of a capacitive microphone with a DC bias."
+    structure:
+      - {label: definition, text: "$\\hat x(t) = x_0 e^{i\\omega t}$; DC bias $V_b$."}
+      - {label: mechanism, text: "$I = C\\,dV/dt + V\\,dC/dt$ with $dV/dt = 0$ → $I = V_b\\,\\dfrac{dC}{dt} = V_b\\,\\dfrac{dC}{dx}\\,\\dfrac{dx}{dt}$."}
+      - {label: key equation, text: "$\\dfrac{dC}{dx} = \\dfrac{C_0\\,d}{(d - x)^2}$, $\\dfrac{d\\hat x}{dt} = i\\omega\\hat x$ → $\\hat I = V_b C_0\\,\\dfrac{d}{(d - x)^2}\\,i\\omega\\hat x$."}
+      - {label: assumptions, text: "DC bias; parallel plates; for linearity $x \\ll d$."}
+    expected_points:
+      - {id: dc, text: "Uses $dV/dt = 0$"}
+      - {id: chain, text: "Applies the chain rule"}
+      - {id: slope, text: "Correct $dC/dx$ with units F/m"}
+      - {id: result, text: "Final expression with $i\\omega\\hat x$"}
+    followups:
+      - {always: true, ask: "Compare your result with the lecture's form. Which one has the right units?", hint: "K1: the lecture misses the factor $d$."}
+    traps:
+      - "$dC/dx$ needs the prefactor $\\varepsilon A = C_0 d$."
+
+whiteboard:
+  - id: wb_cap_chain
+    concepts: [capacitive_sensor]
+    skill: draw
+    prompt: "Draw the capacitive pressure sensor: membrane on springs, fixed plate, the gap d − x, the bias source and the readout chain p → x → C → I → V."
+    time_limit_s: 240
+    reference_figure: capacitor
+    checklist:
+      - {id: plates, text: "Membrane and fixed plate, springs $k$, pressure $p$ drawn"}
+      - {id: gap, text: "Rest gap $d$ and deflection $x$ marked; the gap is $d - x$"}
+      - {id: cx, text: "$C(x) = \\varepsilon A/(d - x)$ written"}
+      - {id: chain, text: "Chain $p \\to x \\to C \\to I \\to V_\\text{out}$ with the transimpedance amplifier"}
+
+  - id: wb_barometer_derive
+    concepts: [capacitor_current]
+    skill: derive
+    prompt: "Derive the barometer current: start from Q = V·C, apply an AC bias V₀e^{iωt}, take the real part."
+    time_limit_s: 360
+    reference_figure: capacitor_ac
+    reference_derivation: barometer_case
+    checklist:
+      - {id: product, text: "$I = C\\,dV/dt + V\\,dC/dt$"}
+      - {id: quasi, text: "Quasi-static: $dC/dt \\approx 0$"}
+      - {id: ac, text: "AC bias $V_0 e^{i\\omega t}$, $\\hat I = V_0 i\\omega C e^{i\\omega t}$"}
+      - {id: real, text: "$I(t) = -V_0\\,\\omega\\,C\\sin\\omega t$"}
+      - {id: why, text: "Explained why DC would not work"}

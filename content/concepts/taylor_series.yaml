@@ -1,0 +1,19 @@
+id: taylor_series
+title: Taylor series and the geometric series
+short: Taylor series
+code: M10
+track: math
+prerequisites:
+- much_less_than
+- ratios
+status: supplemental
+source_refs:
+- standard; used in Lecture 1 notes, p. 5–6
+one_liner: $\dfrac{1}{1-u} = 1 + u + u^2 + u^3 + \dots$ for $|u| < 1$. For $u \ll 1$ the first terms are enough;
+  the error is about the first term you drop.
+plain_words: replace a curve by a straight line plus small corrections
+explanation_md: taylor_series.md
+misconceptions:
+- id: approx_always_ok
+  text: The first-order approximation works for any deflection.
+  correction: 'Its relative error is $u^2 = (x/d)^2$: fine for $x \ll d$, but $25\,\%$ at $x = d/2$.'

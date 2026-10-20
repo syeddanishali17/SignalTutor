@@ -1,0 +1,19 @@
+id: derivative_rate
+title: Rate of change (d/dt)
+short: Rate of change
+code: M5
+track: math
+prerequisites:
+- proportionality
+status: supplemental
+source_refs:
+- standard
+one_liner: '$\dfrac{dQ}{dt}$ is **how fast** $Q$ changes per second — the slope of $Q$ plotted against time. Current
+  is exactly this: $I = \dfrac{dQ}{dt}$.'
+plain_words: how quickly something is changing right now
+explanation_md: derivative_rate.md
+misconceptions:
+- id: derivative_is_value
+  text: A large value means a large rate of change.
+  correction: A large but **constant** value has rate of change zero. That is why a constant voltage on a constant
+    capacitor gives no current.

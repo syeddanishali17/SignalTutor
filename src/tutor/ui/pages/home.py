@@ -36,6 +36,18 @@ AMP_PATH = [
     ("difference_amp", "amplifiers", "diffamp"),
     ("instrumentation_amp", "amplifiers", "ina"),
 ]
+CAP_PATH = [
+    ("spring_hooke", "capacitive", "membrane"),
+    ("capacitance", "capacitive", "capacitance"),
+    ("capacitive_sensor", "capacitive", "cx"),
+    ("capacitor_current", "capacitive", "current"),
+    ("harmonic_distortion", "capacitive", "smallsignal"),
+    ("pull_in", "capacitive", "pullin"),
+]
+
+
+SCENE_KEY = {"playground": "pg_scene", "wheatstone": "wb_scene", "amplifiers": "amp_scene",
+             "capacitive": "cap_scene", "noise": "noise_scene"}
 
 
 def render() -> None:
@@ -67,7 +79,8 @@ def render() -> None:
 
     mastered = {k for k, v in mastery.items() if is_mastered(v)}
     for title, path in (("Path 1 — from 'what is current?' to the Wheatstone bridge", PATH),
-                        ("Path 2 — amplifiers: from the op-amp to the instrumentation amplifier", AMP_PATH)):
+                        ("Path 2 — amplifiers: from the op-amp to the instrumentation amplifier", AMP_PATH),
+                        ("Path 3 — the capacitive sensor: from a membrane to pull-in", CAP_PATH)):
         st.markdown(f"### {title}")
         st.caption("States follow fixed rules (see Progress), not percentages. Weak prerequisites are named.")
         for i, (cid, page, scene) in enumerate(path, 1):
@@ -86,7 +99,7 @@ def render() -> None:
                 st.markdown(badges + extra, unsafe_allow_html=True)
             with right:
                 if st.button("Open", key=f"open_{cid}", use_container_width=True):
-                    st.session_state[{"playground": "pg_scene", "wheatstone": "wb_scene", "amplifiers": "amp_scene"}[page]] = scene
+                    st.session_state[SCENE_KEY[page]] = scene
                     st.switch_page(_page(page))
 
     st.markdown("### How to use this")
@@ -98,6 +111,13 @@ def render() -> None:
         "5. **Whiteboard**: draw and derive on paper, then compare with the reference.  \n"
         "6. Come back for **Today's review**."
     )
+    with st.expander("About this tutor"):
+        st.markdown(
+            "A personal, visual study tool for the oral exam in Modern Sensor Technologies. Lecture-derived material "
+            "is marked with its source; anything added beyond the lecture is labelled *supplemental*; doubtful "
+            "lecture formulas are flagged *needs review* instead of being silently corrected (see Sources)."
+        )
+        layout.signature_inline()
 
 
 def _item_title(item_type: str, item_id: str) -> str:

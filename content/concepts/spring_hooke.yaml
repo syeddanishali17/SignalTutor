@@ -1,0 +1,29 @@
+id: spring_hooke
+title: Springs and Hooke's law
+short: Springs
+code: P2
+track: physics
+prerequisites:
+- force_pressure
+- proportionality
+status: verified
+source_refs:
+- Lecture 1 notes, p. 3 (F = 2k·x = p·A)
+one_liner: 'A spring pushes back in proportion to how far it is squeezed: $F = k\,x$. The lecture''s membrane sits
+  on **two** springs, so $F = 2k\,x$.'
+plain_words: squeeze twice as far, it pushes back twice as hard
+explanation_md: spring_hooke.md
+units: k in N/m
+symbol: F = kx
+analogy:
+  text: 'A bathroom scale: the spring inside compresses in proportion to your weight.'
+  breaks_when: for very large squeezes, where a real spring or membrane stops being linear
+misconceptions:
+- id: two_springs_forgotten
+  text: With two springs the membrane still moves x = pA/k.
+  correction: 'Two springs share the load: they push back with $2k\,x$, so $x = \dfrac{pA}{2k}$ — half as far as
+    with one spring.'
+- id: spring_stiffer_moves_more
+  text: A stiffer spring (larger k) lets the membrane move further.
+  correction: 'The opposite: $x = \dfrac{A}{2k}\,p$ has $k$ in the **denominator** — a stiffer spring moves less
+    for the same pressure.'

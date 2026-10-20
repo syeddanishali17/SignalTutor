@@ -245,6 +245,8 @@ def validate(bundle: ContentBundle) -> list[str]:
 
 
 def main() -> int:
+    if hasattr(sys.stdout, "reconfigure"):  # Windows consoles default to cp1252
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     bundle, errors = load_content()
     if not errors:
         errors = validate(bundle)
