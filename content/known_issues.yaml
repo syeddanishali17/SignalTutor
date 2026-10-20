@@ -65,6 +65,7 @@ issues:
     proposed_form: "\\text{one per-Hz density } S_x,\\ \\text{written in } f \\text{ or in } \\omega"
     reason: "Easy to misread as two different densities being equal."
     severity: medium
+    formulas: [psd_convention]
 
   - id: K9
     location: "L02 p2, quarter-bridge drawing vs derivation"

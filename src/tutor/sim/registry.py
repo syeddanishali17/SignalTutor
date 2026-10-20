@@ -13,7 +13,7 @@ from __future__ import annotations
 import math
 from typing import Callable
 
-from tutor.sim import amplifiers, bridge, capacitive, circuits
+from tutor.sim import amplifiers, bridge, capacitive, circuits, noise
 
 Params = dict[str, float]
 AnswerFn = Callable[[Params], float]
@@ -323,3 +323,52 @@ def _cap_pullin_v(p: Params) -> float:
 def _cap_pullin_v_one(p: Params) -> float:
     g = _geom(p)
     return math.sqrt(8.0 * g.k * g.d**3 / (27.0 * g.eps * g.A))
+
+
+# --- noise ------------------------------------------------------------------------------------
+# Densities are given to the learner per hertz: S0 in µV²/Hz (1e-12 V²/Hz), ASD in nV/√Hz.
+
+
+@answer("noise.white_band_rms")
+def _nz_white_rms(p: Params) -> float:
+    return math.sqrt(noise.white_band_power(p["S0_uV2"] * 1e-12, p["f1"], p["f2"]))
+
+
+@misconception_value("noise.white_band_no_sqrt")
+def _nz_white_no_sqrt(p: Params) -> float:
+    return noise.white_band_power(p["S0_uV2"] * 1e-12, p["f1"], p["f2"])
+
+
+@misconception_value("noise.white_band_omega")
+def _nz_white_omega(p: Params) -> float:
+    return math.sqrt(noise.lecture_band_power_omega(p["S0_uV2"] * 1e-12, p["f1"], p["f2"]))
+
+
+@answer("noise.asd_rms")
+def _nz_asd_rms(p: Params) -> float:
+    return p["asd_nV"] * 1e-9 * math.sqrt(p["B"])
+
+
+@misconception_value("noise.asd_times_b")
+def _nz_asd_times_b(p: Params) -> float:
+    return p["asd_nV"] * 1e-9 * p["B"]
+
+
+@answer("noise.pink_band_rms")
+def _nz_pink_rms(p: Params) -> float:
+    return math.sqrt(noise.pink_band_power(p["S1_uV2"] * 1e-12, p["f1"], p["f2"]))
+
+
+@misconception_value("noise.pink_flat_shortcut")
+def _nz_pink_flat(p: Params) -> float:
+    return math.sqrt(p["S1_uV2"] * 1e-12 / p["f1"] * (p["f2"] - p["f1"]))
+
+
+@answer("noise.two_sided_rms")
+def _nz_two_sided(p: Params) -> float:
+    return math.sqrt(2 * p["S2_uV2"] * 1e-12 * (p["f2"] - p["f1"]))
+
+
+@misconception_value("noise.two_sided_positive_only")
+def _nz_two_sided_pos(p: Params) -> float:
+    return math.sqrt(p["S2_uV2"] * 1e-12 * (p["f2"] - p["f1"]))

@@ -1,0 +1,18 @@
+id: integral_area
+title: Integral as area under a curve
+short: Integral (area)
+code: M11
+track: math
+prerequisites:
+- fractions
+status: supplemental
+source_refs:
+- standard
+one_liner: $\displaystyle\int_{a}^{b} S(f)\,df$ is the **area** under the curve $S(f)$ between $a$ and $b$ — add
+  up height × width of many thin strips.
+plain_words: the area under a curve between two points
+explanation_md: integral_area.md
+misconceptions:
+- id: integral_flat_always
+  text: The area under any curve is height × width.
+  correction: Only for a **flat** curve (a rectangle). For a sloped curve such as $1/f$ you must integrate.

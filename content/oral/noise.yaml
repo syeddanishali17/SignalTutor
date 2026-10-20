@@ -1,0 +1,87 @@
+questions:
+  - id: noise_psd_q
+    concepts: [noise_types, psd]
+    priority: very_high
+    question: "What is noise in a measurement, and how do we describe it quantitatively?"
+    structure:
+      - {label: definition, text: "Any random fluctuation that adds uncertainty to a measurement. Additive: $V + n$ (same size at every signal level). Multiplicative: $V\\,(1 + n)$ (grows with the signal)."}
+      - {label: motivation, text: "Random means unpredictable sample by sample — so we describe it statistically: variance $\\sigma^2$, and how its power is spread over frequency."}
+      - {label: mechanism, text: "The **power spectral density** $S_V(f)$: noise power per hertz of bandwidth, units $[\\text{quantity}]^2/\\text{Hz}$, e.g. $\\text{V}^2/\\text{Hz}$."}
+      - {label: key equation, text: "White: $S = S_0$ (flat). $1/f$: $S = S_1/f$. Spectral amplitude $X_V(f) = \\sqrt{S_V(f)}$ in $\\text{V}/\\sqrt{\\text{Hz}}$. Variance $\\sigma^2 = \\int_0^\\infty S(f)\\,df$."}
+      - {label: physical meaning, text: "A measurement that only looks at a band $[f_1, f_2]$ only collects the noise power in that band — narrow bands collect less noise."}
+      - {label: limitations, text: "Watch the notation: the lecture writes $S_x(f) = S_x(\\omega)$ — one per-hertz density in two variables (K8)."}
+      - {label: application, text: "Choosing the measurement bandwidth; why lock-in detection (narrow band around a known frequency) works."}
+    expected_points:
+      - {id: definition, text: "Random fluctuation adding uncertainty"}
+      - {id: add_mult, text: "Additive vs multiplicative"}
+      - {id: psd, text: "Described by the PSD: power per hertz"}
+      - {id: units, text: "Units $\\text{V}^2/\\text{Hz}$ (quantity²/Hz); amplitude $\\text{V}/\\sqrt{\\text{Hz}}$"}
+      - {id: shapes, text: "White (flat) and $1/f$"}
+      - {id: variance, text: "Variance = integral of the PSD"}
+    followups:
+      - {when_missing: units, ask: "What are the units of a PSD, and of its square root?"}
+      - {when_missing: shapes, ask: "Sketch white and 1/f noise on a PSD plot.", hint: "White: horizontal line. 1/f: falling, straight line of slope −1 on log–log axes."}
+      - {always: true, ask: "How large is the noise in the band from f₁ to f₂?"}
+    traps:
+      - "PSD units are V²/Hz, not V/Hz."
+      - "Variance is in V²; RMS = √variance."
+
+  - id: band_noise_q
+    concepts: [band_noise, psd_sides]
+    priority: very_high
+    question: "Given a PSD, how do you compute the noise in a frequency band? Where are the factor-2 and 2π traps?"
+    structure:
+      - {label: definition, text: "Band power = area under the PSD: $\\sigma^2 = \\int_{f_1}^{f_2} S(f)\\,df$, RMS $= \\sqrt{\\sigma^2}$."}
+      - {label: key equation, text: "White: $S_0\\,(f_2 - f_1)$. $1/f$: $S_1\\ln(f_2/f_1)$. Over $\\omega$: $\\frac{1}{2\\pi}\\int S\\,d\\omega$."}
+      - {label: limitations, text: "The lecture's $S_V(\\omega)\\,(\\omega_2 - \\omega_1)$ is valid only for white noise, and with a per-hertz $S$ it lacks $1/2\\pi$ (K4)."}
+      - {label: assumptions, text: "$S$ one-sided ($f \\ge 0$). Two-sided $S'' = S/2$ integrated over $-\\infty\\dots\\infty$ gives the same $\\sigma^2$."}
+      - {label: physical meaning, text: "Narrowing the band reduces white noise power in proportion to the width, its RMS with the square root."}
+    expected_points:
+      - {id: integral, text: "$\\sigma^2 = \\int_{f_1}^{f_2} S\\,df$"}
+      - {id: white, text: "White shortcut $S_0(f_2 - f_1)$ — and only for white"}
+      - {id: sqrt, text: "RMS is the square root"}
+      - {id: omega, text: "$1/2\\pi$ when integrating over ω"}
+      - {id: sides, text: "One- vs two-sided: factor 2, same variance if consistent"}
+    followups:
+      - {when_missing: omega, ask: "The lecture writes S(ω)·(ω₂ − ω₁). Is that right?", hint: "Only for white noise, and a per-hertz S needs 1/2π (K4)."}
+      - {when_missing: sides, ask: "What changes if the PSD is two-sided?", hint: "$S'' = S/2$ over ±f: same variance; integrating $S''$ over $f \\ge 0$ only halves it."}
+      - {always: true, ask: "Compute the noise for 1/f noise between 10 Hz and 1 kHz.", hint: "$S_1\\ln 100$."}
+    traps:
+      - "S·Δf only for white noise."
+      - "Factor 2 between one- and two-sided PSDs."
+      - "Factor 2π between ∫…df and ∫…dω."
+
+  - id: psd_sides_q
+    concepts: [psd_sides]
+    priority: high
+    question: "Explain one-sided and two-sided power spectral densities."
+    structure:
+      - {label: definition, text: "One-sided $S(f)$ on $f \\ge 0$; two-sided $S''(f) = \\tfrac12 S(|f|)$ on $-\\infty\\dots\\infty$."}
+      - {label: mechanism, text: "Real signals contain $e^{i\\omega t}$ and $e^{-i\\omega t}$ equally; mathematics keeps both, instruments fold them onto $f \\ge 0$."}
+      - {label: key equation, text: "$\\sigma^2 = \\int_0^\\infty S\\,df = \\int_{-\\infty}^\\infty S''\\,df$."}
+      - {label: limitations, text: "Mixing them gives errors of exactly 2."}
+    expected_points:
+      - {id: def, text: "Defines both"}
+      - {id: half, text: "$S'' = S/2$"}
+      - {id: same, text: "Same variance"}
+      - {id: practical, text: "Lab instruments and datasheets use one-sided"}
+    followups:
+      - {always: true, ask: "You integrate a two-sided PSD from 0 to ∞. What do you get?", hint: "Half the variance."}
+    traps:
+      - "Two-sided does NOT mean twice the noise."
+
+whiteboard:
+  - id: wb_band_noise
+    concepts: [band_noise]
+    skill: derive
+    prompt: "Draw a PSD (white and 1/f on log–log axes), mark a band f₁…f₂, and compute the RMS noise in it for both shapes, with units."
+    time_limit_s: 300
+    reference_figure: psd_band
+    reference_derivation: band_power
+    checklist:
+      - {id: axes, text: "Axes labelled: $f$ (Hz), $S$ ($\\text{V}^2/\\text{Hz}$), log–log"}
+      - {id: shapes, text: "White flat, $1/f$ falling with slope −1"}
+      - {id: area, text: "Band shaded; $\\sigma^2 = \\int_{f_1}^{f_2} S\\,df$"}
+      - {id: white, text: "White: $S_0(f_2 - f_1)$"}
+      - {id: pink, text: "$1/f$: $S_1\\ln(f_2/f_1)$"}
+      - {id: rms, text: "RMS $= \\sqrt{\\sigma^2}$, in V"}

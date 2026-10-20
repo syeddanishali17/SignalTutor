@@ -1,0 +1,24 @@
+id: variance_rms
+title: Mean, variance, standard deviation and RMS
+short: Variance & RMS
+code: M12
+track: math
+prerequisites:
+- fractions
+status: supplemental
+source_refs:
+- standard
+one_liner: 'For a fluctuating signal: the **mean** is its average, the **variance** $\sigma^2$ the average squared
+  deviation from it, $\sigma$ the typical size of the wiggles, and the **RMS** $\sqrt{\overline{x^2}}$ its ''effective''
+  size.'
+plain_words: how big the wiggles typically are
+explanation_md: variance_rms.md
+units: σ² in V², σ and RMS in V
+symbol: σ²
+misconceptions:
+- id: rms_is_mean
+  text: The RMS of zero-mean noise is zero because the wiggles average out.
+  correction: 'The **mean** is zero; the RMS squares first, so every wiggle counts: RMS $= \sigma > 0$.'
+- id: variance_in_volts
+  text: Variance is measured in volts.
+  correction: Variance is in $\text{V}^2$; take the square root to get $\sigma$ (or RMS) in volts.

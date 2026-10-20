@@ -48,7 +48,15 @@ h3 {{ font-size: 1.15rem !important; }}
 .st-key-lessonrow [data-testid="stColumn"] {{ min-width: min(100%, 420px); }}
 @media (max-width: 900px) {{
   .st-key-lessonrow [data-testid="stColumn"] {{ flex: 1 1 100% !important; width: 100% !important; }}
+  /* tablet: stack squeezed control trays, equation results and metric rows instead of clipping */
+  .st-key-tray [data-testid="stHorizontalBlock"],
+  .st-key-eqstrip [data-testid="stHorizontalBlock"],
+  .st-key-consequence [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap; }}
+  .st-key-tray [data-testid="stColumn"],
+  .st-key-eqstrip [data-testid="stColumn"] {{ flex: 1 1 100% !important; width: 100% !important; min-width: 0 !important; }}
+  .st-key-consequence [data-testid="stColumn"] {{ flex: 1 1 46% !important; width: auto !important; min-width: 148px !important; }}
 }}
+.st-key-tray .stButton button p {{ white-space: nowrap; }}
 
 /* small type helpers */
 .mst-kicker {{ font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .2rem 0; }}

@@ -124,3 +124,30 @@ def test_capacitive_variants(scene, ctl, value):
     at.session_state[f"w_cap_{scene}_{ctl}"] = value
     at.run()
     assert not at.exception, [e.message for e in at.exception]
+
+
+NOISE_SEL = {"noise": "op", "stats": "sigma", "spectrum": "A", "psd": "S", "band": "sigma2", "sides": "Spp"}
+
+
+@pytest.mark.parametrize("scene", list(NOISE_SEL))
+def test_noise_scenes(scene):
+    from tutor.models.loader import load_or_raise
+
+    title = next(s.title for s in load_or_raise().lessons["noise_lab"].scenes if s.id == scene)
+    at = _run("noise", scene=scene, unlock="1", sel=NOISE_SEL[scene])
+    assert any(title in m.value for m in at.markdown), "deep-linked scene was not rendered"
+    assert len(at.latex) >= 3
+
+
+@pytest.mark.parametrize("scene,ctl,value", [("noise", "mode", "multiplicative"), ("psd", "kind", "pink"),
+                                             ("psd", "asd", True), ("band", "kind", "pink"), ("band", "f2", 10.0),
+                                             ("sides", "kind", "pink"), ("spectrum", "level", 0.0),
+                                             ("stats", "n", 10000)])
+def test_noise_variants(scene, ctl, value):
+    at = AppTest.from_function(_page, args=("noise",), default_timeout=60)
+    at.query_params["scene"] = scene
+    at.query_params["unlock"] = "1"
+    at.query_params["sel"] = "p2" if scene == "spectrum" else ""
+    at.session_state[f"w_nz_{scene}_{ctl}"] = value
+    at.run()
+    assert not at.exception, [e.message for e in at.exception]

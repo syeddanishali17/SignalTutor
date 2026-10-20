@@ -1,0 +1,23 @@
+id: psd_sides
+title: One-sided vs two-sided PSD (factor 2)
+short: One/two-sided PSD
+code: C13
+track: course_l02
+prerequisites:
+- band_noise
+status: verified
+source_refs:
+- 'Lecture 2 notes, p. 8 (marked: watch the factor 2)'
+one_liner: 'A **one-sided** PSD $S$ lives on $f \ge 0$; a **two-sided** PSD $S''''$ spreads the same power over
+  $-\infty \dots \infty$ with **half** the height: $S''''(f) = \tfrac12 S(f)$. Both integrate to the same variance.'
+plain_words: the same noise, drawn on positive frequencies only or split over ±f
+explanation_md: psd_sides.md
+misconceptions:
+- id: two_sided_double
+  text: A two-sided PSD gives twice the variance.
+  correction: 'It has half the height over twice the range: the **same** variance. Only mixing conventions creates
+    a factor 2.'
+- id: two_sided_positive_only
+  text: To use a two-sided PSD, integrate it over the positive frequencies.
+  correction: A two-sided $S''$ must be integrated over $-\infty \dots \infty$ (or doubled). Over $f \ge 0$ alone
+    you get half the variance.

@@ -1,0 +1,23 @@
+id: noise_types
+title: 'Noise: additive and multiplicative'
+short: Noise
+code: C13
+track: course_l02
+prerequisites:
+- interference
+status: verified
+source_refs:
+- Lecture 2 notes, p. 7
+one_liner: '**Noise** is any random fluctuation that adds uncertainty to a measurement. **Additive** noise has the
+  same size whatever the signal; **multiplicative** noise grows with the signal.'
+plain_words: random wiggles that make the reading uncertain
+explanation_md: noise_types.md
+misconceptions:
+- id: multiplicative_constant
+  text: Multiplicative noise has the same size at every signal level.
+  correction: 'That is **additive** noise. Multiplicative noise is $V\,(1 + n)$: its wiggles grow in proportion
+    to the signal.'
+- id: noise_is_interference
+  text: Noise and 50 Hz interference are the same thing.
+  correction: 'Interference has a known source and frequency (deterministic). Noise is random: only its statistics
+    are known.'

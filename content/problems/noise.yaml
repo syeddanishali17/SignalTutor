@@ -1,0 +1,197 @@
+# Templates and solutions are Markdown + $LaTeX$. Placeholders are [[name]].
+problems:
+  - id: nz_add_mult
+    concept: noise_types
+    kind: mc
+    level: 2
+    template: "On a sensor output, the random wiggles are tiny when the signal is small and large when the signal is large. This noise is…"
+    options:
+      - {id: mult, text: "multiplicative: $V\\,(1 + n)$"}
+      - {id: add, text: "additive: $V + n$", misconception: multiplicative_constant}
+      - {id: interf, text: "50 Hz interference", misconception: noise_is_interference}
+    correct: mult
+    solution: "Multiplicative noise scales with the signal; additive noise keeps the same size whatever the signal."
+
+  - id: nz_rms_zero_mean
+    concept: variance_rms
+    kind: mc
+    level: 2
+    template: "A noise voltage has mean 0 and standard deviation $\\sigma = 3\\,\\text{mV}$. Its RMS value is…"
+    options:
+      - {id: three, text: "3 mV"}
+      - {id: zero, text: "0 — the wiggles average out", misconception: rms_is_mean}
+      - {id: nine, text: "9 mV²"}
+    correct: three
+    solution: "RMS squares before averaging, so every wiggle counts. For zero-mean noise RMS $= \\sigma$."
+
+  - id: nz_variance_units
+    concept: variance_rms
+    kind: mc
+    level: 2
+    template: "What is the unit of the variance $\\sigma^2$ of a noise voltage?"
+    options:
+      - {id: v2, text: "$\\text{V}^2$"}
+      - {id: v, text: "$\\text{V}$", misconception: variance_in_volts}
+      - {id: vhz, text: "$\\text{V}^2/\\text{Hz}$", misconception: psd_units_v}
+    correct: v2
+    solution: "Variance is an average of **squared** voltages: $\\text{V}^2$. Per hertz is the PSD, not the variance."
+
+  - id: nz_spectrum_axis
+    concept: spectrum
+    kind: mc
+    level: 1
+    template: "A spectrum plot has which quantity on its horizontal axis?"
+    options:
+      - {id: f, text: "frequency"}
+      - {id: t, text: "time", misconception: spectrum_over_time}
+      - {id: v, text: "voltage"}
+    correct: f
+    solution: "Time domain: voltage vs time. Frequency domain (spectrum): strength vs frequency."
+
+  - id: nz_psd_units
+    concept: psd
+    kind: mc
+    level: 2
+    template: "A voltage noise PSD is quoted in which unit?"
+    options:
+      - {id: v2hz, text: "$\\text{V}^2/\\text{Hz}$"}
+      - {id: vhz, text: "$\\text{V}/\\text{Hz}$", misconception: psd_units_v}
+      - {id: v2, text: "$\\text{V}^2$", misconception: variance_in_volts}
+    correct: v2hz
+    solution: "Power per hertz: $[\\text{quantity}]^2/\\text{Hz}$. Its square root, the spectral amplitude, is in $\\text{V}/\\sqrt{\\text{Hz}}$."
+
+  - id: nz_pink_where
+    concept: psd
+    kind: mc
+    level: 2
+    template: "Where is 1/f noise strongest?"
+    options:
+      - {id: low, text: "at low frequencies (slow measurements)"}
+      - {id: high, text: "at high frequencies", misconception: pink_high_freq}
+      - {id: flat, text: "equally at all frequencies"}
+    correct: low
+    solution: "$S(f) = S_1/f$ grows as $f \\to 0$. Flat would be white noise."
+
+  - id: nz_white_band_rms
+    concept: band_noise
+    kind: numeric
+    level: 4
+    template: >-
+      White noise with one-sided PSD $S_0 = [[S0_uV2]]\,\mu\text{V}^2/\text{Hz}$ is measured in the band from
+      $[[f1]]\,\text{Hz}$ to $[[f2]]\,\text{Hz}$. What is the **RMS** noise voltage in that band?
+    params:
+      S0_uV2: {choices: [1, 4, 10]}
+      f1: {choices: [10, 100]}
+      f2: {choices: [1000, 10000]}
+    answer: {fn: noise.white_band_rms, unit: V, tolerance_rel: 0.02, display_prefix: m}
+    misconception_checks:
+      - {fn: noise.white_band_no_sqrt, misconception: rms_no_sqrt}
+      - {fn: noise.white_band_omega, misconception: omega_no_2pi}
+    solution: >-
+      $\sigma^2 = S_0\,(f_2 - f_1) = [[S0_uV2]]\times10^{-12}\,\tfrac{\text{V}^2}{\text{Hz}}\times([[f2]] - [[f1]])\,\text{Hz}$,
+      then $V_\text{rms} = \sqrt{\sigma^2}$. (Using $\omega$ instead of $f$ without $1/2\pi$ would give $\sqrt{2\pi}$ too much — K4.)
+
+  - id: nz_asd_rms
+    concept: band_noise
+    kind: numeric
+    level: 3
+    template: "An amplifier has a flat input noise of $[[asd_nV]]\\,\\text{nV}/\\sqrt{\\text{Hz}}$. What RMS noise does it add in a bandwidth of $[[B]]\\,\\text{Hz}$?"
+    params:
+      asd_nV: {choices: [4, 10, 20]}
+      B: {choices: [100, 10000, 1000000]}
+    answer: {fn: noise.asd_rms, unit: V, tolerance_rel: 0.02, display_prefix: µ}
+    misconception_checks:
+      - {fn: noise.asd_times_b, misconception: flat_shortcut_always}
+    solution: "$V_\\text{rms} = \\sqrt{S_0 B} = \\sqrt{S_0}\\,\\sqrt{B} = [[asd_nV]]\\,\\tfrac{\\text{nV}}{\\sqrt{\\text{Hz}}}\\times\\sqrt{[[B]]\\,\\text{Hz}}$. The spectral amplitude multiplies $\\sqrt{B}$, not $B$."
+
+  - id: nz_pink_band_rms
+    concept: band_noise
+    kind: numeric
+    level: 5
+    template: >-
+      1/f noise with $S(f) = S_1/f$, $S_1 = [[S1_uV2]]\,\mu\text{V}^2$, is measured from $[[f1]]\,\text{Hz}$ to $[[f2]]\,\text{Hz}$.
+      RMS noise in that band?
+    params:
+      S1_uV2: {choices: [1, 10]}
+      f1: {choices: [1, 10]}
+      f2: {choices: [100, 1000]}
+    answer: {fn: noise.pink_band_rms, unit: V, tolerance_rel: 0.02, display_prefix: µ}
+    misconception_checks:
+      - {fn: noise.pink_flat_shortcut, misconception: flat_shortcut_always}
+    solution: "$\\sigma^2 = \\int_{f_1}^{f_2} \\frac{S_1}{f}\\,df = S_1\\ln\\frac{f_2}{f_1}$, $V_\\text{rms} = \\sqrt{\\sigma^2}$. The rectangle $S(f_1)\\,(f_2 - f_1)$ would hugely overestimate it."
+
+  - id: nz_two_sided_rms
+    concept: psd_sides
+    kind: numeric
+    level: 5
+    template: >-
+      A simulation reports a **two-sided** white PSD of $S'' = [[S2_uV2]]\,\mu\text{V}^2/\text{Hz}$. What RMS noise does a
+      real instrument see between $[[f1]]\,\text{Hz}$ and $[[f2]]\,\text{Hz}$?
+    params:
+      S2_uV2: {choices: [1, 5]}
+      f1: {choices: [0, 100]}
+      f2: {choices: [1000, 10000]}
+    answer: {fn: noise.two_sided_rms, unit: V, tolerance_rel: 0.02, display_prefix: m}
+    misconception_checks:
+      - {fn: noise.two_sided_positive_only, misconception: two_sided_positive_only}
+    solution: "One-sided $S = 2S''$, so $\\sigma^2 = 2S''(f_2 - f_1)$ (equivalently: integrate $S''$ over both $[f_1, f_2]$ and $[-f_2, -f_1]$)."
+
+  - id: nz_bandwidth_quadruple
+    concept: band_noise
+    kind: mc
+    level: 3
+    template: "White noise: you make the measurement bandwidth 4 × wider. The RMS noise becomes…"
+    options:
+      - {id: two, text: "2 × larger"}
+      - {id: four, text: "4 × larger", misconception: rms_no_sqrt}
+      - {id: same, text: "unchanged"}
+    correct: two
+    solution: "Power $\\propto$ bandwidth (4 ×), RMS $= \\sqrt{\\text{power}}$: 2 ×."
+
+  - id: nz_decade
+    concept: band_noise
+    kind: mc
+    level: 3
+    template: "1/f noise: compare the noise power between 10 and 100 Hz with that between 100 and 1000 Hz."
+    options:
+      - {id: same, text: "equal"}
+      - {id: ten, text: "the higher decade has 10 × more (it is 10 × wider)", misconception: flat_shortcut_always}
+      - {id: less, text: "the higher decade has less"}
+    correct: same
+    solution: "$S_1\\ln(100/10) = S_1\\ln(1000/100) = S_1\\ln 10$: every decade carries the same power."
+
+  - id: nz_flat_integral
+    concept: integral_area
+    kind: mc
+    level: 2
+    template: "When may you compute the area under a PSD as height × width?"
+    options:
+      - {id: flat, text: "only where the PSD is flat (white noise)"}
+      - {id: always, text: "always", misconception: integral_flat_always}
+      - {id: never, text: "never"}
+    correct: flat
+    solution: "A flat curve gives a rectangle. Any slope means you must integrate."
+
+  - id: nz_omega_trap
+    concept: band_noise
+    kind: mc
+    level: 4
+    template: "A per-hertz white PSD $S_0$ is integrated over angular frequency from $\\omega_1$ to $\\omega_2$. The band power is…"
+    options:
+      - {id: correct, text: "$\\dfrac{S_0}{2\\pi}(\\omega_2 - \\omega_1)$"}
+      - {id: lecture, text: "$S_0\\,(\\omega_2 - \\omega_1)$", misconception: omega_no_2pi}
+      - {id: times, text: "$2\\pi S_0\\,(\\omega_2 - \\omega_1)$"}
+    correct: correct
+    solution: "$d\\omega = 2\\pi\\,df$, so $\\int S\\,df = \\frac{1}{2\\pi}\\int S\\,d\\omega$. The lecture's $S(\\omega)(\\omega_2 - \\omega_1)$ is flagged as K4."
+
+  - id: nz_two_sided_same
+    concept: psd_sides
+    kind: mc
+    level: 2
+    template: "The same noise is described by a one-sided PSD $S$ and a two-sided PSD $S''$. Integrated correctly, which gives the larger variance?"
+    options:
+      - {id: same, text: "neither — the same variance"}
+      - {id: two, text: "the two-sided one (it covers twice the range)", misconception: two_sided_double}
+      - {id: one, text: "the one-sided one (it is twice as high)"}
+    correct: same
+    solution: "Half the height over twice the range: equal areas. Factor-2 errors come only from mixing the conventions."

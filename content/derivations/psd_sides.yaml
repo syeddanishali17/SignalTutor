@@ -1,0 +1,45 @@
+id: psd_sides
+title: One-sided and two-sided PSD give the same variance
+concept: psd_sides
+figure: psd_sides
+source: "Lecture 2 notes, p. 8"
+symbols: {S0: V^2/Hz, f1: Hz, f2: Hz, one: V^2, two: V^2}
+steps:
+  - id: one_sided
+    latex: "\\sigma^2 = \\int_0^\\infty S(f)\\,df"
+    changed: "One-sided convention: all the noise power is drawn at f ≥ 0."
+    why: "The practical form: instruments and datasheets have no negative frequencies."
+    law: "Variance from the PSD"
+    highlight: [one]
+
+  - id: two_def
+    latex: "S''(f) = \\tfrac12\\,S(|f|) \\quad (-\\infty < f < \\infty)"
+    changed: "Two-sided convention: spread the same power over ±f, at half the height."
+    why: "e^{iωt} and e^{−iωt} together make a real cosine, so the mathematics naturally uses both signs of frequency."
+    law: "Definition (lecture: S''(ω) = ½ S(ω))"
+    highlight: [two, half]
+
+  - id: same
+    latex: "\\int_{-\\infty}^{\\infty} S''(f)\\,df = 2\\int_0^\\infty \\tfrac12\\,S(f)\\,df = \\int_0^\\infty S(f)\\,df = \\sigma^2"
+    annotated: |-
+      \int_{-\infty}^{\infty} S''\,df = \underbrace{2}_{\text{both sides}}\int_0^\infty \underbrace{\tfrac12\,S}_{\text{half height}}\,df = \sigma^2
+    changed: "Half the height over twice the range: the same area."
+    why: "S'' is even in f, so the integral over −∞…∞ is twice the integral over 0…∞; the two factors cancel."
+    law: "Symmetry of an even function"
+    highlight: [one, two]
+
+  - id: band_check
+    latex: "\\text{white, band } [f_1, f_2]:\\quad S_0\\,(f_2 - f_1) = 2\\cdot\\tfrac{S_0}{2}\\,(f_2 - f_1)"
+    changed: "Check on a band: one rectangle at full height, or two mirrored rectangles at half height."
+    why: "Both conventions agree — if you use each one consistently."
+    law: "Algebra"
+    highlight: [one, two]
+    check: {kind: equals, lhs: "S0*(f2 - f1)", expr: "2*(S0/2)*(f2 - f1)"}
+
+  - id: trap
+    latex: "\\int_0^\\infty S''(f)\\,df = \\tfrac12\\,\\sigma^2 \\quad(\\text{the factor-2 trap})"
+    changed: "The mistake: integrate a two-sided density over positive frequencies only."
+    why: "That throws away the negative-frequency half: the variance comes out half as large. Always say which convention your PSD uses."
+    law: "Exam trap"
+    highlight: [two]
+    check: {kind: equals, lhs: "(S0/2)*(f2 - f1)", expr: "S0*(f2 - f1)/2"}

@@ -1,0 +1,18 @@
+id: spectrum
+title: 'Spectrum: a signal as a sum of sines'
+short: Spectrum
+code: M13
+track: math
+prerequisites:
+- sine_wave
+status: supplemental
+source_refs:
+- standard
+one_liner: Any signal can be built from sine waves. Its **spectrum** shows which frequencies are in it, and how
+  strong each one is.
+plain_words: a list of which frequencies are in the signal, and how much of each
+explanation_md: spectrum.md
+misconceptions:
+- id: spectrum_over_time
+  text: A spectrum shows how the signal changes over time.
+  correction: 'A spectrum has **frequency** on its axis, not time: it says which sine waves the whole record contains.'

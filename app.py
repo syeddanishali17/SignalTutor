@@ -24,6 +24,7 @@ from tutor.ui.pages import (  # noqa: E402
     dev_gallery,
     glossary,
     home,
+    noise,
     oral_page,
     playground,
     practice_page,
@@ -55,6 +56,7 @@ pages = {
                 url_path="amplifiers"),
         st.Page(capacitive.render, title="Capacitive Sensor Lab", icon=":material/compress:",
                 url_path="capacitive"),
+        st.Page(noise.render, title="Noise Lab", icon=":material/graphic_eq:", url_path="noise"),
     ],
     "Practice": [
         st.Page(practice_page.render, title="Problems & review", icon=":material/calculate:", url_path="practice"),

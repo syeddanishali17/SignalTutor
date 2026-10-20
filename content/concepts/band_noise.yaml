@@ -1,0 +1,27 @@
+id: band_noise
+title: Noise in a frequency band
+short: Band noise
+code: C13
+track: course_l02
+prerequisites:
+- psd
+status: verified
+source_refs:
+- Lecture 2 notes, p. 7–8 (see K4, K5)
+one_liner: 'The noise power (variance) in a band is the **area** under the PSD: $\sigma^2 = \int_{f_1}^{f_2} S(f)\,df$.
+  Only for **white** noise is it $S_0\,(f_2 - f_1)$. RMS noise $= \sqrt{\sigma^2}$.'
+plain_words: the area under the PSD between two frequencies
+explanation_md: band_noise.md
+symbol: σ² = ∫S df
+misconceptions:
+- id: flat_shortcut_always
+  text: The noise power in a band is always S·(f₂ − f₁).
+  correction: 'Only for **white** (flat) noise. In general integrate: $\int_{f_1}^{f_2} S(f)\,df$ — for $1/f$ noise
+    $S_1\ln(f_2/f_1)$.'
+- id: omega_no_2pi
+  text: Integrating a per-hertz PSD over ω needs no extra factor.
+  correction: $d\omega = 2\pi\,df$, so $\int S\,df = \frac{1}{2\pi}\int S\,d\omega$. Forgetting it makes the power
+    $2\pi$ too large.
+- id: rms_no_sqrt
+  text: The RMS noise is the integral of the PSD.
+  correction: The integral gives the **variance** in $\text{V}^2$. RMS $= \sqrt{\sigma^2}$, in V.

@@ -44,6 +44,14 @@ CAP_PATH = [
     ("harmonic_distortion", "capacitive", "smallsignal"),
     ("pull_in", "capacitive", "pullin"),
 ]
+NOISE_PATH = [
+    ("noise_types", "noise", "noise"),
+    ("variance_rms", "noise", "stats"),
+    ("spectrum", "noise", "spectrum"),
+    ("psd", "noise", "psd"),
+    ("band_noise", "noise", "band"),
+    ("psd_sides", "noise", "sides"),
+]
 
 
 SCENE_KEY = {"playground": "pg_scene", "wheatstone": "wb_scene", "amplifiers": "amp_scene",
@@ -80,7 +88,8 @@ def render() -> None:
     mastered = {k for k, v in mastery.items() if is_mastered(v)}
     for title, path in (("Path 1 — from 'what is current?' to the Wheatstone bridge", PATH),
                         ("Path 2 — amplifiers: from the op-amp to the instrumentation amplifier", AMP_PATH),
-                        ("Path 3 — the capacitive sensor: from a membrane to pull-in", CAP_PATH)):
+                        ("Path 3 — the capacitive sensor: from a membrane to pull-in", CAP_PATH),
+                        ("Path 4 — noise: from random wiggles to the PSD and the factor 2", NOISE_PATH)):
         st.markdown(f"### {title}")
         st.caption("States follow fixed rules (see Progress), not percentages. Weak prerequisites are named.")
         for i, (cid, page, scene) in enumerate(path, 1):

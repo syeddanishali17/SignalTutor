@@ -278,6 +278,7 @@ formulas:
     shown_in_exam_mode: canonical_with_flag
 
   - id: noise_band_power
+    concept: band_noise
     title: Noise power in a frequency band
     module: C13
     status: needs_review
@@ -293,6 +294,7 @@ formulas:
     shown_in_exam_mode: canonical_with_flag
 
   - id: variance_from_psd
+    concept: band_noise
     title: Variance from the PSD
     module: C13
     status: needs_review
@@ -664,3 +666,114 @@ formulas:
     lecture_form: "\\text{THD} = \\frac{\\sqrt{A_2^2 + A_3^2 + \\dots}}{A_1}"
     lecture_check: {expr: "sqrt(A2^2 + A3^2)/A1", symbols: {A1: A, A2: A, A3: A}, result_unit: "1"}
     dimension_check: pass
+
+  # --- L02: noise and PSD (M4) -------------------------------------------------------------------
+  - id: noise_additive
+    title: Additive noise
+    concept: noise_types
+    module: C13
+    status: verified
+    source: "Lecture 2 notes, p. 7 (sketch)"
+    evidence: [notes, dimension_check]
+    lecture_form: "V_\\text{meas}(t) = V(t) + n(t)"
+    lecture_check: {expr: "V + n", symbols: {V: V, n: V}, result_unit: V}
+    dimension_check: pass
+
+  - id: noise_multiplicative
+    title: Multiplicative noise
+    concept: noise_types
+    module: C13
+    status: verified
+    source: "Lecture 2 notes, p. 7 (sketch)"
+    evidence: [notes, dimension_check]
+    lecture_form: "V_\\text{meas}(t) = V(t)\\,\\big(1 + n(t)\\big)"
+    lecture_check: {expr: "V*(1 + n)", symbols: {V: V, n: "1"}, result_unit: V}
+    dimension_check: pass
+    meaning:
+      - {symbol: "n(t)", meaning: "relative (dimensionless) random fluctuation", unit: "1"}
+
+  - id: variance_def
+    title: Variance and RMS of samples
+    concept: variance_rms
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check]
+    lecture_form: "\\sigma^2 = \\frac{1}{N}\\sum_i (x_i - \\bar x)^2,\\qquad x_\\text{rms} = \\sqrt{\\tfrac{1}{N}\\textstyle\\sum_i x_i^2}"
+    lecture_check: {expr: "sqrt(x^2)", symbols: {x: V}, result_unit: V}
+    dimension_check: pass
+
+  - id: psd_units
+    title: Power spectral density and its unit
+    concept: psd
+    module: C13
+    status: verified
+    source: "Lecture 2 notes, p. 7"
+    evidence: [notes, dimension_check]
+    lecture_form: "S_V(\\omega)\\ \\text{in}\\ \\left[\\text{quantity}^2/\\text{Hz}\\right]"
+    lecture_check: {expr: "V^2/f", symbols: {V: V, f: Hz}, result_unit: "V^2/Hz"}
+    dimension_check: pass
+    meaning:
+      - {symbol: "S_V", meaning: "noise power per hertz of bandwidth (one-sided)", unit: "V²/Hz"}
+
+  - id: asd
+    title: Noise spectral amplitude
+    concept: psd
+    module: C13
+    status: verified
+    source: "Lecture 2 notes, p. 8"
+    evidence: [notes, dimension_check]
+    lecture_form: "X_V(f) = \\sqrt{S_V(f)}"
+    lecture_check: {expr: "sqrt(S)", symbols: {S: "V^2/Hz"}, result_unit: "V/Hz^(1/2)"}
+    dimension_check: pass
+    meaning:
+      - {symbol: "X_V", meaning: "amplitude spectral density (datasheet form)", unit: "V/√Hz"}
+
+  - id: psd_convention
+    title: PSD written in f or in ω
+    concept: psd
+    module: C13
+    status: needs_review
+    source: "Lecture 2 notes, p. 8"
+    evidence: [notes]
+    known_issue: K8
+    lecture_form: "S_x(f) = S_x(\\omega) = S_x(2\\pi f),\\quad \\text{both in } [\\text{m}^2/\\text{Hz}]"
+    canonical_form: "S_x \\text{ is one per-hertz density};\\ S_x(\\omega) \\text{ means } S_x \\text{ evaluated at } f = \\omega/2\\pi"
+    issue: "Reads like two different densities being equal. It is one density per hertz, written as a function of f or of ω; integrating over ω then needs 1/2π."
+    dimension_check: not_applicable
+    shown_in_exam_mode: canonical_with_flag
+
+  - id: pink_band_power
+    title: Band power of 1/f noise
+    concept: band_noise
+    module: C13
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check, sympy]
+    lecture_form: "S(f) = \\frac{S_1}{f}:\\qquad \\sigma^2 = \\int_{f_1}^{f_2}\\frac{S_1}{f}\\,df = S_1\\,\\ln\\frac{f_2}{f_1}"
+    lecture_check: {expr: "S1*log(f2/f1)", symbols: {S1: "V^2", f2: Hz, f1: Hz}, result_unit: "V^2"}
+    dimension_check: pass
+    meaning:
+      - {symbol: "S_1", meaning: "1/f noise level: S(f)·f", unit: "V²"}
+
+  - id: band_rms
+    title: RMS noise in a band
+    concept: band_noise
+    module: C13
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check]
+    lecture_form: "V_\\text{rms} = \\sqrt{\\int_{f_1}^{f_2} S(f)\\,df}\\;\\overset{\\text{white}}{=}\\;\\sqrt{S_0\\,(f_2 - f_1)}"
+    lecture_check: {expr: "sqrt(S0*(f2 - f1))", symbols: {S0: "V^2/Hz", f2: Hz, f1: Hz}, result_unit: V}
+    dimension_check: pass
+
+  - id: psd_two_sided
+    title: One-sided and two-sided PSD
+    concept: psd_sides
+    module: C13
+    status: verified
+    source: "Lecture 2 notes, p. 8"
+    evidence: [notes, sympy]
+    lecture_form: "\\sigma_x^2 = \\int_0^\\infty S_x(f)\\,df = \\int_{-\\infty}^{\\infty} S''_x(f)\\,df,\\qquad S''(\\omega) = \\tfrac12\\,S(\\omega)"
+    lecture_check: {expr: "2*(S/2)*f", symbols: {S: "V^2/Hz", f: Hz}, result_unit: "V^2"}
+    dimension_check: pass
+    assumptions: ["S one-sided (f ≥ 0), S'' two-sided and even in f"]

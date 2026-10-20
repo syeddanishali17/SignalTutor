@@ -1,0 +1,71 @@
+id: band_power
+title: Noise power in a band — and why the lecture's shortcut needs care
+concept: band_noise
+figure: psd_band
+source: "Lecture 2 notes, p. 7–8 (see K4, K5, K8)"
+symbols: {S0: V^2/Hz, S1: V^2, f1: Hz, f2: Hz, w1: 1/s, w2: 1/s, sigma2: V^2, sigmap: V^2, vrms: V}
+steps:
+  - id: area
+    latex: "\\sigma^2_{[f_1, f_2]} = \\int_{f_1}^{f_2} S(f)\\,df"
+    annotated: |-
+      \sigma^2_{[f_1, f_2]} = \int_{f_1}^{f_2} \underbrace{S(f)}_{\text{V}^2 \text{ per Hz}}\,\underbrace{df}_{\text{Hz}}\quad(\text{area under the PSD, in } \text{V}^2)
+    changed: "Start from the meaning of a PSD: power per hertz. The power in a band is the area under it."
+    why: "Each thin strip of width df holds S(f)·df of noise power; adding the strips gives the area."
+    law: "Integral as area"
+    highlight: [band, f1, f2]
+
+  - id: white
+    latex: "S(f) = S_0 \\;\\Rightarrow\\; \\sigma^2 = S_0\\,(f_2 - f_1)"
+    changed: "White noise: the area is a rectangle."
+    why: "A flat PSD has the same height everywhere, so height × width is exact. This shortcut is ONLY valid for white noise."
+    law: "Area of a rectangle"
+    assumption: "White (flat) noise"
+    highlight: [band, S0]
+    check: {kind: define, name: sigma2, expr: "S0*(f2 - f1)"}
+    fade:
+      prompt: "White noise of level S₀ in the band [f₁, f₂]: σ² = ?"
+      correct: 0
+      options:
+        - {latex: "S_0\\,(f_2 - f_1)", expr: "S0*(f2 - f1)"}
+        - {latex: "S_0\\,\\frac{f_2}{f_1}", expr: "S0*f2/f1"}
+        - {latex: "\\frac{S_0}{f_2 - f_1}", expr: "S0/(f2 - f1)"}
+
+  - id: rms
+    latex: "V_\\text{rms} = \\sqrt{\\sigma^2} = \\sqrt{S_0\\,(f_2 - f_1)}"
+    changed: "The RMS noise is the square root of the band power."
+    why: "σ² is in V²; the square root brings it back to volts. Four times the bandwidth gives only twice the RMS noise."
+    law: "Definition of RMS"
+    highlight: [band]
+    check: {kind: define, name: vrms, expr: "sqrt(sigma2)"}
+
+  - id: omega
+    latex: "\\omega = 2\\pi f \\;\\Rightarrow\\; \\sigma^2 = \\frac{1}{2\\pi}\\int_{\\omega_1}^{\\omega_2} S\\,d\\omega = \\frac{S_0}{2\\pi}\\,(\\omega_2 - \\omega_1)"
+    changed: "The same area written with angular frequency."
+    why: "S is per hertz, and dω = 2π·df. To keep the same area you must divide by 2π."
+    law: "Change of variable"
+    highlight: [band]
+    check: {kind: equals, lhs: "S0*(w2 - w1)/(2*pi)", expr: "sigma2", subs: {w1: "2*pi*f1", w2: "2*pi*f2"}}
+
+  - id: lecture_form
+    latex: "S(\\omega)\\,(\\omega_2 - \\omega_1) = 2\\pi\\,\\sigma^2 \\quad(\\text{K4: } 2\\pi \\text{ too large})"
+    changed: "Compare with the lecture's form."
+    why: "S_V(ω)·(ω₂ − ω₁) with a per-hertz S is 2π times the true band power — and the shortcut itself is only valid for white noise. The dimension check cannot catch this: rad/s and Hz are both 1/s."
+    law: "Known issue K4"
+    highlight: [band]
+    check: {kind: equals, lhs: "S0*(w2 - w1)", expr: "2*pi*sigma2", subs: {w1: "2*pi*f1", w2: "2*pi*f2"}}
+
+  - id: pink
+    latex: "S(f) = \\frac{S_1}{f} \\;\\Rightarrow\\; \\sigma^2 = \\int_{f_1}^{f_2}\\frac{S_1}{f}\\,df = S_1\\,\\ln\\frac{f_2}{f_1}"
+    changed: "For 1/f noise the rectangle shortcut fails: integrate."
+    why: "The area under 1/f is a logarithm. Every decade (10 → 100 Hz, 100 → 1000 Hz) carries the same power S₁·ln 10."
+    law: "Integral of 1/f"
+    assumption: "1/f noise"
+    highlight: [band, curve]
+    check: {kind: define, name: sigmap, expr: "S1*log(f2/f1)"}
+    fade:
+      prompt: "1/f noise S(f) = S₁/f in the band [f₁, f₂]: σ² = ?"
+      correct: 1
+      options:
+        - {latex: "S_1\\,(f_2 - f_1)", expr: "S1*(f2 - f1)"}
+        - {latex: "S_1\\,\\ln\\frac{f_2}{f_1}", expr: "S1*log(f2/f1)"}
+        - {latex: "\\frac{S_1}{f_2 - f_1}", expr: "S1/(f2 - f1)"}

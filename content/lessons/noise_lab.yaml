@@ -1,0 +1,255 @@
+id: noise_lab
+title: Noise Lab
+module: C13
+map_stage: signal_conditioning
+map_note: "noise rides on every measured signal"
+concepts: [noise_types, variance_rms, spectrum, psd, integral_area, band_noise, psd_sides]
+derivations: [band_power, psd_sides]
+problems: [nz_add_mult, nz_rms_zero_mean, nz_variance_units, nz_spectrum_axis, nz_psd_units, nz_pink_where, nz_white_band_rms, nz_asd_rms, nz_pink_band_rms, nz_two_sided_rms, nz_bandwidth_quadruple, nz_decade, nz_flat_integral, nz_omega_trap, nz_two_sided_same]
+oral: [noise_psd_q, band_noise_q, psd_sides_q]
+whiteboard: [wb_band_noise]
+formulas: [noise_additive, noise_multiplicative, variance_def, psd_units, asd, psd_convention, noise_band_power, variance_from_psd, pink_band_power, band_rms, psd_two_sided]
+
+x-psd-inspect: &psd_inspect
+  - {id: curve, label: "PSD curve S(f)", concept: psd, role: "Noise power **per hertz** at each frequency. White: flat. 1/f: falls by 10 × per decade.", controls: [kind, level]}
+  - {id: band, label: "Shaded band", concept: band_noise, role: "The frequencies the measurement lets through. Its **area** is the noise power $\\sigma^2$ that gets in.", controls: [f1, f2]}
+  - {id: f1, label: "f₁", concept: band_noise, role: "Lower edge of the band.", controls: [f1]}
+  - {id: f2, label: "f₂", concept: band_noise, role: "Upper edge of the band.", controls: [f2]}
+  - {id: S0, label: "Level", concept: psd, role: "Height of the PSD: $S_0$ for white noise, $S_1/f$ for 1/f noise.", controls: [level]}
+  - {id: units, label: "Units", concept: psd, role: "$\\text{V}^2/\\text{Hz}$: a **power** per **bandwidth**. Area under it: $\\text{V}^2$."}
+
+scenes:
+  - id: noise
+    title: "Noise is uncertainty"
+    short: "0 · Noise"
+    concepts: [noise_types]
+    problem: >-
+      Every measured signal carries random wiggles that were not in the physics. **Do they always look the same, whatever
+      the signal does?**
+    predict:
+      question: "The sensor output rises from 0.3 V to 1 V. With **multiplicative** noise, the wiggles at 1 V compared with 0.3 V are…"
+      options:
+        - {id: bigger, label: "about 3 × bigger"}
+        - {id: same, label: "the same size"}
+        - {id: smaller, label: "smaller"}
+      correct: bigger
+      reveal: >-
+        Multiplicative noise is $V\,(1 + n)$: the random part is a **fraction** of the signal, so it grows with it
+        (1 V / 0.3 V ≈ 3 ×). **Additive** noise $V + n$ keeps the same size everywhere. Switch the mode and compare.
+    inspect:
+      - {id: signal, label: "Clean signal V(t)", concept: noise_types, role: "What the physics produces (here: a smooth rise, as in the lecture's sketch)."}
+      - {id: noise, label: "Noise n(t)", concept: noise_types, role: "Random fluctuation: unpredictable sample by sample.", controls: [level]}
+      - {id: op, label: "+ or ×", concept: noise_types, role: "**Additive**: $V + n$. **Multiplicative**: $V\\,(1 + n)$.", controls: [mode]}
+      - {id: out, label: "Measured output", concept: noise_types, role: "What the instrument reads. The noise makes every single reading uncertain."}
+    terms:
+      - {id: Vm, symbol: nz_Vmeas, highlight: [out]}
+      - {id: V, symbol: nz_V, highlight: [signal]}
+      - {id: n, symbol: nz_n, highlight: [noise], controls: [level]}
+    explain:
+      prompt: "Without the picture: what is noise, and how do additive and multiplicative noise differ?"
+      points:
+        - "Random fluctuation that adds uncertainty to a measurement"
+        - "Additive: $V + n$, same size at every signal level"
+        - "Multiplicative: $V\\,(1 + n)$, grows with the signal"
+        - "Random → described statistically, not predicted"
+    notes_md: |
+      Lecture 2, p. 7 sketches exactly these three panels: the clean $V_\text{out}(t)$, the same curve with additive noise, and with multiplicative noise.
+
+  - id: stats
+    title: "How big is the noise? Variance and RMS"
+    short: "1 · Variance & RMS"
+    concepts: [variance_rms]
+    problem: >-
+      We cannot predict the next wiggle — but we can say **how big the wiggles typically are**. Which number does that?
+    predict:
+      question: "Zero-mean noise. You average all the samples. You get…"
+      options:
+        - {id: zero, label: "about 0"}
+        - {id: sigma, label: "the typical wiggle size σ"}
+        - {id: big, label: "the largest wiggle"}
+      correct: zero
+      reveal: >-
+        Positive and negative wiggles cancel: the **mean** is ≈ 0 and tells you nothing about the size. Square first,
+        then average: the **variance** $\sigma^2$. Its square root $\sigma$ — for zero-mean noise equal to the **RMS** — is
+        the typical size. About 68 % of the samples lie within $\pm\sigma$.
+    inspect:
+      - {id: out, label: "Noise samples", concept: variance_rms, role: "Each point is one reading."}
+      - {id: mean, label: "Mean", concept: variance_rms, role: "Average value $\\bar x$ — where the wiggles are centred."}
+      - {id: sigma, label: "± σ band", concept: variance_rms, role: "One standard deviation either side of the mean.", controls: [level]}
+      - {id: noise, label: "Noise source", concept: noise_types, role: "Sets how big the wiggles are.", controls: [level]}
+    terms:
+      - {id: sigma2, symbol: nz_sigma2, highlight: [sigma]}
+      - {id: sigma, symbol: nz_sigma, highlight: [sigma], controls: [level]}
+      - {id: mean, symbol: nz_mean, highlight: [mean]}
+      - {id: rms, symbol: nz_rms, highlight: [sigma, out]}
+    explain:
+      prompt: "Without the picture: how do you put a number on the size of random noise, and why square?"
+      points:
+        - "The mean of zero-mean noise is 0 — useless for its size"
+        - "Variance: average of squared deviations, in V²"
+        - "σ = √variance; RMS = σ for zero-mean noise"
+        - "Squared voltage ∝ power"
+    notes_md: |
+      The histogram is the distribution of the readings: a bell curve for Gaussian noise. Its width is $\sigma$.
+
+  - id: spectrum
+    title: "A signal is a sum of sines"
+    short: "2 · Spectrum"
+    concepts: [spectrum, sine_wave]
+    problem: >-
+      The time trace is a tangle. **Is there a view in which its ingredients separate?**
+    predict:
+      question: "A signal is the sum of three sine waves. In its spectrum you will see…"
+      options:
+        - {id: three, label: "three separate lines"}
+        - {id: one, label: "one broad hump"}
+        - {id: wave, label: "the same wiggly curve"}
+      correct: three
+      reveal: >-
+        Each sine becomes **one line** at its frequency, as tall as its amplitude. Noise, by contrast, has no single
+        frequency: it appears as a low **floor** spread over all frequencies. Pick a line to see its sine in the time trace.
+    inspect:
+      - {id: p1, label: "Line 1", concept: spectrum, role: "One sine component: position = frequency, height = amplitude.", controls: [a1]}
+      - {id: p2, label: "Line 2", concept: spectrum, role: "Second sine component.", controls: [a2]}
+      - {id: p3, label: "Line 3", concept: spectrum, role: "Third sine component.", controls: [a3]}
+      - {id: floor, label: "Noise floor", concept: psd, role: "Noise spreads its power over **all** frequencies: no line, a floor.", controls: [level]}
+    terms:
+      - {id: A, symbol: nz_A, highlight: [p1, p2, p3]}
+      - {id: f, symbol: nz_fk, highlight: [p1, p2, p3]}
+    explain:
+      prompt: "Without the picture: what does a spectrum show, and how do sines and noise look in it?"
+      points:
+        - "Frequency on the axis, strength upward"
+        - "Each sine → one line at its frequency, height = amplitude"
+        - "Noise → a floor spread over all frequencies"
+        - "Time and frequency views carry the same information"
+
+  - id: psd
+    title: "PSD: noise power per hertz"
+    short: "3 · PSD"
+    concepts: [psd]
+    problem: >-
+      Noise has no lines, only a floor. **How do we put a number on a floor?** By how much power sits in each hertz.
+    predict:
+      question: "For 1/f noise, where is the PSD highest?"
+      options:
+        - {id: low, label: "at low frequencies"}
+        - {id: high, label: "at high frequencies"}
+        - {id: flat, label: "everywhere the same"}
+      correct: low
+      reveal: >-
+        $S(f) = S_1/f$ falls as $f$ grows: on log–log axes a straight line of slope −1. **White** noise is flat. Slow
+        (near-DC) measurements suffer most from 1/f noise — one reason to move a measurement to a higher frequency (AC bias,
+        lock-in).
+    inspect: *psd_inspect
+    terms:
+      - {id: S, symbol: nz_S, highlight: [curve, units], controls: [kind]}
+      - {id: S0, symbol: nz_S0, highlight: [S0, curve], controls: [level]}
+      - {id: S1, symbol: nz_S1, highlight: [S0, curve], controls: [level]}
+      - {id: f, symbol: nz_f, highlight: [curve]}
+      - {id: X, symbol: nz_X, highlight: [curve, units]}
+    explain:
+      prompt: "Without the picture: what is a PSD, what are its units, and how do white and 1/f noise differ?"
+      points:
+        - "Noise power per hertz of bandwidth"
+        - "Units $[\\text{quantity}]^2/\\text{Hz}$, e.g. $\\text{V}^2/\\text{Hz}$"
+        - "White: flat; 1/f: falls with frequency"
+        - "Spectral amplitude $\\sqrt{S}$ in $\\text{V}/\\sqrt{\\text{Hz}}$"
+    notes_md: |
+      The thin grey trace is the PSD **estimated** from the generated noise (Welch's method: average the spectra of many short pieces). The thick line is the model it was generated from. The lecture's $S_x(f) = S_x(\omega)$ notation is flagged as K8.
+
+  - id: band
+    title: "Noise in a band: the area under the PSD"
+    short: "4 · Band noise"
+    concepts: [band_noise, integral_area]
+    problem: >-
+      A measurement only sees the frequencies between $f_1$ and $f_2$. **How much noise gets in?**
+    predict:
+      question: "White noise. You make the band 4 × wider. The RMS noise becomes…"
+      options:
+        - {id: two, label: "2 × larger"}
+        - {id: four, label: "4 × larger"}
+        - {id: same, label: "the same"}
+      correct: two
+      reveal: >-
+        The power is the **area** under the PSD: 4 × the width → 4 × the power. RMS is its square root → 2 ×. For white
+        noise the area is a rectangle $S_0\,(f_2 - f_1)$; for 1/f noise you must integrate: $S_1\ln(f_2/f_1)$.
+    inspect: *psd_inspect
+    terms:
+      - {id: sigma2, symbol: nz_sigma2, highlight: [band]}
+      - {id: S, symbol: nz_S, highlight: [curve], controls: [kind]}
+      - {id: df, symbol: nz_df, highlight: [band]}
+      - {id: f1, symbol: nz_f1, highlight: [f1], controls: [f1]}
+      - {id: f2, symbol: nz_f2, highlight: [f2], controls: [f2]}
+      - {id: S0, symbol: nz_S0, highlight: [S0, curve], controls: [level]}
+      - {id: rms, symbol: nz_rms, highlight: [band]}
+    break_it: [flat_shortcut, omega_factor]
+    explain:
+      prompt: "Without the picture: how do you get the noise in a band from the PSD, and when is S·Δf allowed?"
+      points:
+        - "$\\sigma^2 = \\int_{f_1}^{f_2} S(f)\\,df$: the area"
+        - "White only: $S_0\\,(f_2 - f_1)$"
+        - "1/f: $S_1\\ln(f_2/f_1)$"
+        - "RMS $= \\sqrt{\\sigma^2}$; over ω divide by 2π"
+    notes_md: |
+      The check on the right filters the generated noise to $[f_1, f_2]$ and measures the variance of what is left — it matches the area under the PSD. The lecture's $S_V(\omega)\cdot(\omega_2 - \omega_1)$ is flagged as K4.
+
+  - id: sides
+    title: "One-sided vs two-sided PSD"
+    short: "5 · Factor 2"
+    concepts: [psd_sides]
+    problem: >-
+      Some books draw the PSD over negative frequencies too, at half the height. **Does that change the amount of noise?**
+      (Lecture notes: watch the factor 2.)
+    predict:
+      question: "Integrated over all its frequencies, the two-sided PSD gives a variance that is…"
+      options:
+        - {id: same, label: "the same as the one-sided"}
+        - {id: double, label: "twice as large"}
+        - {id: half, label: "half as large"}
+      correct: same
+      reveal: >-
+        Half the height over twice the range: the **same area**. Errors of exactly 2 appear only when the conventions are
+        mixed — e.g. integrating a two-sided density over $f \ge 0$ only.
+    inspect:
+      - {id: one, label: "One-sided S", concept: psd_sides, role: "All the power drawn at $f \\ge 0$ — what instruments and datasheets use."}
+      - {id: two, label: "Two-sided S''", concept: psd_sides, role: "Half the height, over $-\\infty\\dots\\infty$ — what the mathematics uses."}
+      - {id: half, label: "Half height, twice width", concept: psd_sides, role: "$S'' = S/2$: the area (variance) is unchanged."}
+    terms:
+      - {id: S, symbol: nz_S, highlight: [one]}
+      - {id: Spp, symbol: nz_Spp, highlight: [two, half]}
+      - {id: sigma2, symbol: nz_sigma2, highlight: [one, two]}
+    break_it: [mixed_sides]
+    explain:
+      prompt: "Without the picture: what are one-sided and two-sided PSDs, and where does a factor 2 creep in?"
+      points:
+        - "One-sided on $f \\ge 0$; two-sided $S'' = S/2$ on $\\pm f$"
+        - "Same variance when each is integrated over its own range"
+        - "Two-sided over $f \\ge 0$ only → half the variance"
+        - "Always state the convention"
+
+break_it:
+  - id: flat_shortcut
+    title: "S·Δf is only for white noise"
+    cause: "Height × width treats the PSD as a rectangle."
+    condition: "Any PSD that is not flat — 1/f noise, a resonance, a filter edge."
+    consequence: "For 1/f noise from 1 Hz to 1 kHz, S(f₁)·Δf overestimates the power by a factor ≈ 145."
+    recovery: "Integrate: $\\int S\\,df$; for 1/f noise $S_1\\ln(f_2/f_1)$."
+  - id: omega_factor
+    title: "Integrating over ω without 1/2π"
+    cause: "A per-hertz density integrated over angular frequency: $d\\omega = 2\\pi\\,df$."
+    condition: "Using $S(\\omega)(\\omega_2 - \\omega_1)$ as written in the lecture (K4)."
+    consequence: "The noise power comes out 2π ≈ 6.3 × too large (RMS 2.5 × too large)."
+    recovery: "$\\int S\\,df = \\frac{1}{2\\pi}\\int S\\,d\\omega$ — or simply integrate over f."
+  - id: mixed_sides
+    title: "Mixing one- and two-sided conventions"
+    cause: "A two-sided density integrated over positive frequencies only (or a one-sided over both)."
+    condition: "Datasheet (one-sided) and theory (two-sided) combined without converting."
+    consequence: "Variance off by exactly a factor 2 (RMS by √2)."
+    recovery: "Convert: $S = 2S''$ for $f \\ge 0$; state the convention every time."
+traps:
+  - "PSD units: quantity²/Hz; spectral amplitude: quantity/√Hz."
+  - "σ² = ∫S df; S·Δf only for white noise."
+  - "Over ω: multiply by 1/2π."
+  - "Two-sided S'' = S/2 — same variance, factor 2 if mixed."
+  - "RMS = √σ², not σ²."

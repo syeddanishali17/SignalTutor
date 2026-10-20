@@ -1,0 +1,26 @@
+id: psd
+title: Power spectral density (PSD)
+short: PSD
+code: C13
+track: course_l02
+prerequisites:
+- noise_types
+- spectrum
+- integral_area
+status: verified
+source_refs:
+- Lecture 2 notes, p. 7–8
+one_liner: 'The **PSD** $S(f)$ says how much noise power sits in each hertz of bandwidth. Unit: $\text{quantity}^2/\text{Hz}$
+  (e.g. $\text{V}^2/\text{Hz}$). **White** noise: flat. **1/f** noise: falls with frequency.'
+plain_words: noise power per hertz, at each frequency
+explanation_md: psd.md
+units: V²/Hz (amplitude density V/√Hz)
+symbol: S(f)
+misconceptions:
+- id: psd_units_v
+  text: A PSD has units of V/Hz.
+  correction: 'It is a **power** density: $\text{V}^2/\text{Hz}$. The *amplitude* spectral density $\sqrt{S}$ has
+    $\text{V}/\sqrt{\text{Hz}}$.'
+- id: pink_high_freq
+  text: 1/f noise is strongest at high frequencies.
+  correction: $S_1/f$ is largest at **low** frequencies — that is why slow (DC) measurements suffer most from it.

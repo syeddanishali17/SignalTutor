@@ -575,3 +575,112 @@ symbols:
     meaning: "**Transfer function pressure → deflection**: metres of deflection per pascal, $A/(2k)$ for the lecture's two-spring membrane."
     unit: "m/Pa"
     concept: transfer_function
+
+  # --- noise (M4) -----------------------------------------------------------------------------------
+  - id: nz_V
+    latex: "V(t)"
+    label: "V(t)"
+    meaning: "The **clean** sensor signal — what we want to measure."
+    unit: V
+    concept: noise_types
+  - id: nz_n
+    latex: "n(t)"
+    label: "n(t)"
+    meaning: "The **random** part. Additive: in volts. Multiplicative: a relative fluctuation (no unit)."
+    concept: noise_types
+  - id: nz_Vmeas
+    latex: "V_\\text{meas}"
+    label: "V_meas"
+    meaning: "What the instrument actually reads: signal and noise combined."
+    unit: V
+    concept: noise_types
+  - id: nz_mean
+    latex: "\\bar x"
+    label: "x̄"
+    meaning: "**Mean**: the average value, where the wiggles are centred."
+    unit: V
+    concept: variance_rms
+  - id: nz_sigma2
+    latex: "\\sigma^2"
+    label: "σ²"
+    meaning: "**Variance**: the average squared deviation from the mean — the noise **power**. In $\\text{V}^2$."
+    unit: "V²"
+    concept: variance_rms
+  - id: nz_sigma
+    latex: "\\sigma"
+    label: "σ"
+    meaning: "**Standard deviation**: the typical size of the wiggles, $\\sqrt{\\sigma^2}$. For zero-mean noise equal to the RMS."
+    unit: V
+    concept: variance_rms
+  - id: nz_rms
+    latex: "V_\\text{rms}"
+    label: "V_rms"
+    meaning: "**RMS** (root mean square): square, average, take the root. The 'effective' size of a fluctuating voltage."
+    unit: V
+    concept: variance_rms
+  - id: nz_S
+    latex: "S(f)"
+    label: "S(f)"
+    meaning: "**Power spectral density**: noise power per hertz at frequency $f$ (one-sided)."
+    unit: "V²/Hz"
+    concept: psd
+  - id: nz_S0
+    latex: "S_0"
+    label: "S₀"
+    meaning: "**White noise level**: the constant height of a flat PSD."
+    unit: "V²/Hz"
+    concept: psd
+  - id: nz_S1
+    latex: "S_1"
+    label: "S₁"
+    meaning: "**1/f noise level**: $S(f) = S_1/f$, so $S_1$ is the PSD at $f = 1\\,\\text{Hz}$ (in $\\text{V}^2$)."
+    unit: "V²"
+    concept: psd
+  - id: nz_f
+    latex: "f"
+    label: "f"
+    meaning: "**Frequency** in hertz (cycles per second)."
+    unit: Hz
+    concept: spectrum
+  - id: nz_f1
+    latex: "f_1"
+    label: "f₁"
+    meaning: "**Lower edge** of the measured band."
+    unit: Hz
+    concept: band_noise
+  - id: nz_f2
+    latex: "f_2"
+    label: "f₂"
+    meaning: "**Upper edge** of the measured band."
+    unit: Hz
+    concept: band_noise
+  - id: nz_df
+    latex: "df"
+    label: "df"
+    meaning: "A **thin slice of bandwidth**. $S(f)\\,df$ is the power in that slice; the integral adds the slices."
+    unit: Hz
+    concept: integral_area
+  - id: nz_Spp
+    latex: "S''(f)"
+    label: "S''(f)"
+    meaning: "**Two-sided PSD**: the same power spread over $-\\infty \\dots \\infty$ at half the height, $S'' = S/2$."
+    unit: "V²/Hz"
+    concept: psd_sides
+  - id: nz_X
+    latex: "X_V(f)"
+    label: "X_V(f)"
+    meaning: "**Spectral amplitude** $\\sqrt{S_V(f)}$ — what datasheets quote, in $\\text{V}/\\sqrt{\\text{Hz}}$."
+    unit: "V/√Hz"
+    concept: psd
+  - id: nz_A
+    latex: "A_k"
+    label: "A_k"
+    meaning: "**Amplitude** of the $k$-th sine component: the height of its line in the spectrum."
+    unit: V
+    concept: spectrum
+  - id: nz_fk
+    latex: "f_k"
+    label: "f_k"
+    meaning: "**Frequency** of the $k$-th sine component: where its line sits."
+    unit: Hz
+    concept: spectrum

@@ -622,3 +622,6 @@ FIGURES.update(_amp.FIGURES)
 from tutor.ui.svg import cap_figures as _cap  # noqa: E402
 
 FIGURES.update(_cap.FIGURES)
+from tutor.ui.svg import noise_figures as _noise  # noqa: E402
+
+FIGURES.update(_noise.FIGURES)
