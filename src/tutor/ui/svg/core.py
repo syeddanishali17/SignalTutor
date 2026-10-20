@@ -115,7 +115,7 @@ def as_img(svg: str, max_width: int | None = None) -> str:
 
 # --- text ---------------------------------------------------------------------------
 
-_SUB = re.compile(r"_(\{[^}]*\}|[A-Za-z0-9₀-₉]+)")
+_SUB = re.compile(r"_(\{[^}]*\}|[A-Za-z0-9₀-₉]+|[+\-−])")  # V_2, V_{out}, V_+, V_−
 
 
 def rich(text: str) -> str:

@@ -1,0 +1,19 @@
+id: instrumentation_amp
+title: Instrumentation amplifier
+short: "Instrumentation amp"
+code: C10
+track: course_l02
+prerequisites: [difference_amp, non_inverting_amp, kcl, cmrr]
+status: verified
+source_refs: ["Lecture 2 notes, p. 4–5"]
+one_liner: "Three op-amps: stage 1 buffers and amplifies the difference ($A_d = 1 + 2R_2/R_1$, $A_{cm} = 1$); stage 2 removes the common mode ($A_d = 1$, $A_{cm} = 0$)."
+plain_words: "the right tool for a bridge"
+explanation_md: instrumentation_amp.md
+symbol: "A_d = 1 + \\frac{2R_2}{R_1}"
+misconceptions:
+  - id: stage1_rejects_cm
+    text: "Stage 1 of the instrumentation amplifier rejects the common mode."
+    correction: "Stage 1 passes common mode with gain 1 (no current flows in $R_1$, so the outputs simply follow the inputs). **Stage 2** — the difference amplifier — removes it."
+  - id: ina_forgot_two
+    text: "The instrumentation amplifier's gain is 1 + R₂/R₁."
+    correction: "It is $1 + 2R_2/R_1$: the same current flows through **both** $R_2$ resistors (KCL), so both contribute."

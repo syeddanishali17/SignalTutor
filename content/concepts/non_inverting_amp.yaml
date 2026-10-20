@@ -1,0 +1,18 @@
+id: non_inverting_amp
+title: Non-inverting amplifier
+short: "Non-inverting amp"
+code: C9
+track: course_l02
+prerequisites: [virtual_short, voltage_divider]
+status: verified
+source_refs: ["Lecture 2 notes, p. 3"]
+one_liner: "Input on $V_+$, divider $R_1$ (output → $V_-$) and $R_2$ ($V_-$ → ground): $V_\\text{out} = V_\\text{in}\\left(1 + \\dfrac{R_1}{R_2}\\right)$."
+plain_words: "a simple amplifier for one wire"
+explanation_md: non_inverting_amp.md
+misconceptions:
+  - id: noninv_forgot_one
+    text: "The gain of the non-inverting amplifier is R₁/R₂."
+    correction: "It is $1 + R_1/R_2$: even with $R_1 = 0$ the output follows the input (gain 1)."
+  - id: noninv_rejects_cm
+    text: "A non-inverting amplifier on one bridge node amplifies only the strain signal."
+    correction: "It amplifies **everything** on that wire relative to ground — the 2.5 V common-mode level and the 50 Hz pickup too. With a large gain it simply saturates."

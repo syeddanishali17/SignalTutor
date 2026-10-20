@@ -1,0 +1,342 @@
+id: amplifier_lab
+title: Amplifier Lab
+module: C4
+map_stage: signal_conditioning
+map_note: "mV bridge difference → volts, common mode removed"
+concepts: [interference, op_amp, negative_feedback, virtual_short, non_inverting_amp, difference_amp, cmrr, instrumentation_amp]
+derivations: [non_inverting, difference_amp, ina_common_mode, ina_differential]
+problems: [interference_cm, opamp_input_signs, opamp_open_loop, virtual_short_condition, feedback_sign, noninv_gain_value, noninv_bridge_node, diffamp_out, diffamp_leak, diffamp_gain_change, diffamp_loading, ina_gain_value, ina_r1_design, ina_out_value, ina_stage1_cm, ina_why, cmrr_meaning, impedance_meter]
+oral: [why_instrumentation_amp, ideal_opamp, three_approaches, derive_ina, derive_noninv]
+whiteboard: [wb_ina_derive, wb_noninv_draw]
+formulas: [opamp_output, closed_loop_gain, noninv_gain, diffamp_gain, diffamp_cmr_condition, diffamp_acm, cmrr_def, ina_stage1, ina_stage2, ina_output]
+
+scenes:
+  - id: problem
+    title: "The problem: a tiny signal in a noisy world"
+    short: "0 · The problem"
+    concepts: [interference, common_mode, differential_signal]
+    problem: >-
+      The bridge from the last lab gives **a few millivolts**, riding on **2.5 V**, and it arrives over two long wires
+      that pass a mains cable. Before choosing an amplifier: **what exactly arrives at its input?**
+    predict:
+      question: "The mains cable couples the same 0.3 V of 50 Hz into **both** wires. The bridge signal $V_2 - V_1$ …"
+      options:
+        - {id: same, label: "is unchanged"}
+        - {id: bigger, label: "gets 0.3 V of 50 Hz added"}
+        - {id: double, label: "gets 0.6 V of 50 Hz added"}
+      correct: same
+      reveal: >-
+        Both wires move **together** by the same pickup, so their **difference** does not change. Pickup that is the same
+        on both wires is *common mode*; the bridge signal is *differential*. The amplifier we want reads only the
+        difference — and must not be blinded by the common part.
+    inspect:
+      - {id: bridge, label: "Bridge", concept: wheatstone_bridge, role: "The source: two midpoints at $\\approx V_0/2 = 2.5\\,\\text{V}$ each, a few mV apart."}
+      - {id: w2, label: "Wire V₂", concept: common_mode, role: "Carries $V_2 = V_{cm} + \\tfrac{V_d}{2}$ **plus** the mains pickup.", controls: [pick]}
+      - {id: w1, label: "Wire V₁", concept: common_mode, role: "Carries $V_1 = V_{cm} - \\tfrac{V_d}{2}$ **plus the same** mains pickup.", controls: [pick]}
+      - {id: mains, label: "Mains cable", concept: interference, role: "230 V, 50 Hz. Its electric field couples a small 50 Hz voltage into nearby wires — the same amount into wires that run close together.", controls: [pick]}
+      - {id: diff, label: "V₂ − V₁", concept: differential_signal, role: "The **difference** of the two wires: the bridge signal $V_d$. Shared pickup cancels here.", controls: [vd]}
+      - {id: amp, label: "Amplifier (?)", concept: amplifier_gain, role: "What we must design: amplify $V_d$ (mV → V), ignore $V_{cm}$ and the pickup, and draw no current from the bridge."}
+    terms:
+      - {id: V1, symbol: sig_V1, highlight: [w1]}
+      - {id: V2, symbol: sig_V2, highlight: [w2]}
+      - {id: Vd, symbol: sig_Vd, highlight: [diff], controls: [vd]}
+      - {id: Vcm, symbol: sig_Vcm, highlight: [w1, w2, bridge]}
+      - {id: pick, symbol: sig_pickup, highlight: [mains, w1, w2], controls: [pick]}
+    explain:
+      prompt: "Without the picture: what is common mode, what is the differential signal, and why does a difference measurement ignore mains pickup?"
+      points:
+        - "Each wire = common part + half the difference"
+        - "Bridge: common part $\\approx V_0/2$, difference = a few mV"
+        - "Pickup is (almost) the same on both wires → common mode"
+        - "$V_2 - V_1$ removes everything both wires share"
+    notes_md: |
+      **Common mode** $V_{cm} = \tfrac{V_1 + V_2}{2}$ is what the wires share; the **differential signal** $V_d = V_2 - V_1$ is what pushes them apart. Every pair of voltages can be written this way:
+      $V_1 = V_{cm} - \tfrac{V_d}{2}$, $V_2 = V_{cm} + \tfrac{V_d}{2}$.
+
+      Watch the triangles on the wires: with *Show → common* they bob **together**, with *differential* they move **apart**.
+
+  - id: opamp
+    title: "The op-amp: a huge, blunt amplifier"
+    short: "1 · Op-amp"
+    concepts: [op_amp, amplifier_gain]
+    problem: >-
+      The building block is the **operational amplifier**: two inputs, one output, and a gain of about $10^5$.
+      **What happens if we just feed it our signal?**
+    predict:
+      question: "Open-loop gain $A_d = 100\\,000$, supply $\\pm 15\\,\\text{V}$. The inputs differ by 1 mV. The output is…"
+      options:
+        - {id: hundred, label: "100 V"}
+        - {id: rail, label: "+15 V (stuck at the supply)"}
+        - {id: small, label: "1 mV"}
+      correct: rail
+      reveal: >-
+        $A_d \times 1\,\text{mV} = 100\,\text{V}$ — but the output cannot leave its supply range. It sits at the
+        **rail**, +15 V. Without feedback, any input difference above about $15\,\text{V}/10^5 = 150\,\mu\text{V}$
+        just slams the output to a rail: useless as a measuring amplifier.
+    inspect:
+      - {id: U, label: "Op-amp", concept: op_amp, role: "A triangle: $V_\\text{out} = A_d\\,(V_+ - V_-)$ with a huge $A_d$. Draws (almost) no current at its inputs.", controls: [A]}
+      - {id: Vp, label: "V₊ (non-inverting input)", concept: op_amp, role: "Raising $V_+$ raises the output. Marked **+**."}
+      - {id: Vm, label: "V₋ (inverting input)", concept: op_amp, role: "Raising $V_-$ **lowers** the output. Marked **−**."}
+      - {id: diff, label: "V₊ − V₋", concept: differential_signal, role: "The only thing the op-amp looks at: the difference between its inputs.", controls: [vd]}
+      - {id: out, label: "V_out", concept: op_amp, role: "The output, measured from ground."}
+      - {id: rail, label: "Supply rails ±V_s", concept: op_amp, role: "The output can only move between the supply voltages. Beyond that it **saturates** (clips).", controls: [Vs]}
+    terms:
+      - {id: Vout, symbol: op_Vout, highlight: [out]}
+      - {id: Ad, symbol: op_Ad, highlight: [U], controls: [A]}
+      - {id: Vp, symbol: op_Vp, highlight: [Vp]}
+      - {id: Vm, symbol: op_Vm, highlight: [Vm]}
+      - {id: diff, symbol: op_Vdiff, latex: "[[Vp]] - [[Vm]]", highlight: [diff, Vp, Vm], controls: [vd]}
+      - {id: rail, symbol: op_rail, highlight: [rail], controls: [Vs]}
+    break_it: [open_loop_rail]
+    explain:
+      prompt: "Without the picture: what does an op-amp do, and why can't we use it on its own to amplify a 1 mV signal?"
+      points:
+        - "$V_\\text{out} = A_d\\,(V_+ - V_-)$, $A_d \\approx 10^5$–$10^6$"
+        - "The output is limited to the supply rails"
+        - "Above $\\approx V_s/A_d$ (≈ 100 µV) the output saturates"
+        - "$A_d$ is huge and poorly controlled — we need feedback"
+    notes_md: |
+      Drag the input difference through zero: the output is only "linear" in a window of about $\pm 150\,\mu\text{V}$. Everywhere else it is stuck at $+V_s$ or $-V_s$.
+
+  - id: feedback
+    title: "Negative feedback tames the gain"
+    short: "2 · Feedback"
+    concepts: [negative_feedback, virtual_short]
+    problem: >-
+      Idea: feed **part of the output back** to the input, so the op-amp can see and correct its own error.
+      **Does it matter which input we feed back to?**
+    predict:
+      question: "We feed a fraction of the output back to the **− input** (the input that lowers the output). The output…"
+      options:
+        - {id: settles, label: "settles at a stable value"}
+        - {id: rail, label: "runs to a rail anyway"}
+        - {id: oscillates, label: "jumps between the rails"}
+      correct: settles
+      reveal: >-
+        If the output is too high, $V_-$ rises, which pushes the output **down** — and vice versa. The loop settles
+        where $V_+ - V_-$ is just $V_\text{out}/A_d$: microvolts. That near-equality, $V_+ \approx V_-$, is the
+        **virtual short**. Now switch to *positive* feedback and watch it fail.
+    inspect:
+      - {id: U, label: "Op-amp", concept: op_amp, role: "Still $V_\\text{out} = A_d\\,(V_+ - V_-)$ — feedback changes what arrives at its inputs.", controls: [A]}
+      - {id: Vin, label: "V_in", concept: negative_feedback, role: "The input signal, on the **+** input.", controls: [vin]}
+      - {id: fb, label: "Feedback path", concept: negative_feedback, role: "Carries a fraction $\\beta$ of the output back. To the − input: **negative** feedback (corrects). To the + input: **positive** (reinforces).", controls: [fb]}
+      - {id: R1, label: "R₁", concept: voltage_divider, role: "Top of the feedback divider: from the output to $V_-$.", controls: [gain]}
+      - {id: R2, label: "R₂", concept: voltage_divider, role: "Bottom of the feedback divider: from $V_-$ to ground.", controls: [gain]}
+      - {id: Vm, label: "V₋ (fed back)", concept: virtual_short, role: "$V_- = \\beta\\,V_\\text{out}$ with $\\beta = \\dfrac{R_2}{R_1 + R_2}$. With negative feedback it ends up (almost) equal to $V_+$."}
+      - {id: out, label: "V_out", concept: op_amp, role: "Settles at $\\approx V_\\text{in}/\\beta$."}
+      - {id: I, label: "Divider current", concept: charge_current, role: "The output drives a small current down through $R_1$ and $R_2$. None of it enters the − input."}
+    terms:
+      - {id: Vout, symbol: op_Vout, highlight: [out]}
+      - {id: Ad, symbol: op_Ad, highlight: [U], controls: [A]}
+      - {id: Vp, symbol: op_Vp, highlight: [Vin]}
+      - {id: Vm, symbol: op_Vm, highlight: [Vm, fb]}
+      - {id: Vin, symbol: ni_Vin, highlight: [Vin], controls: [vin]}
+      - {id: R1, symbol: ni_R1, highlight: [R1]}
+      - {id: R2, symbol: ni_R2, highlight: [R2]}
+      - {id: diff, symbol: op_Vdiff, latex: "[[Vp]] - [[Vm]]", highlight: [Vin, Vm]}
+    break_it: [positive_feedback]
+    explain:
+      prompt: "Without the picture: why does feeding the output back to the − input make the circuit stable, and what is the 'virtual short'?"
+      points:
+        - "Too high an output raises $V_-$, which lowers the output: self-correction"
+        - "The loop settles where $V_+ - V_- = V_\\text{out}/A_d$ — microvolts"
+        - "So $V_+ \\approx V_-$: the virtual short (no current flows through it)"
+        - "Only with negative feedback and an unsaturated output"
+    notes_md: |
+      The virtual short is a **result**, not a wire: look at the tiny $V_+ - V_-$ in the equation strip. Lower $A_d$ under *More controls* and it grows.
+
+  - id: noninv
+    title: "Approach 1: a non-inverting amplifier on the bridge"
+    short: "3 · Approach 1"
+    concepts: [non_inverting_amp, common_mode]
+    problem: >-
+      With negative feedback the gain is set by two resistors. **Let's connect one bridge node to it** and amplify.
+    predict:
+      question: "Gain $1 + R_1/R_2 = 101$. The input is the bridge node $V_2 = 2.500\\,\\text{V}$ (with 1 mV of strain signal on it). The output is…"
+      options:
+        - {id: signal, label: "101 mV (the amplified strain signal)"}
+        - {id: rail, label: "+15 V (saturated)"}
+        - {id: big, label: "252.6 V"}
+      correct: rail
+      reveal: >-
+        The amplifier multiplies **everything** at its input, the 2.5 V common mode included: $101 \times 2.5\,\text{V}
+        \approx 253\,\text{V}$ — far beyond the rails, so the output saturates and the 1 mV signal is lost.
+        A single-input amplifier cannot tell common mode from signal. **We need to subtract.**
+    inspect:
+      - {id: bridge, label: "Bridge node V₂", concept: common_mode, role: "Sits at $\\approx 2.5\\,\\text{V}$ (common mode) plus the tiny strain signal. $V_1$ is not used at all.", controls: [src]}
+      - {id: Vin, label: "V_in", concept: non_inverting_amp, role: "The input on the + input.", controls: [src]}
+      - {id: U, label: "Op-amp", concept: op_amp, role: "With negative feedback: virtual short $V_- = V_+$."}
+      - {id: R1, label: "R₁", concept: non_inverting_amp, role: "From the output to $V_-$. A bigger $R_1$ → more gain.", controls: [gain]}
+      - {id: R2, label: "R₂", concept: non_inverting_amp, role: "From $V_-$ to ground. Together with $R_1$ a divider of the output.", controls: [gain]}
+      - {id: Vm, label: "V₋", concept: virtual_short, role: "$V_- = V_\\text{out}\\,\\dfrac{R_2}{R_1 + R_2}$, and by the virtual short also $= V_\\text{in}$."}
+      - {id: fb, label: "Feedback path", concept: negative_feedback, role: "Negative feedback: to the − input."}
+      - {id: out, label: "V_out", concept: non_inverting_amp, role: "$\\left(1 + \\dfrac{R_1}{R_2}\\right)V_\\text{in}$ — as long as that stays inside the rails."}
+      - {id: I, label: "Divider current", concept: charge_current, role: "$V_\\text{out}/(R_1 + R_2)$ down through the divider."}
+    terms:
+      - {id: Vout, symbol: op_Vout, highlight: [out]}
+      - {id: Vin, symbol: ni_Vin, highlight: [Vin, bridge], controls: [src]}
+      - {id: R1, symbol: ni_R1, highlight: [R1], controls: [gain]}
+      - {id: R2, symbol: ni_R2, highlight: [R2], controls: [gain]}
+      - {id: gain, symbol: ni_gain, latex: "1 + \\frac{[[R1]]}{[[R2]]}", highlight: [R1, R2], controls: [gain]}
+      - {id: Vm, symbol: op_Vm, highlight: [Vm, fb]}
+    break_it: [cm_saturation]
+    explain:
+      prompt: "Without the picture: what is the gain of the non-inverting amplifier, and why does it fail on a bridge node?"
+      points:
+        - "$R_1$, $R_2$ divide the output back to $V_-$; virtual short $V_- = V_\\text{in}$"
+        - "Gain $1 + R_1/R_2$"
+        - "It amplifies the whole node voltage, common mode included"
+        - "$101 \\times 2.5\\,\\text{V}$ saturates — the mV signal is lost"
+    notes_md: |
+      Switch the input to *a small test signal*: the same circuit works perfectly. The circuit is fine — it is the wrong tool for a signal that rides on 2.5 V.
+
+  - id: diffamp
+    title: "Approach 2: the difference amplifier"
+    short: "4 · Approach 2"
+    concepts: [difference_amp, cmrr, bridge_loading]
+    problem: >-
+      Subtract inside the amplifier: one op-amp, four resistors, **both** bridge nodes connected.
+      **Does it reject the 2.5 V — and at what price?**
+    predict:
+      question: "$R_2/R_1 = R_4/R_3 = 100$. Inputs $V_1 = 2.500\\,\\text{V}$, $V_2 = 2.501\\,\\text{V}$. The output is…"
+      options:
+        - {id: hundred, label: "100 mV"}
+        - {id: rail, label: "saturated"}
+        - {id: big, label: "250 V"}
+      correct: hundred
+      reveal: >-
+        $V_\text{out} = \tfrac{R_2}{R_1}\,(V_2 - V_1) = 100 \times 1\,\text{mV} = 100\,\text{mV}$. The common 2.5 V cancels —
+        but **only** while $R_2/R_1 = R_4/R_3$ exactly. Now mistune $R_4$ by 1 % and look at the output.
+    inspect:
+      - {id: U, label: "Op-amp", concept: op_amp, role: "One op-amp with negative feedback through $R_2$."}
+      - {id: in1, label: "V₁ input", concept: difference_amp, role: "Goes through $R_1$ to the − input. Draws a current from the bridge: **it loads it**."}
+      - {id: in2, label: "V₂ input", concept: difference_amp, role: "Goes through the divider $R_3$–$R_4$ to the + input. Also draws current."}
+      - {id: R1, label: "R₁", concept: difference_amp, role: "Input resistor of the − side.", controls: [k]}
+      - {id: R2, label: "R₂", concept: difference_amp, role: "Feedback resistor. Gain $R_2/R_1$.", controls: [k]}
+      - {id: R3, label: "R₃", concept: difference_amp, role: "Input resistor of the + side.", controls: [k]}
+      - {id: R4, label: "R₄", concept: cmrr, role: "From $V_+$ to ground. Must satisfy $R_4/R_3 = R_2/R_1$ **exactly** — try mistuning it.", controls: [mis, k]}
+      - {id: Vp, label: "V₊", concept: voltage_divider, role: "$V_+ = V_2\\,\\dfrac{R_4}{R_3 + R_4}$ — a divider of $V_2$."}
+      - {id: Vm, label: "V₋", concept: virtual_short, role: "Held equal to $V_+$ by the feedback (virtual short)."}
+      - {id: out, label: "V_out", concept: difference_amp, role: "$\\dfrac{R_2}{R_1}\\,(V_2 - V_1)$ when matched; otherwise some common mode leaks through."}
+    terms:
+      - {id: Vout, symbol: op_Vout, highlight: [out]}
+      - {id: V1, symbol: sig_V1, highlight: [in1]}
+      - {id: V2, symbol: sig_V2, highlight: [in2]}
+      - {id: R1, symbol: da_R1, highlight: [R1], controls: [k]}
+      - {id: R2, symbol: da_R2, highlight: [R2], controls: [k]}
+      - {id: R3, symbol: da_R3, highlight: [R3], controls: [k]}
+      - {id: R4, symbol: da_R4, highlight: [R4], controls: [mis, k]}
+      - {id: gain, symbol: da_gain, latex: "\\frac{[[R2]]}{[[R1]]}", highlight: [R1, R2], controls: [k]}
+      - {id: Acm, symbol: da_Acm, highlight: [R3, R4, out], controls: [mis]}
+    break_it: [mismatch, da_loading]
+    explain:
+      prompt: "Without the picture: how does a difference amplifier reject common mode, and what are its three problems on a bridge?"
+      points:
+        - "$V_\\text{out} = \\tfrac{R_2}{R_1}(V_2 - V_1)$ if $R_2/R_1 = R_4/R_3$"
+        - "Mismatch → $A_{cm} \\ne 0$, common mode leaks to the output"
+        - "Changing the gain means changing two resistors together"
+        - "Its input resistors draw current: it loads the bridge"
+    notes_md: |
+      The general result for any four resistors is $V_\text{out} = V_2\,\dfrac{R_4}{R_3 + R_4}\left(1 + \dfrac{R_2}{R_1}\right) - V_1\,\dfrac{R_2}{R_1}$. Matching makes the two coefficients equal, so only $V_2 - V_1$ survives.
+
+  - id: ina
+    title: "Approach 3: the instrumentation amplifier"
+    short: "5 · INA"
+    concepts: [instrumentation_amp, virtual_short, cmrr, impedance]
+    problem: >-
+      Fix approach 2's problems: put a **buffer with gain** in front of each input (stage 1), then subtract with a
+      unity difference amplifier (stage 2). **Where does the common mode go?**
+    predict:
+      question: "Both inputs at 2.5 V (pure common mode, no strain). What are the two stage-1 outputs $V_{o1}$ and $V_{o2}$?"
+      options:
+        - {id: pass, label: "both 2.5 V"}
+        - {id: zero, label: "both 0 V"}
+        - {id: amplified, label: "both 2.5 V × (1 + 2R₂/R₁)"}
+      correct: pass
+      reveal: >-
+        With equal inputs there is no voltage across $R_1$, so **no current** flows in $R_1$ or the $R_2$s: the outputs
+        simply equal the inputs. **Stage 1 passes common mode with gain 1** and amplifies only the difference by
+        $1 + 2R_2/R_1$. Stage 2 then removes the common mode.
+    inspect:
+      - {id: in1, label: "V_in1 (= V₁)", concept: impedance, role: "Goes straight to the **+ input** of U1: no current is drawn, the bridge is not loaded."}
+      - {id: in2, label: "V_in2 (= V₂)", concept: impedance, role: "Goes straight to the **+ input** of U2."}
+      - {id: U1, label: "U1", concept: virtual_short, role: "Holds node A at its + input: $V_A = V_{\\text{in},1}$."}
+      - {id: U2, label: "U2", concept: virtual_short, role: "Holds node B at its + input: $V_B = V_{\\text{in},2}$."}
+      - {id: R1, label: "R₁ (gain resistor)", concept: instrumentation_amp, role: "The whole input difference appears across it: $I = \\dfrac{V_B - V_A}{R_1}$. **One resistor sets the gain.**", controls: [R1]}
+      - {id: R2a, label: "R₂ (top)", concept: instrumentation_amp, role: "Feedback of U1; carries the same $I$ as $R_1$."}
+      - {id: R2b, label: "R₂ (bottom)", concept: instrumentation_amp, role: "Feedback of U2; carries the same $I$."}
+      - {id: Ipath, label: "Current path R₂–R₁–R₂", concept: kcl, role: "No current enters the op-amp inputs, so one current flows through all three resistors (KCL)."}
+      - {id: VA, label: "V_A", concept: virtual_short, role: "Top of $R_1$; equal to $V_{\\text{in},1}$."}
+      - {id: VB, label: "V_B", concept: virtual_short, role: "Bottom of $R_1$; equal to $V_{\\text{in},2}$."}
+      - {id: o1, label: "V_o1", concept: instrumentation_amp, role: "Top stage-1 output: $V_A - I\\,R_2$. The lecture reuses the name $V_1$ here (known issue K10)."}
+      - {id: o2, label: "V_o2", concept: instrumentation_amp, role: "Bottom stage-1 output: $V_B + I\\,R_2$."}
+      - {id: stage1, label: "Stage 1", concept: instrumentation_amp, role: "Two non-inverting amplifiers sharing $R_1$: $A_d = 1 + 2R_2/R_1$, $A_{cm} = 1$."}
+      - {id: stage2, label: "Stage 2", concept: difference_amp, role: "Difference amplifier with four equal $R$: $A_d = 1$, $A_{cm} = 0$ — removes the common mode.", controls: [mis]}
+      - {id: Rg, label: "Stage-2 resistor to ground", concept: cmrr, role: "Mistune it to see the common mode leak — stage 2 still needs matched resistors.", controls: [mis]}
+      - {id: out, label: "V_out", concept: instrumentation_amp, role: "$V_{o2} - V_{o1} = \\left(1 + \\dfrac{2R_2}{R_1}\\right)(V_{\\text{in},2} - V_{\\text{in},1})$."}
+    terms:
+      - {id: Vout, symbol: ina_Vout, highlight: [out]}
+      - {id: Vo1, symbol: ina_Vo1, highlight: [o1]}
+      - {id: Vo2, symbol: ina_Vo2, highlight: [o2]}
+      - {id: V1, symbol: sig_V1, highlight: [in1]}
+      - {id: V2, symbol: sig_V2, highlight: [in2]}
+      - {id: R1, symbol: ina_R1, highlight: [R1], controls: [R1]}
+      - {id: R2, symbol: ina_R2, highlight: [R2a, R2b]}
+      - {id: gain, symbol: ina_gain, latex: "1 + \\frac{2[[R2]]}{[[R1]]}", highlight: [R1, R2a, R2b, Ipath], controls: [R1]}
+      - {id: VA, symbol: ina_VA, highlight: [VA]}
+      - {id: VB, symbol: ina_VB, highlight: [VB]}
+      - {id: I, symbol: ina_I, highlight: [Ipath, R1]}
+    break_it: [stage1_rail, mismatch]
+    explain:
+      prompt: "Without the picture: how does the instrumentation amplifier amplify the bridge difference, and why does it beat approaches 1 and 2?"
+      points:
+        - "Virtual shorts put the whole input difference across $R_1$"
+        - "The same current flows through both $R_2$ → $A_d = 1 + 2R_2/R_1$"
+        - "Stage 1 passes common mode with gain 1; stage 2 removes it"
+        - "Inputs are + inputs only → no bridge loading; one resistor sets the gain"
+    notes_md: |
+      Move the **probe** from the inputs to the stage-1 outputs to the output and watch the time plot: the 50 Hz pickup and the 2.5 V are still there after stage 1 and vanish after stage 2; the strain signal grows at stage 1.
+
+break_it:
+  - id: open_loop_rail
+    title: "No feedback: the output sticks to a rail"
+    cause: "The open-loop gain $A_d \\approx 10^5$ multiplies any input difference."
+    condition: "$|V_+ - V_-| > V_s/A_d$ — about 150 µV here."
+    consequence: "$V_\\text{out}$ saturates at $\\pm V_s$; the reading no longer depends on the input."
+    recovery: "Use negative feedback so the gain is set by resistors."
+  - id: positive_feedback
+    title: "Positive feedback latches"
+    cause: "The output is fed back to the **+** input, so every error is reinforced."
+    condition: "Feedback to the non-inverting input."
+    consequence: "The output runs to a rail and stays there; $V_+ = V_-$ does **not** hold."
+    recovery: "Feed back to the − input (negative feedback)."
+  - id: cm_saturation
+    title: "Approach 1 amplifies the common mode"
+    cause: "A single-input amplifier multiplies the whole node voltage, $\\approx V_0/2$ included."
+    condition: "Gain × common mode beyond the rails (here $101 \\times 2.5\\,\\text{V}$)."
+    consequence: "The output saturates; the mV strain signal is lost."
+    recovery: "Amplify the **difference** of both nodes (approaches 2 and 3)."
+  - id: mismatch
+    title: "Mismatched resistors leak common mode"
+    cause: "$R_2/R_1 \\ne R_4/R_3$ makes the two input coefficients unequal: $A_{cm} \\ne 0$."
+    condition: "Any mismatch — 1 % is already enough."
+    consequence: "Part of the 2.5 V (and of the mains pickup) appears at the output, as large as the signal."
+    recovery: "Precisely matched (laser-trimmed) resistors, or an integrated INA."
+  - id: da_loading
+    title: "The difference amplifier loads the bridge"
+    cause: "Its inputs are resistors ($R_1$; $R_3 + R_4$), not op-amp inputs."
+    condition: "Input resistances not ≫ the bridge resistance."
+    consequence: "Current is drawn from the bridge nodes; they shift and the reading is wrong."
+    recovery: "Buffer the inputs: the instrumentation amplifier's stage 1."
+  - id: stage1_rail
+    title: "A stage-1 output hits the rail"
+    cause: "Each stage-1 output is common mode **plus** half the amplified difference."
+    condition: "$V_{cm} + \\tfrac12 A_d\\,|V_d|$ beyond the rails."
+    consequence: "Stage 1 clips, the output is wrong even though $A_d\\,V_d$ alone would fit."
+    recovery: "Lower the gain (larger $R_1$) or the bridge supply."
+traps:
+  - "The virtual short needs negative feedback and an unsaturated output."
+  - "Non-inverting gain is 1 + R1/R2 (lecture naming), not R1/R2."
+  - "INA: the factor 2 in 2R2/R1 — two R2 carry the same current."
+  - "Stage 1 passes common mode (gain 1); stage 2 rejects it."
+  - "CMRR: bigger is better."

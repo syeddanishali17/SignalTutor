@@ -1,0 +1,16 @@
+id: sine_wave
+title: Sine waves, frequency and 50 Hz
+short: "Sine waves"
+code: M8
+track: math
+prerequisites: [proportionality]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "A **sine wave** $A\\sin(2\\pi f t)$ swings between $+A$ and $-A$, repeating $f$ times per second (unit hertz, Hz)."
+plain_words: "a smooth up-and-down that repeats"
+explanation_md: sine_wave.md
+units: "frequency in hertz, Hz = 1/s"
+misconceptions:
+  - id: amplitude_vs_frequency
+    text: "A bigger amplitude means a higher frequency."
+    correction: "They are independent: amplitude $A$ is how *high* the wave swings, frequency $f$ is how *often* it repeats."

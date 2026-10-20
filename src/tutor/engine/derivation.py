@@ -5,7 +5,7 @@ from __future__ import annotations
 import sympy as sp
 
 from tutor.engine import dims
-from tutor.engine.expr import names, parse, to_sympy
+from tutor.engine.expr import const_value, names, parse, to_sympy
 from tutor.models.content import Derivation
 
 
@@ -48,6 +48,10 @@ def check_derivation(d: Derivation) -> list[str]:
                         errors.append(f"{where}: equals needs 'lhs'")
                         continue
                     lhs, target = S(c.lhs), S(c.expr)
+                    if c.subs:
+                        cond = {syms.setdefault(k, sp.Symbol(k, positive=True)): to_sympy(v, syms)
+                                for k, v in c.subs.items()}
+                        lhs, target = lhs.subs(cond), target.subs(cond)
                     if sp.simplify(lhs - target) != 0:
                         errors.append(f"{where}: {c.lhs} ≠ {c.expr} (difference {sp.simplify(lhs - target)})")
                 elif c.kind == "approx":
@@ -84,6 +88,8 @@ def check_derivation(d: Derivation) -> list[str]:
 
 def _dim_check(expr: str, name: str, d: Derivation, where: str, errors: list[str]) -> None:
     if name not in d.symbols:
+        return
+    if const_value(parse(expr)) == 0:  # "0" fits any unit (e.g. a grounded node, zero current)
         return
     missing = names(parse(expr)) - set(d.symbols)
     if missing:

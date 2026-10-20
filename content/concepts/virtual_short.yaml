@@ -1,0 +1,15 @@
+id: virtual_short
+title: The virtual short (V₊ ≈ V₋)
+short: "Virtual short"
+code: C8
+track: course_l02
+prerequisites: [negative_feedback, kcl]
+status: verified
+source_refs: ["Lecture 2 notes, p. 3–5 (used in every derivation)"]
+one_liner: "Under **negative feedback**, and only while the output is **not saturated**, an ideal op-amp holds $V_+ = V_-$ — while drawing no current into either input."
+plain_words: "the two inputs end up at the same voltage"
+explanation_md: virtual_short.md
+misconceptions:
+  - id: virtual_short_always
+    text: "V₊ = V₋ always holds for an op-amp."
+    correction: "Only with **negative feedback** and only while the output is **inside the rails**. Open loop, with positive feedback, or saturated, the inputs can be far apart."

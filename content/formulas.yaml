@@ -316,3 +316,127 @@ formulas:
     canonical_check: {expr: "k*a^2/(E*h^2)*p", symbols: {k: "1", a: m, E: Pa, h: m, p: Pa}, result_unit: "1"}
     dimension_check: pass
     shown_in_exam_mode: canonical_with_flag
+
+  # --- L02: op-amp and the three approaches ---------------------------------------------------
+  - id: opamp_output
+    title: Op-amp output (general)
+    concept: op_amp
+    module: C8
+    status: verified
+    source: "Lecture 2 notes, p. 1"
+    evidence: [notes, dimension_check]
+    lecture_form: "V_\\text{out} = A_d\\,(V_+ - V_-) + A_{cm}\\,V_{cm}"
+    lecture_check: {expr: "Ad*(Vp - Vm) + Acm*Vcm", symbols: {Ad: "1", Vp: V, Vm: V, Acm: "1", Vcm: V}, result_unit: V}
+    dimension_check: pass
+    assumptions: ["Output not saturated (inside the rails)"]
+    meaning:
+      - {symbol: "A_d", meaning: "differential gain (ideal: ∞)", unit: "1"}
+      - {symbol: "A_{cm}", meaning: "common-mode gain (ideal: 0)", unit: "1"}
+      - {symbol: "V_+ - V_-", meaning: "input difference", unit: "V", when_it_goes_up: "output rises — until it hits a rail"}
+
+  - id: closed_loop_gain
+    title: Closed-loop gain with finite op-amp gain
+    concept: negative_feedback
+    module: C8
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check, sympy]
+    lecture_form: "\\frac{V_\\text{out}}{V_\\text{in}} = \\frac{A_d}{1 + A_d\\,\\beta} \\xrightarrow{A_d\\to\\infty} \\frac{1}{\\beta},\\qquad \\beta = \\frac{R_2}{R_1 + R_2}"
+    lecture_check: {expr: "Ad/(1 + Ad*R2/(R1 + R2))", symbols: {Ad: "1", R1: ohm, R2: ohm}, result_unit: "1"}
+    dimension_check: pass
+
+  - id: noninv_gain
+    title: Non-inverting amplifier
+    concept: non_inverting_amp
+    module: C9
+    status: verified
+    source: "Lecture 2 notes, p. 3"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "V_\\text{out} = V_\\text{in}\\left(1 + \\frac{R_1}{R_2}\\right)"
+    lecture_check: {expr: "Vin*(1 + R1/R2)", symbols: {Vin: V, R1: ohm, R2: ohm}, result_unit: V}
+    dimension_check: pass
+    comes_from: "Virtual short V− = Vin; the same current flows through R2 and R1 (no current into the input)."
+    assumptions: ["Negative feedback", "Not saturated", "Ideal op-amp"]
+
+  - id: diffamp_gain
+    title: Difference amplifier
+    concept: difference_amp
+    module: C9
+    status: verified
+    source: "Lecture 2 notes, p. 3"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "V_\\text{out} = A_d\\,(V_2 - V_1),\\qquad A_d = \\frac{R_2}{R_1} = \\frac{R_4}{R_3}"
+    lecture_check: {expr: "R2/R1*(V2 - V1)", symbols: {R1: ohm, R2: ohm, V1: V, V2: V}, result_unit: V}
+    dimension_check: pass
+    assumptions: ["Matched resistors R2/R1 = R4/R3", "Ideal op-amp"]
+
+  - id: diffamp_cmr_condition
+    title: Difference amplifier — condition for zero common-mode gain
+    concept: difference_amp
+    module: C9
+    status: verified
+    source: "Lecture 2 notes, p. 3"
+    evidence: [notes, sympy]
+    lecture_form: "\\frac{R_1}{R_2} = \\frac{R_3}{R_4} \\quad\\Rightarrow\\quad A_{cm} = 0"
+    lecture_check: {expr: "R1/R2", symbols: {R1: ohm, R2: ohm}, result_unit: "1"}
+    dimension_check: pass
+
+  - id: diffamp_acm
+    title: Difference amplifier — common-mode gain with mismatch
+    concept: cmrr
+    module: C9
+    status: supplemental
+    source: derived in this app (SymPy-verified), not in the notes
+    evidence: [sympy, dimension_check]
+    lecture_form: "A_{cm} = \\frac{R_4}{R_3 + R_4}\\left(1 + \\frac{R_2}{R_1}\\right) - \\frac{R_2}{R_1}"
+    lecture_check: {expr: "R4/(R3 + R4)*(1 + R2/R1) - R2/R1", symbols: {R1: ohm, R2: ohm, R3: ohm, R4: ohm}, result_unit: "1"}
+    dimension_check: pass
+
+  - id: cmrr_def
+    title: Common-mode rejection ratio
+    concept: cmrr
+    status: supplemental
+    source: standard (datasheet definition)
+    evidence: [textbook, dimension_check]
+    lecture_form: "\\text{CMRR} = \\frac{A_d}{A_{cm}},\\qquad \\text{CMRR}_\\text{dB} = 20\\log_{10}\\frac{A_d}{A_{cm}}"
+    lecture_check: {expr: "Ad/Acm", symbols: {Ad: "1", Acm: "1"}, result_unit: "1"}
+    dimension_check: pass
+
+  - id: ina_stage1
+    title: Instrumentation amplifier — stage 1
+    concept: instrumentation_amp
+    module: C10
+    status: verified
+    source: "Lecture 2 notes, p. 4–5"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "A_d = 1 + \\frac{2R_2}{R_1},\\qquad A_{cm} = 1"
+    lecture_check: {expr: "1 + 2*R2/R1", symbols: {R1: ohm, R2: ohm}, result_unit: "1"}
+    dimension_check: pass
+    comes_from: "Common mode: no current in R1 → outputs follow the inputs. Differential: the same current through R2, R1, R2 (KCL)."
+    meaning:
+      - {symbol: "R_1", meaning: "gain resistor between the inverting inputs", unit: "Ω", when_it_goes_up: "gain falls"}
+      - {symbol: "R_2", meaning: "feedback resistor (one per op-amp)", unit: "Ω", when_it_goes_up: "gain rises"}
+      - {symbol: "2", meaning: "both R2 carry the same current", unit: "1"}
+
+  - id: ina_stage2
+    title: Instrumentation amplifier — stage 2
+    concept: instrumentation_amp
+    module: C10
+    status: verified
+    source: "Lecture 2 notes, p. 4"
+    evidence: [notes, sympy]
+    lecture_form: "A_d = 1,\\qquad A_{cm} = 0 \\qquad (\\text{four equal resistors } R)"
+    lecture_check: {expr: "R/R", symbols: {R: ohm}, result_unit: "1"}
+    dimension_check: pass
+
+  - id: ina_output
+    title: Instrumentation amplifier — output
+    concept: instrumentation_amp
+    module: C10
+    status: verified
+    source: "Lecture 2 notes, p. 5"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "V_\\text{out} = V_{o2} - V_{o1} = \\left(1 + \\frac{2R_2}{R_1}\\right)(V_2 - V_1)"
+    lecture_check: {expr: "(1 + 2*R2/R1)*(V2 - V1)", symbols: {R1: ohm, R2: ohm, V1: V, V2: V}, result_unit: V}
+    dimension_check: pass
+    known_issue: K10

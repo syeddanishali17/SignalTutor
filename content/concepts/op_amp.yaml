@@ -1,0 +1,16 @@
+id: op_amp
+title: The operational amplifier (op-amp)
+short: "Op-amp"
+code: C8
+track: course_l02
+prerequisites: [amplifier_gain, differential_signal, common_mode, impedance]
+status: verified
+source_refs: ["Lecture 2 notes, p. 1"]
+one_liner: "An **op-amp** amplifies the difference between its two inputs by an enormous gain: $V_\\text{out} = A_d\\,(V_+ - V_-)$, clipped at its supply rails."
+plain_words: "a difference amplifier with a huge gain"
+explanation_md: op_amp.md
+symbol: "V_\\text{out} = A_d(V_+ - V_-)"
+misconceptions:
+  - id: opamp_gain_used_directly
+    text: "With A_d = 100 000, a 1 mV input gives 100 V at the output."
+    correction: "The output cannot leave the supply rails (e.g. ±15 V); it **saturates**. Used on its own, an op-amp's gain is far too large to be useful — negative feedback tames it."

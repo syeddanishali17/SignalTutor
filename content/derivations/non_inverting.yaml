@@ -1,0 +1,72 @@
+id: non_inverting
+title: Non-inverting amplifier gain
+concept: non_inverting_amp
+figure: noninv
+source: "Lecture 2 notes, p. 3"
+symbols: {Vin: V, R1: ohm, R2: ohm, Vm: V, I: A, Vout: V}
+steps:
+  - id: setup
+    latex: "V_+ = V_\\text{in},\\qquad R_1:\\ V_\\text{out} \\to V_-,\\qquad R_2:\\ V_- \\to \\text{ground}"
+    changed: "Name the parts. The output is fed back to the **inverting** input through the divider $R_1$, $R_2$."
+    why: "Feedback to the $-$ input is negative feedback, so the two golden rules apply: $V_+ = V_-$ and no current into the inputs."
+    law: "Circuit reading"
+    assumption: "Ideal op-amp, negative feedback, output not saturated"
+    highlight: [R1, R2, fb]
+
+  - id: vshort
+    latex: "V_- = V_+ = V_\\text{in}"
+    changed: "The inverting input sits at the input voltage."
+    why: "Virtual short: under negative feedback the op-amp drives its output until $V_- = V_+$."
+    law: "Virtual short"
+    assumption: "Negative feedback, not saturated"
+    highlight: [Vm, Vin]
+    check: {kind: define, name: Vm, expr: "Vin"}
+    fade:
+      prompt: "What is the voltage at the inverting input $V_-$?"
+      correct: 0
+      options:
+        - {latex: "V_- = V_\\text{in}", expr: "Vin"}
+        - {latex: "V_- = 0", expr: "0"}
+        - {latex: "V_- = \\tfrac12 V_\\text{in}", expr: "Vin/2"}
+
+  - id: current
+    latex: "I = \\frac{V_-}{R_2} = \\frac{V_\\text{in}}{R_2}"
+    annotated: |-
+      I = \frac{\overbrace{V_-}^{\text{voltage across } R_2}}{\underbrace{R_2}_{V_- \text{ to ground}}} = \frac{V_\text{in}}{R_2}
+    changed: "Ohm's law on $R_2$, which sits between $V_-$ and ground."
+    why: "$R_2$ has $V_-$ on one side and 0 V on the other."
+    law: "Ohm's law"
+    highlight: [R2, I]
+    check: {kind: define, name: I, expr: "Vm/R2"}
+    fade:
+      prompt: "Current through $R_2$?"
+      correct: 1
+      options:
+        - {latex: "\\dfrac{V_\\text{in}}{R_1}", expr: "Vin/R1"}
+        - {latex: "\\dfrac{V_\\text{in}}{R_2}", expr: "Vin/R2"}
+        - {latex: "\\dfrac{V_\\text{in}}{R_1 + R_2}", expr: "Vin/(R1 + R2)"}
+
+  - id: kcl
+    latex: "I_{R_1} = I_{R_2} = I"
+    changed: "The same current flows through $R_1$."
+    why: "No current can enter the op-amp's $-$ input, so everything that flows down through $R_2$ must have come through $R_1$ (KCL at $V_-$)."
+    law: "KCL + ideal input (no current)"
+    highlight: [R1, R2, Vm, I]
+
+  - id: vout
+    latex: "V_\\text{out} = V_- + I\\,R_1 = V_\\text{in} + \\frac{V_\\text{in}}{R_2}\\,R_1 = V_\\text{in}\\left(1 + \\frac{R_1}{R_2}\\right)"
+    annotated: |-
+      V_\text{out} = \underbrace{V_-}_{V_\text{in}} + \underbrace{I\,R_1}_{\text{drop across } R_1} = V_\text{in}\left(1 + \frac{R_1}{R_2}\right)
+    changed: "Walk from $V_-$ up through $R_1$ to the output, adding the drop across $R_1$."
+    why: "The output is higher than $V_-$ by exactly the voltage across $R_1$."
+    law: "Ohm's law, algebra"
+    highlight: [R1, out]
+    check: {kind: define, name: Vout, expr: "Vm + I*R1"}
+    fade:
+      prompt: "The output voltage?"
+      correct: 2
+      options:
+        - {latex: "V_\\text{in}\\,\\dfrac{R_1}{R_2}", expr: "Vin*R1/R2"}
+        - {latex: "V_\\text{in}\\left(1 + \\dfrac{R_2}{R_1}\\right)", expr: "Vin*(1 + R2/R1)"}
+        - {latex: "V_\\text{in}\\left(1 + \\dfrac{R_1}{R_2}\\right)", expr: "Vin*(1 + R1/R2)"}
+        - {latex: "V_\\text{in}\\,\\dfrac{R_2}{R_1 + R_2}", expr: "Vin*R2/(R1 + R2)"}

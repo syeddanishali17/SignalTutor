@@ -72,3 +72,29 @@ def test_wheatstone_scenes(scene):
     at = _run("wheatstone", scene=scene, unlock="1", sel="left" if scene != "sensor" else "eps")
     assert any(title in m.value for m in at.markdown), "deep-linked scene was not rendered"
     assert len(at.latex) >= 3  # law, numbers, result
+
+
+AMP_SEL = {"problem": "Vcm", "opamp": "diff", "feedback": "diff", "noninv": "gain", "diffamp": "Acm", "ina": "gain"}
+
+
+@pytest.mark.parametrize("scene", list(AMP_SEL))
+def test_amplifier_scenes(scene):
+    from tutor.models.loader import load_or_raise
+
+    title = next(s.title for s in load_or_raise().lessons["amplifier_lab"].scenes if s.id == scene)
+    at = _run("amplifiers", scene=scene, unlock="1", sel=AMP_SEL[scene])
+    assert any(title in m.value for m in at.markdown), "deep-linked scene was not rendered"
+    assert len(at.latex) >= 3  # law, numbers, result
+
+
+@pytest.mark.parametrize("scene,ctl,value", [("feedback", "fb", "positive"), ("noninv", "src", "test"),
+                                             ("ina", "view", "common"), ("ina", "probe", "out"),
+                                             ("diffamp", "mis", 1.0)])
+def test_amplifier_variants(scene, ctl, value):
+    """Alternative control states render too (positive feedback, pure common mode, …)."""
+    at = AppTest.from_function(_page, args=("amplifiers",), default_timeout=60)
+    at.query_params["scene"] = scene
+    at.query_params["unlock"] = "1"
+    at.session_state[f"w_amp_{scene}_{ctl}"] = value
+    at.run()
+    assert not at.exception, [e.message for e in at.exception]

@@ -1,0 +1,14 @@
+id: amplifier_gain
+title: Amplifier and gain
+short: "Gain"
+track: electrical
+prerequisites: [voltage, ratios]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "An **amplifier** outputs a bigger copy of its input; the **gain** is the factor, $A = V_\\text{out}/V_\\text{in}$ (no unit)."
+plain_words: "how many times bigger the output is"
+explanation_md: amplifier_gain.md
+misconceptions:
+  - id: gain_creates_energy
+    text: "An amplifier creates the extra signal out of nothing."
+    correction: "It takes the energy from its **power supply**. That is also why the output can never go beyond the supply voltages (the 'rails')."

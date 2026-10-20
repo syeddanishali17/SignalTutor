@@ -1,0 +1,14 @@
+id: cmrr
+title: Common-mode rejection (CMR / CMRR)
+short: "CMRR"
+track: course_l02
+prerequisites: [common_mode, amplifier_gain]
+status: supplemental
+source_refs: ["standard (datasheet definition)", "Lecture 2 notes, p. 3–4 (CMR)"]
+one_liner: "How well an amplifier ignores what both inputs share: $\\text{CMRR} = A_d / A_{cm}$, often quoted in decibels, $20\\log_{10}(A_d/A_{cm})$."
+plain_words: "how well it ignores what both wires share"
+explanation_md: cmrr.md
+misconceptions:
+  - id: cmrr_small_good
+    text: "A small CMRR is good."
+    correction: "Big is good: a large ratio $A_d/A_{cm}$ means the difference is amplified much more than the shared part. Ideal: $A_{cm} = 0$, CMRR → ∞."

@@ -231,3 +231,195 @@ symbols:
     meaning: "**Current in the left branch** ($R_1$ then $R_4$)."
     unit: A
     concept: charge_current
+
+  # --- interference / signals -----------------------------------------------------------
+  - id: sig_V1
+    latex: "V_1"
+    label: "V₁"
+    meaning: "**Voltage of wire 1** (measured from ground): common level − half the signal + pickup."
+    unit: V
+    concept: differential_signal
+  - id: sig_V2
+    latex: "V_2"
+    label: "V₂"
+    meaning: "**Voltage of wire 2** (measured from ground): common level + half the signal + pickup."
+    unit: V
+    concept: differential_signal
+  - id: sig_Vd
+    latex: "V_d"
+    label: "V_d"
+    meaning: "**Differential signal** $V_d = V_2 - V_1$: the part that pushes the two wires apart — the measurement."
+    unit: V
+    concept: differential_signal
+  - id: sig_Vcm
+    latex: "V_{cm}"
+    label: "V_cm"
+    meaning: "**Common mode**: what both wires share, $V_{cm} = (V_1 + V_2)/2$ — here the bridge's DC level plus the mains pickup."
+    unit: V
+    concept: common_mode
+  - id: sig_pickup
+    latex: "v_\\text{pickup}"
+    label: "v_pickup"
+    meaning: "**Mains pickup**: a 50 Hz sine picked up from a nearby mains cable. It arrives on both wires almost equally."
+    unit: V
+    concept: interference
+
+  # --- op-amp -------------------------------------------------------------------------------
+  - id: op_Vp
+    latex: "V_+"
+    label: "V₊"
+    meaning: "**Non-inverting input** (marked $+$): raising it pushes the output **up**."
+    unit: V
+    concept: op_amp
+  - id: op_Vm
+    latex: "V_-"
+    label: "V₋"
+    meaning: "**Inverting input** (marked $-$): raising it pushes the output **down**."
+    unit: V
+    concept: op_amp
+  - id: op_Vdiff
+    latex: "V_+ - V_-"
+    label: "V₊ − V₋"
+    meaning: "**The input difference** — the only thing an ideal op-amp responds to. Under negative feedback it becomes tiny (the virtual short)."
+    unit: V
+    concept: op_amp
+  - id: op_Ad
+    latex: "A_d"
+    label: "A_d"
+    meaning: "**Differential (open-loop) gain** of the op-amp itself: enormous, $10^5$ to $10^6$. Ideal: infinite."
+    unit: "1"
+    concept: op_amp
+  - id: op_Vout
+    latex: "V_\\text{out}"
+    label: "V_out"
+    meaning: "**Output voltage**, measured from ground. It can never leave the supply rails."
+    unit: V
+    concept: op_amp
+  - id: op_rail
+    latex: "\\pm V_s"
+    label: "±V_s"
+    meaning: "**Supply rails**: the op-amp's power supply, e.g. $\\pm 15\\,\\text{V}$. The output saturates (clips) there."
+    unit: V
+    concept: amplifier_gain
+
+  # --- non-inverting amplifier ----------------------------------------------------------------
+  - id: ni_Vin
+    latex: "V_\\text{in}"
+    label: "V_in"
+    meaning: "**Input voltage**, applied to the $+$ input."
+    unit: V
+    concept: non_inverting_amp
+  - id: ni_R1
+    latex: "R_1"
+    label: "R₁"
+    meaning: "**Feedback resistor** from the output to $V_-$ (lecture naming)."
+    unit: "Ω"
+    concept: non_inverting_amp
+  - id: ni_R2
+    latex: "R_2"
+    label: "R₂"
+    meaning: "**Resistor from $V_-$ to ground.** With $R_1$ it forms the divider that feeds part of the output back."
+    unit: "Ω"
+    concept: non_inverting_amp
+  - id: ni_gain
+    latex: "1 + \\frac{R_1}{R_2}"
+    label: "1 + R₁/R₂"
+    meaning: "**Closed-loop gain** of the non-inverting amplifier — set by two resistors, not by the op-amp. Even with $R_1 = 0$ it is 1 (a follower)."
+    unit: "1"
+    concept: non_inverting_amp
+
+  # --- difference amplifier --------------------------------------------------------------------
+  - id: da_R1
+    latex: "R_1"
+    label: "R₁"
+    meaning: "**Input resistor** from $V_1$ to the $-$ input."
+    unit: "Ω"
+    concept: difference_amp
+  - id: da_R2
+    latex: "R_2"
+    label: "R₂"
+    meaning: "**Feedback resistor** from the output to the $-$ input."
+    unit: "Ω"
+    concept: difference_amp
+  - id: da_R3
+    latex: "R_3"
+    label: "R₃"
+    meaning: "**Input resistor** from $V_2$ to the $+$ input."
+    unit: "Ω"
+    concept: difference_amp
+  - id: da_R4
+    latex: "R_4"
+    label: "R₄"
+    meaning: "**Resistor from the $+$ input to ground.** Must match: $R_4/R_3 = R_2/R_1$."
+    unit: "Ω"
+    concept: difference_amp
+  - id: da_gain
+    latex: "\\frac{R_2}{R_1}"
+    label: "R₂/R₁"
+    meaning: "**Differential gain** when the resistors are matched ($R_2/R_1 = R_4/R_3$)."
+    unit: "1"
+    concept: difference_amp
+
+  # --- instrumentation amplifier ---------------------------------------------------------------
+  - id: ina_R1
+    latex: "R_1"
+    label: "R₁"
+    meaning: "**The gain resistor** between the two inverting inputs (nodes $A$ and $B$). Changing only $R_1$ changes the gain."
+    unit: "Ω"
+    concept: instrumentation_amp
+  - id: ina_R2
+    latex: "R_2"
+    label: "R₂"
+    meaning: "**Feedback resistors** of the two stage-1 op-amps (one each). The same current flows through both."
+    unit: "Ω"
+    concept: instrumentation_amp
+  - id: ina_gain
+    latex: "1 + \\frac{2R_2}{R_1}"
+    label: "1 + 2R₂/R₁"
+    meaning: "**Stage-1 differential gain** $A_d$. The 2 is there because the current flows through **both** $R_2$ resistors."
+    unit: "1"
+    concept: instrumentation_amp
+  - id: ina_VA
+    latex: "V_A"
+    label: "V_A"
+    meaning: "**Node A**, top end of $R_1$ — held equal to the top input by the virtual short."
+    unit: V
+    concept: virtual_short
+  - id: ina_VB
+    latex: "V_B"
+    label: "V_B"
+    meaning: "**Node B**, bottom end of $R_1$ — held equal to the bottom input by the virtual short."
+    unit: V
+    concept: virtual_short
+  - id: ina_Vo1
+    latex: "V_{o1}"
+    label: "V_o1"
+    meaning: "**Stage-1 output, top.** (The lecture writes $V_1$ here — K10.)"
+    unit: V
+    concept: instrumentation_amp
+  - id: ina_Vo2
+    latex: "V_{o2}"
+    label: "V_o2"
+    meaning: "**Stage-1 output, bottom.** (The lecture writes $V_2$ here — K10.)"
+    unit: V
+    concept: instrumentation_amp
+  - id: ina_I
+    latex: "I"
+    label: "I"
+    meaning: "**The one current** through $R_2$, $R_1$ and $R_2$: $I = (V_B - V_A)/R_1$. It cannot leave into the op-amp inputs (KCL)."
+    unit: A
+    concept: kcl
+  - id: ina_Vout
+    latex: "V_\\text{out}"
+    label: "V_out"
+    meaning: "**Final output** of stage 2: $V_\\text{out} = V_{o2} - V_{o1}$."
+    unit: V
+    concept: instrumentation_amp
+  - id: da_Acm
+    latex: "A_{cm}"
+    label: "A_cm"
+    meaning: >-
+      **Common-mode gain**: how much of the voltage both inputs share reaches the output, $V_\text{out} = A_{cm}\,V_{cm}$.
+      Ideally 0; for the difference amplifier $A_{cm} = \dfrac{R_4}{R_3 + R_4}\left(1 + \dfrac{R_2}{R_1}\right) - \dfrac{R_2}{R_1}$,
+      which is 0 only when $R_4/R_3 = R_2/R_1$.
+    concept: cmrr

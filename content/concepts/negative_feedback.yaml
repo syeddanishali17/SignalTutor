@@ -1,0 +1,15 @@
+id: negative_feedback
+title: Negative feedback
+short: "Negative feedback"
+code: C8
+track: course_l02
+prerequisites: [op_amp, voltage_divider]
+status: supplemental
+source_refs: ["standard", "Lecture 2 notes, p. 3 (feedback networks)"]
+one_liner: "Feeding (part of) the output back to the **inverting** input makes the op-amp correct itself: the output settles where $V_-$ almost equals $V_+$."
+plain_words: "the output checks itself and corrects"
+explanation_md: negative_feedback.md
+misconceptions:
+  - id: feedback_any_input
+    text: "Feedback to either input works the same way."
+    correction: "Only feedback to the **inverting** ($-$) input corrects errors. Feedback to $+$ (positive feedback) amplifies every error: the output runs to a rail and stays there."

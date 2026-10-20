@@ -55,9 +55,10 @@ def resolved(scope: str, scene: Scene) -> inspector.Resolved:
     return res
 
 
-def main_row(scope: str, scene: Scene, svg: str, below_visual: Callable[[], None] | None = None) -> None:
+def main_row(scope: str, scene: Scene, svg: str, below_visual: Callable[[], None] | None = None,
+             ratio: tuple[float, float] = (3, 2)) -> None:
     with st.container(key="lessonrow"):
-        left, right = st.columns([3, 2], gap="medium")
+        left, right = st.columns(list(ratio), gap="medium")
         with left:
             with st.container(key="visual"):
                 st.html(as_img(svg))

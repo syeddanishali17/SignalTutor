@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Callable
 
-from tutor.sim import bridge, circuits
+from tutor.sim import amplifiers, bridge, circuits
 
 Params = dict[str, float]
 AnswerFn = Callable[[Params], float]
@@ -137,3 +137,88 @@ def _midpoint(p: Params) -> float:
 @misconception_value("zero")
 def _zero(p: Params) -> float:
     return 0.0
+
+
+# --- amplifiers ----------------------------------------------------------------------
+
+
+@answer("opamp.open_loop")
+def _open_loop(p: Params) -> float:
+    return amplifiers.open_loop(p["vd_uV"] * 1e-6, 0.0, p["A_k"] * 1e3, p["Vs"])
+
+
+@misconception_value("opamp.no_rails")
+def _open_loop_no_rails(p: Params) -> float:
+    return p["A_k"] * 1e3 * p["vd_uV"] * 1e-6
+
+
+@answer("noninv.gain")
+def _noninv_gain(p: Params) -> float:
+    return amplifiers.noninv_gain_ideal(p["R1_k"], p["R2_k"])
+
+
+@misconception_value("noninv.ratio_only")
+def _noninv_ratio_only(p: Params) -> float:
+    return p["R1_k"] / p["R2_k"]
+
+
+@misconception_value("noninv.swapped")
+def _noninv_swapped(p: Params) -> float:
+    return 1.0 + p["R2_k"] / p["R1_k"]
+
+
+@answer("noninv.bridge_node_out")
+def _noninv_bridge(p: Params) -> float:
+    return amplifiers.clamp(p["G"] * p["V2"], p["Vs"])
+
+
+@misconception_value("noninv.bridge_no_rails")
+def _noninv_bridge_no_rails(p: Params) -> float:
+    return p["G"] * p["V2"]
+
+
+@misconception_value("noninv.only_signal")
+def _noninv_only_signal(p: Params) -> float:
+    return p["G"] * p["dV_mV"] * 1e-3
+
+
+@answer("diffamp.vout")
+def _diffamp_vout(p: Params) -> float:
+    return p["k"] * p["dV_mV"] * 1e-3
+
+
+@answer("diffamp.cm_leak")
+def _diffamp_cm_leak(p: Params) -> float:
+    k, m = p["k"], p["mis_pct"] / 100
+    _, a_cm = amplifiers.diffamp_gains(1e3, k * 1e3, 1e3, k * 1e3 * (1 + m))
+    return abs(a_cm) * p["Vcm"]
+
+
+@answer("ina.gain")
+def _ina_gain(p: Params) -> float:
+    return amplifiers.ina_gain_ideal(p["R1_k"], p["R2_k"])
+
+
+@misconception_value("ina.forgot_two")
+def _ina_forgot_two(p: Params) -> float:
+    return 1.0 + p["R2_k"] / p["R1_k"]
+
+
+@answer("ina.r1_for_gain")
+def _ina_r1(p: Params) -> float:
+    return amplifiers.ina_r1_for_gain(p["G"], p["R2_k"] * 1e3)
+
+
+@misconception_value("ina.r1_forgot_two")
+def _ina_r1_forgot_two(p: Params) -> float:
+    return p["R2_k"] * 1e3 / (p["G"] - 1.0)
+
+
+@answer("ina.vout")
+def _ina_vout(p: Params) -> float:
+    return amplifiers.ina_gain_ideal(p["R1_k"], p["R2_k"]) * p["dV_mV"] * 1e-3
+
+
+@misconception_value("ina.vout_forgot_two")
+def _ina_vout_forgot_two(p: Params) -> float:
+    return (1.0 + p["R2_k"] / p["R1_k"]) * p["dV_mV"] * 1e-3

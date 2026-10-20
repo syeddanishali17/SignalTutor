@@ -219,6 +219,7 @@ class StepCheck(Strict):
     lhs: str | None = None
     expr: str
     small: str | None = None
+    subs: dict[str, str] = {}  # extra condition applied to both sides, e.g. {R4: "R3*R2/R1"} (matched resistors)
 
 
 class DerivationStep(Strict):

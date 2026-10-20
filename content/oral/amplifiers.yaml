@@ -1,0 +1,149 @@
+questions:
+  - id: why_instrumentation_amp
+    concepts: [instrumentation_amp, common_mode, bridge_loading]
+    priority: very_high
+    question: "Why do we read out a Wheatstone bridge with an instrumentation amplifier, and not with a simple non-inverting amplifier or a difference amplifier?"
+    structure:
+      - {label: definition, text: "The bridge gives a millivolt **difference** $V_2 - V_1$ riding on $\\approx V_0/2$ of **common mode**. The amplifier must amplify the difference, reject the common mode and draw no current from the bridge."}
+      - {label: motivation, text: "**Approach 1**, non-inverting amplifier on one node: it amplifies the whole node voltage, common mode included — $101 \\times 2.5\\,\\text{V}$ saturates the output, the mV signal is lost."}
+      - {label: mechanism, text: "**Approach 2**, difference amplifier: rejects common mode **only** if $R_2/R_1 = R_4/R_3$ exactly; changing the gain means changing two resistors; and its input resistors load the bridge."}
+      - {label: key equation, text: "**Approach 3**, instrumentation amplifier: $A_d = 1 + \\dfrac{2R_2}{R_1}$. Stage 1 (two non-inverting amplifiers) passes common mode with gain 1 and amplifies the difference; stage 2 (a unity difference amplifier) removes the common mode."}
+      - {label: physical meaning, text: "The bridge sees only op-amp **+ inputs** (very high input impedance, no loading); the gain is set by the single resistor $R_1$; CMR is high."}
+      - {label: assumptions, text: "Ideal op-amps with negative feedback (virtual short $V_+ = V_-$, no input current), outputs within the rails."}
+      - {label: limitations, text: "Stage 2 still needs matched resistors — in integrated INAs they are laser-trimmed. Each stage-1 output must stay inside the rails: common mode plus the amplified half-difference."}
+      - {label: application, text: "Piezoresistive pressure sensor: bridge → INA → ADC."}
+    expected_points:
+      - {id: cm, text: "The bridge output is a small difference on a large common mode ($\\approx V_0/2$)"}
+      - {id: approach1, text: "Non-inverting amp amplifies common mode too → saturates"}
+      - {id: approach2, text: "Difference amp: needs exact resistor matching, gain needs two resistors, finite input impedance loads the bridge"}
+      - {id: gain, text: "INA gain $A_d = 1 + 2R_2/R_1$, set by one resistor"}
+      - {id: stages, text: "Stage 1 passes CM with gain 1, amplifies the difference; stage 2 removes CM"}
+      - {id: impedance, text: "High input impedance: the bridge sees only + inputs"}
+    followups:
+      - {when_missing: cm, ask: "At what voltage does each bridge output sit when the bridge is balanced?", hint: "Both at $V_0/2$ — that is the common mode."}
+      - {when_missing: approach2, ask: "A difference amplifier subtracts — so what is wrong with it?"}
+      - {when_missing: stages, ask: "What does stage 1 do with a pure common-mode input?", hint: "$V_A = V_B$ → no current in $R_1$ → both outputs equal their inputs (gain 1)."}
+      - {when_missing: impedance, ask: "Why does the INA not load the bridge?"}
+      - {always: true, ask: "Derive the differential gain of the instrumentation amplifier on the whiteboard."}
+      - {always: true, ask: "What does CMRR mean, and is a large value good or bad?", hint: "$\\text{CMRR} = A_d/A_{cm}$, usually in dB — larger is better."}
+    traps:
+      - "Stage 1 does **not** reject common mode — it passes it with gain 1. Stage 2 rejects it."
+      - "The factor 2 in $2R_2/R_1$: there are two $R_2$ resistors in the current path."
+      - "The virtual short holds only with negative feedback and an unsaturated output."
+
+  - id: ideal_opamp
+    concepts: [op_amp, negative_feedback, virtual_short]
+    priority: very_high
+    question: "What is an ideal operational amplifier, and what are the two rules you use to analyse circuits with it?"
+    structure:
+      - {label: definition, text: "A differential amplifier with output $V_\\text{out} = A_d\\,(V_+ - V_-)$, open-loop gain $A_d \\to \\infty$ (real: $10^5$–$10^6$), infinite input impedance, zero output impedance."}
+      - {label: mechanism, text: "Without feedback, any microvolt difference drives the output to a rail. With **negative** feedback (output → − input) the output settles where the difference is tiny."}
+      - {label: key equation, text: "Rule 1: no current flows into the inputs, $I_+ = I_- = 0$. Rule 2 (virtual short): $V_+ = V_-$ — **only** with negative feedback and an unsaturated output."}
+      - {label: physical meaning, text: "The virtual short is not a wire: it is the result of a huge gain inside a correcting loop. $V_+ - V_- = V_\\text{out}/A_d$, microvolts."}
+      - {label: limitations, text: "The output can never exceed the supply rails. With positive feedback or open loop, rule 2 fails."}
+    expected_points:
+      - {id: transfer, text: "$V_\\text{out} = A_d\\,(V_+ - V_-)$, with $A_d$ huge"}
+      - {id: no_current, text: "No input current (infinite input impedance)"}
+      - {id: virtual_short, text: "Virtual short $V_+ = V_-$"}
+      - {id: condition, text: "Condition: negative feedback, output not saturated"}
+      - {id: rails, text: "The output is limited by the supply rails"}
+    followups:
+      - {when_missing: condition, ask: "Does $V_+ = V_-$ hold for an op-amp with its output connected to the + input?", hint: "No — that is positive feedback: the output runs to a rail."}
+      - {when_missing: rails, ask: "Open loop, $A_d = 10^5$, input difference 1 mV. What is the output?", hint: "$10^5 \\times 1\\,\\text{mV} = 100\\,\\text{V}$ — impossible; it saturates at the rail."}
+      - {always: true, ask: "Why is a huge, poorly controlled gain useful at all?", hint: "With negative feedback the closed-loop gain depends only on resistor ratios, not on $A_d$."}
+    traps:
+      - "Using $V_+ = V_-$ without stating negative feedback."
+      - "Calling the virtual short a real connection — no current flows through it."
+
+  - id: three_approaches
+    concepts: [non_inverting_amp, difference_amp, instrumentation_amp]
+    priority: high
+    question: "Walk through the three approaches to amplifying a bridge signal. What problem does each one solve, and what problem does it leave?"
+    structure:
+      - {label: definition, text: "1 · non-inverting amplifier on one bridge node; 2 · difference amplifier across both nodes; 3 · instrumentation amplifier."}
+      - {label: mechanism, text: "1 amplifies everything at its input → common mode saturates it. 2 subtracts → rejects CM, but only with matched resistors, and it loads the bridge. 3 buffers both nodes (stage 1) before subtracting (stage 2)."}
+      - {label: key equation, text: "$1 + \\dfrac{R_1}{R_2}$ (non-inverting) · $\\dfrac{R_2}{R_1}\\,(V_2 - V_1)$ if $\\dfrac{R_2}{R_1} = \\dfrac{R_4}{R_3}$ (difference) · $1 + \\dfrac{2R_2}{R_1}$ (INA)."}
+      - {label: physical meaning, text: "Each step fixes the previous step's failure: CM → subtraction; loading and matching → buffering stage first."}
+    expected_points:
+      - {id: a1, text: "Approach 1 fails: amplifies common mode, saturates"}
+      - {id: a2, text: "Approach 2: subtracts, but matching, two-resistor gain change, loading"}
+      - {id: a3, text: "Approach 3: high input impedance, one gain resistor, high CMR"}
+      - {id: formulas, text: "States the three gain formulas"}
+    followups:
+      - {when_missing: a2, ask: "What happens to a difference amplifier when $R_4$ is 1 % too large?", hint: "$A_{cm} \\ne 0$: part of the 2.5 V common mode leaks to the output."}
+      - {always: true, ask: "Draw approach 3 and mark which part is stage 1 and which is stage 2."}
+    traps:
+      - "Mixing up the non-inverting gain $1 + R_1/R_2$ (lecture labels) with the INA $1 + 2R_2/R_1$ — state your resistor names."
+
+  - id: derive_ina
+    concepts: [instrumentation_amp, virtual_short]
+    priority: very_high
+    question: "Derive the differential gain of the instrumentation amplifier."
+    structure:
+      - {label: definition, text: "Top input $V_1$ on the + input of U1, bottom input $V_2$ on the + input of U2. $R_1$ between their − inputs (nodes A and B); an $R_2$ from each − input to its output. Stage 2: unity difference amplifier, $V_\\text{out} = V_{o2} - V_{o1}$."}
+      - {label: mechanism, text: "Virtual short: $V_A = V_1$, $V_B = V_2$. So $R_1$ carries $I = \\dfrac{V_B - V_A}{R_1} = \\dfrac{V_2 - V_1}{R_1}$. No current enters the inputs, so the **same** $I$ flows through both $R_2$."}
+      - {label: key equation, text: "$V_{o2} = V_B + I\\,R_2$ and $V_{o1} = V_A - I\\,R_2$, so $V_{o2} - V_{o1} = I\\,(R_2 + R_1 + R_2) = \\left(1 + \\dfrac{2R_2}{R_1}\\right)(V_2 - V_1)$. Stage 2 passes it with gain 1."}
+      - {label: assumptions, text: "Ideal op-amps with negative feedback, unsaturated; matched stage-2 resistors."}
+      - {label: physical meaning, text: "Common mode: $V_1 = V_2$ → $I = 0$ → $V_{o1} = V_1$, $V_{o2} = V_2$: passed with gain 1, then removed by stage 2."}
+    expected_points:
+      - {id: vs, text: "Uses the virtual short: $V_A = V_1$, $V_B = V_2$"}
+      - {id: current, text: "$I = (V_2 - V_1)/R_1$ through $R_1$"}
+      - {id: same_current, text: "Same current through both $R_2$ (no input current)"}
+      - {id: result, text: "$V_{o2} - V_{o1} = (1 + 2R_2/R_1)(V_2 - V_1)$"}
+      - {id: stage2, text: "Stage 2 (gain 1) gives $V_\\text{out} = V_{o2} - V_{o1}$"}
+    followups:
+      - {when_missing: same_current, ask: "Why is the current in both $R_2$ the same as in $R_1$?"}
+      - {when_missing: stage2, ask: "What does stage 2 do, and what does it need?", hint: "Subtracts with gain 1; needs its four resistors matched."}
+      - {always: true, ask: "Now show what happens for a pure common-mode input."}
+    traps:
+      - "Sign of $V_{o2} - V_{o1}$: write the current direction first."
+
+  - id: derive_noninv
+    concepts: [non_inverting_amp, virtual_short]
+    priority: high
+    question: "Derive the gain of a non-inverting amplifier."
+    structure:
+      - {label: definition, text: "Input on $V_+$. $R_1$ from the output to $V_-$, $R_2$ from $V_-$ to ground."}
+      - {label: mechanism, text: "$R_1$ and $R_2$ form a voltage divider from the output: $V_- = V_\\text{out}\\,\\dfrac{R_2}{R_1 + R_2}$. Virtual short: $V_- = V_+ = V_\\text{in}$."}
+      - {label: key equation, text: "$V_\\text{out} = \\dfrac{R_1 + R_2}{R_2}\\,V_\\text{in} = \\left(1 + \\dfrac{R_1}{R_2}\\right)V_\\text{in}$."}
+      - {label: assumptions, text: "Ideal op-amp, negative feedback, output within the rails. Finite $A_d$: $A = \\dfrac{A_d}{1 + A_d\\,\\beta}$ with $\\beta = \\dfrac{R_2}{R_1 + R_2}$."}
+      - {label: physical meaning, text: "Gain at least 1; set by a resistor ratio only."}
+    expected_points:
+      - {id: divider, text: "$V_-$ from a divider of the output"}
+      - {id: vs, text: "Virtual short $V_- = V_\\text{in}$"}
+      - {id: result, text: "$1 + R_1/R_2$"}
+      - {id: condition, text: "States negative feedback / ideal op-amp"}
+    followups:
+      - {always: true, ask: "Why can't this circuit reject the common mode of a bridge?"}
+      - {when_missing: condition, ask: "Which assumption did you use when you set $V_- = V_\\text{in}$?"}
+    traps:
+      - "The gain is $1 + R_1/R_2$, not $R_1/R_2$ (that is the inverting amplifier's magnitude)."
+
+whiteboard:
+  - id: wb_ina_derive
+    concepts: [instrumentation_amp]
+    skill: derive
+    prompt: "Draw the instrumentation amplifier (three op-amps, R₁, two R₂, stage-2 resistors) and derive its differential gain A_d."
+    time_limit_s: 420
+    reference_figure: ina
+    reference_derivation: ina_differential
+    checklist:
+      - {id: figure, text: "Three op-amps; $V_1$, $V_2$ on the + inputs of stage 1; $R_1$ between the − inputs; an $R_2$ in each feedback path"}
+      - {id: stage2, text: "Stage 2 drawn as a difference amplifier with equal resistors"}
+      - {id: vs, text: "Virtual short used: $V_A = V_1$, $V_B = V_2$"}
+      - {id: current, text: "$I = (V_2 - V_1)/R_1$, same current in both $R_2$"}
+      - {id: result, text: "$A_d = 1 + 2R_2/R_1$"}
+      - {id: cm, text: "Remarked: pure common mode passes stage 1 with gain 1 and is removed by stage 2"}
+
+  - id: wb_noninv_draw
+    concepts: [non_inverting_amp]
+    skill: draw
+    prompt: "Draw a non-inverting amplifier with its feedback network, label V₊, V₋, R₁, R₂, and write its gain."
+    time_limit_s: 240
+    reference_figure: noninv
+    reference_derivation: non_inverting
+    checklist:
+      - {id: figure, text: "Input to the + input; $R_1$ from output to − input; $R_2$ from − input to ground"}
+      - {id: labels, text: "$V_+$, $V_-$, $V_\\text{out}$ labelled"}
+      - {id: gain, text: "Gain $1 + R_1/R_2$ written"}
+      - {id: feedback, text: "Feedback marked as negative (to the − input)"}

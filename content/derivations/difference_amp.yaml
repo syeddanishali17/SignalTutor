@@ -1,0 +1,71 @@
+id: difference_amp
+title: Difference amplifier output
+concept: difference_amp
+figure: diffamp
+source: "Lecture 2 notes, p. 3 (result); steps: virtual short + KCL"
+symbols: {V1: V, V2: V, R1: ohm, R2: ohm, R3: ohm, R4: ohm, Vp: V, Vm: V, Vout: V}
+steps:
+  - id: setup
+    latex: "V_1 \\xrightarrow{R_1} V_-,\\quad V_\\text{out} \\xrightarrow{R_2} V_-,\\quad V_2 \\xrightarrow{R_3} V_+ \\xrightarrow{R_4} \\text{ground}"
+    changed: "Name the parts (lecture naming)."
+    why: "Feedback goes through $R_2$ to the $-$ input: negative feedback, so $V_+ = V_-$ and no input current."
+    law: "Circuit reading"
+    assumption: "Ideal op-amp, negative feedback, not saturated"
+    highlight: [R1, R2, R3, R4]
+
+  - id: vplus
+    latex: "V_+ = V_2\\,\\frac{R_4}{R_3 + R_4}"
+    annotated: |-
+      V_+ = V_2\cdot\frac{\overbrace{R_4}^{\text{resistor to ground}}}{\underbrace{R_3 + R_4}_{\text{total: no current leaves into } V_+}}
+    changed: "The $+$ input is the midpoint of the divider $R_3$, $R_4$."
+    why: "No current flows into $V_+$, so $R_3$ and $R_4$ carry the same current — a plain voltage divider."
+    law: "Voltage divider"
+    highlight: [R3, R4, Vp]
+    check: {kind: define, name: Vp, expr: "V2*R4/(R3 + R4)"}
+    fade:
+      prompt: "Voltage at the $+$ input?"
+      correct: 0
+      options:
+        - {latex: "V_2\\,\\dfrac{R_4}{R_3 + R_4}", expr: "V2*R4/(R3 + R4)"}
+        - {latex: "V_2\\,\\dfrac{R_3}{R_3 + R_4}", expr: "V2*R3/(R3 + R4)"}
+        - {latex: "V_2", expr: "V2"}
+
+  - id: vshort
+    latex: "V_- = V_+"
+    changed: "The inverting input follows."
+    why: "Virtual short (negative feedback)."
+    law: "Virtual short"
+    highlight: [Vm, Vp]
+    check: {kind: define, name: Vm, expr: "Vp"}
+
+  - id: kcl
+    latex: "\\frac{V_1 - V_-}{R_1} = \\frac{V_- - V_\\text{out}}{R_2}"
+    changed: "KCL at the $-$ input: what flows in through $R_1$ flows out through $R_2$."
+    why: "No current enters the op-amp input."
+    law: "KCL"
+    highlight: [R1, R2, Vm]
+    check: {kind: equals, lhs: "(V1 - Vm)/R1", expr: "(Vm - (Vm*(1 + R2/R1) - V1*R2/R1))/R2"}
+
+  - id: vout
+    latex: "V_\\text{out} = V_-\\left(1 + \\frac{R_2}{R_1}\\right) - V_1\\,\\frac{R_2}{R_1}"
+    changed: "Solve the KCL equation for $V_\\text{out}$."
+    why: "Multiply both sides by $R_2$ and rearrange."
+    law: "Algebra"
+    highlight: [out]
+    check: {kind: define, name: Vout, expr: "Vm*(1 + R2/R1) - V1*R2/R1"}
+
+  - id: matched
+    latex: "\\frac{R_4}{R_3} = \\frac{R_2}{R_1} \\quad\\Rightarrow\\quad V_\\text{out} = \\frac{R_2}{R_1}\\,(V_2 - V_1)"
+    changed: "Insert $V_+$ and use matched resistor ratios."
+    why: "With $R_4/R_3 = R_2/R_1$ the factor in front of $V_2$ becomes exactly $R_2/R_1$ — so a shared (common-mode) part of $V_1$ and $V_2$ cancels."
+    law: "Algebra"
+    assumption: "Matched resistors: $R_2/R_1 = R_4/R_3$ — any mismatch leaks common mode"
+    highlight: [R1, R2, R3, R4, out]
+    check: {kind: equals, lhs: "Vout", expr: "R2/R1*(V2 - V1)", subs: {R4: "R3*R2/R1"}}
+    fade:
+      prompt: "Output with matched resistors?"
+      correct: 1
+      options:
+        - {latex: "\\dfrac{R_2}{R_1}\\,(V_1 - V_2)", expr: "R2/R1*(V1 - V2)"}
+        - {latex: "\\dfrac{R_2}{R_1}\\,(V_2 - V_1)", expr: "R2/R1*(V2 - V1)"}
+        - {latex: "\\left(1 + \\dfrac{R_2}{R_1}\\right)(V_2 - V_1)", expr: "(1 + R2/R1)*(V2 - V1)"}

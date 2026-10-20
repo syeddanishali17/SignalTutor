@@ -19,6 +19,7 @@ st.set_page_config(page_title="Sensor Tutor", page_icon="📐", layout="wide",
 from tutor.ui import state, theme  # noqa: E402
 from tutor.ui.components import layout  # noqa: E402
 from tutor.ui.pages import (  # noqa: E402
+    amplifiers,
     dev_gallery,
     glossary,
     home,
@@ -49,6 +50,8 @@ pages = {
     "Learn": [
         st.Page(playground.render, title="Foundation Playground", icon=":material/science:", url_path="playground"),
         st.Page(wheatstone.render, title="Wheatstone Bridge Lab", icon=":material/electric_meter:", url_path="wheatstone"),
+        st.Page(amplifiers.render, title="Amplifier Lab", icon=":material/settings_input_component:",
+                url_path="amplifiers"),
     ],
     "Practice": [
         st.Page(practice_page.render, title="Problems & review", icon=":material/calculate:", url_path="practice"),

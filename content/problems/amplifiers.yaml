@@ -1,0 +1,248 @@
+# Templates and solutions are Markdown + $LaTeX$. Placeholders are [[name]].
+problems:
+  - id: interference_cm
+    concept: interference
+    kind: mc
+    level: 2
+    template: "Two bridge wires run side by side past a mains cable. Each picks up about 0.3 V of 50 Hz. What does that do to $V_2 - V_1$?"
+    options:
+      - {id: nothing, text: "almost nothing — the pickup is common mode and cancels in the difference"}
+      - {id: doubles, text: "adds 0.6 V of 50 Hz"}
+      - {id: adds, text: "adds 0.3 V of 50 Hz", misconception: interference_differential}
+    correct: nothing
+    solution: "Both wires get the same pickup: $V_2 - V_1 = (V_{cm} + \\tfrac{V_d}{2} + v) - (V_{cm} - \\tfrac{V_d}{2} + v) = V_d$. A difference measurement rejects it."
+
+  - id: opamp_input_signs
+    concept: op_amp
+    kind: direction
+    level: 1
+    template: "An op-amp without feedback: you raise the voltage at its **inverting** input $V_-$ a little, $V_+$ stays fixed. The output…"
+    options:
+      - {id: down, text: "goes down"}
+      - {id: same, text: "stays the same"}
+      - {id: up, text: "goes up"}
+    correct: down
+    solution: "$V_\\text{out} = A_d\\,(V_+ - V_-)$: raising $V_-$ makes the difference smaller, so the output goes down — that is why it is called *inverting*."
+
+  - id: opamp_open_loop
+    concept: op_amp
+    kind: numeric
+    level: 4
+    template: >-
+      An op-amp with open-loop gain $A_d = [[A_k]]\,000$ and supply rails $\pm[[Vs]]\,\text{V}$ is used **without feedback**.
+      The input difference is $V_+ - V_- = [[vd_uV]]\,\mu\text{V}$. What is $V_\text{out}$?
+    params:
+      A_k: {choices: [100, 200]}
+      Vs: {choices: [12, 15]}
+      vd_uV: {choices: [20, 40, 50, 100, 500]}
+    answer: {fn: opamp.open_loop, unit: V, tolerance_rel: 0.02}
+    misconception_checks:
+      - {fn: opamp.no_rails, misconception: opamp_gain_used_directly}
+    solution: >-
+      $A_d\,(V_+ - V_-) = [[A_k]]\,000 \times [[vd_uV]]\times10^{-6}\,\text{V}$. If that is beyond $\pm[[Vs]]\,\text{V}$, the
+      output saturates at the rail.
+
+  - id: virtual_short_condition
+    concept: virtual_short
+    kind: mc
+    level: 3
+    template: "When may you use $V_+ = V_-$ to analyse an op-amp circuit?"
+    options:
+      - {id: neg, text: "with negative feedback, while the output is not saturated"}
+      - {id: always, text: "always — it is a property of every op-amp", misconception: virtual_short_always}
+      - {id: pos, text: "only with positive feedback", misconception: feedback_any_input}
+      - {id: open, text: "only without feedback"}
+    correct: neg
+    solution: "The virtual short is the *result* of negative feedback acting through a huge gain. Open loop, with positive feedback, or saturated, it does not hold."
+
+  - id: feedback_sign
+    concept: negative_feedback
+    kind: mc
+    level: 2
+    template: "An op-amp's output is fed back to its **non-inverting** ($+$) input. What happens?"
+    options:
+      - {id: rail, text: "any small difference grows: the output runs to a rail and stays there"}
+      - {id: stable, text: "the output settles where $V_+ = V_-$", misconception: feedback_any_input}
+      - {id: zero, text: "the output becomes 0 V"}
+    correct: rail
+    solution: "Feedback to $+$ is **positive** feedback: it reinforces every error instead of correcting it. Only feedback to $-$ gives the stable virtual short."
+
+  - id: noninv_gain_value
+    concept: non_inverting_amp
+    kind: numeric
+    level: 4
+    template: >-
+      A non-inverting amplifier has $R_1 = [[R1_k]]\,\text{k}\Omega$ (output to $V_-$) and $R_2 = [[R2_k]]\,\text{k}\Omega$
+      ($V_-$ to ground). What is its gain $V_\text{out}/V_\text{in}$?
+    params:
+      R1_k: {choices: [9, 10, 47, 99, 100]}
+      R2_k: {choices: [1, 2.2, 10]}
+    answer: {fn: noninv.gain, unit: "1", tolerance_rel: 0.01}
+    misconception_checks:
+      - {fn: noninv.ratio_only, misconception: noninv_forgot_one}
+      - {fn: noninv.swapped, misconception: noninv_forgot_one}
+    solution: "$A = 1 + \\dfrac{R_1}{R_2} = 1 + \\dfrac{[[R1_k]]}{[[R2_k]]}$."
+
+  - id: noninv_bridge_node
+    concept: non_inverting_amp
+    kind: numeric
+    level: 4
+    template: >-
+      Approach 1: a non-inverting amplifier with gain $[[G]]$ measures the bridge node $V_2 = [[V2]]\,\text{V}$ against
+      ground (it carries a $[[dV_mV]]\,\text{mV}$ strain signal). The supply rails are $\pm[[Vs]]\,\text{V}$.
+      What is $V_\text{out}$?
+    params:
+      G: {choices: [11, 101, 1001]}
+      V2: {choices: [2.5]}
+      dV_mV: {choices: [1]}
+      Vs: {choices: [12, 15]}
+    answer: {fn: noninv.bridge_node_out, unit: V, tolerance_rel: 0.01}
+    misconception_checks:
+      - {fn: noninv.bridge_no_rails, misconception: opamp_gain_used_directly}
+      - {fn: noninv.only_signal, misconception: noninv_rejects_cm}
+    solution: >-
+      It amplifies the **whole** node voltage, common mode included: $[[G]] \times [[V2]]\,\text{V}$ is far beyond the rails,
+      so the output sits at $+[[Vs]]\,\text{V}$ — the 1 mV signal is lost.
+
+  - id: diffamp_out
+    concept: difference_amp
+    kind: numeric
+    level: 4
+    template: >-
+      A matched difference amplifier has $R_2/R_1 = R_4/R_3 = [[k]]$. The inputs are $V_1 = 2.500\,\text{V}$ and
+      $V_2 = 2.500\,\text{V} + [[dV_mV]]\,\text{mV}$. What is $V_\text{out}$?
+    params:
+      k: {choices: [10, 47, 100]}
+      dV_mV: {choices: [1, 2, 5]}
+    answer: {fn: diffamp.vout, unit: V, tolerance_rel: 0.02, display_prefix: m}
+    solution: "$V_\\text{out} = \\dfrac{R_2}{R_1}\\,(V_2 - V_1) = [[k]] \\times [[dV_mV]]\\,\\text{mV}$. The shared 2.5 V cancels."
+
+  - id: diffamp_leak
+    concept: cmrr
+    kind: numeric
+    level: 5
+    template: >-
+      A difference amplifier with $R_2/R_1 = [[k]]$ has $R_4$ off by $+[[mis_pct]]\,\%$ (so $R_4/R_3 \ne R_2/R_1$).
+      Both inputs sit at a common-mode level of $[[Vcm]]\,\text{V}$ with no difference. How much appears at the output?
+    params:
+      k: {choices: [10, 100]}
+      mis_pct: {choices: [0.1, 1, 5]}
+      Vcm: {choices: [2.5]}
+    answer: {fn: diffamp.cm_leak, unit: V, tolerance_rel: 0.03, accept_sign: either, display_prefix: m}
+    solution: >-
+      $A_{cm} = \dfrac{R_4}{R_3 + R_4}\left(1 + \dfrac{R_2}{R_1}\right) - \dfrac{R_2}{R_1}$ with $R_4 = [[k]]\,R_3\,(1 + [[mis_pct]]\,\%)$;
+      the output is $|A_{cm}| \times [[Vcm]]\,\text{V}$. A tiny mismatch leaks millivolts — as large as the signal.
+
+  - id: diffamp_gain_change
+    concept: difference_amp
+    kind: mc
+    level: 3
+    template: "You want to change the gain of a difference amplifier from 10 to 100 without losing its common-mode rejection. What must you change?"
+    options:
+      - {id: two, text: "two resistors ($R_2$ and $R_4$), keeping $R_2/R_1 = R_4/R_3$"}
+      - {id: one, text: "just $R_2$", misconception: diffamp_change_one_resistor}
+      - {id: none, text: "nothing — the op-amp sets the gain"}
+    correct: two
+    solution: "Gain and CMR are coupled: both ratios must stay equal. That is the lecture's first problem with approach 2."
+
+  - id: diffamp_loading
+    concept: difference_amp
+    kind: mc
+    level: 3
+    template: "Why does a difference amplifier unbalance the Wheatstone bridge it is connected to?"
+    options:
+      - {id: current, text: "its inputs draw current through $R_1$ and through $R_3 + R_4$ (finite input impedance)"}
+      - {id: none, text: "it does not — op-amp inputs draw no current", misconception: diffamp_infinite_input}
+      - {id: gain, text: "because its gain is too high"}
+    correct: current
+    solution: "The op-amp itself draws no current, but the bridge sees the input **resistors**: current flows out of the bridge nodes and shifts them."
+
+  - id: ina_gain_value
+    concept: instrumentation_amp
+    kind: numeric
+    level: 4
+    template: "An instrumentation amplifier has $R_1 = [[R1_k]]\\,\\text{k}\\Omega$ and $R_2 = [[R2_k]]\\,\\text{k}\\Omega$. What is its differential gain $A_d$?"
+    params:
+      R1_k: {choices: [0.5, 1, 2, 4.7]}
+      R2_k: {choices: [10, 20, 49.5]}
+    answer: {fn: ina.gain, unit: "1", tolerance_rel: 0.01}
+    misconception_checks:
+      - {fn: ina.forgot_two, misconception: ina_forgot_two}
+    solution: "$A_d = 1 + \\dfrac{2R_2}{R_1} = 1 + \\dfrac{2 \\times [[R2_k]]}{[[R1_k]]}$ (stage 2 adds a gain of 1)."
+
+  - id: ina_r1_design
+    concept: instrumentation_amp
+    kind: numeric
+    level: 5
+    template: "You need an instrumentation-amplifier gain of $[[G]]$ with $R_2 = [[R2_k]]\\,\\text{k}\\Omega$. Which $R_1$?"
+    params:
+      G: {choices: [11, 21, 101, 201]}
+      R2_k: {choices: [10, 25, 50]}
+    answer: {fn: ina.r1_for_gain, unit: ohm, tolerance_rel: 0.01}
+    misconception_checks:
+      - {fn: ina.r1_forgot_two, misconception: ina_forgot_two}
+    solution: "$1 + \\dfrac{2R_2}{R_1} = [[G]] \\;\\Rightarrow\\; R_1 = \\dfrac{2R_2}{[[G]] - 1}$."
+
+  - id: ina_out_value
+    concept: instrumentation_amp
+    kind: numeric
+    level: 4
+    template: >-
+      A bridge gives $V_2 - V_1 = [[dV_mV]]\,\text{mV}$ on top of 2.5 V common mode. It feeds an instrumentation amplifier
+      with $R_1 = [[R1_k]]\,\text{k}\Omega$ and $R_2 = [[R2_k]]\,\text{k}\Omega$. What is $V_\text{out}$?
+    params:
+      dV_mV: {choices: [1, 1.25, 2, 5]}
+      R1_k: {choices: [1, 2]}
+      R2_k: {choices: [10, 49.5]}
+    answer: {fn: ina.vout, unit: V, tolerance_rel: 0.02, display_prefix: m}
+    misconception_checks:
+      - {fn: ina.vout_forgot_two, misconception: ina_forgot_two}
+    solution: "$V_\\text{out} = \\left(1 + \\dfrac{2R_2}{R_1}\\right)(V_2 - V_1)$; the 2.5 V common mode is removed by stage 2."
+
+  - id: ina_stage1_cm
+    concept: instrumentation_amp
+    kind: mc
+    level: 3
+    template: "Both inputs of an instrumentation amplifier sit at 2.5 V (pure common mode). What are the two **stage-1** outputs?"
+    options:
+      - {id: pass, text: "both 2.5 V — stage 1 passes common mode with gain 1"}
+      - {id: zero, text: "both 0 V — stage 1 rejects it", misconception: stage1_rejects_cm}
+      - {id: amplified, text: "both $(1 + 2R_2/R_1) \\times 2.5\\,\\text{V}$"}
+    correct: pass
+    solution: "$V_A = V_B = 2.5\\,\\text{V}$, so no current flows in $R_1$ or the $R_2$s: the outputs equal the inputs. Stage 2 removes the common mode."
+
+  - id: ina_why
+    concept: instrumentation_amp
+    kind: mc
+    level: 2
+    template: "Which is **not** a reason to read a bridge with an instrumentation amplifier?"
+    options:
+      - {id: rails, text: "it lets the output go beyond the supply rails"}
+      - {id: z, text: "very high input impedance (the bridge is not loaded)"}
+      - {id: cmr, text: "high common-mode rejection"}
+      - {id: gain, text: "gain set by a single resistor $R_1$"}
+    correct: rails
+    solution: "No amplifier output can go beyond its rails. The other three are exactly the lecture's three ticks for approach 3."
+
+  - id: cmrr_meaning
+    concept: cmrr
+    kind: mc
+    level: 2
+    template: "Amplifier A has CMRR = 60 dB, amplifier B 100 dB. Which rejects mains pickup better?"
+    options:
+      - {id: b, text: "B (bigger is better)"}
+      - {id: a, text: "A (smaller is better)", misconception: cmrr_small_good}
+    correct: b
+    solution: "CMRR $= A_d/A_{cm}$: larger means the common mode is amplified relatively less. 100 dB = $10^5$, 60 dB = $10^3$."
+
+  - id: impedance_meter
+    concept: impedance
+    kind: mc
+    level: 2
+    template: "To measure a voltage without disturbing it, the meter's input resistance should be…"
+    options:
+      - {id: high, text: "as high as possible"}
+      - {id: low, text: "as low as possible", misconception: low_impedance_better}
+      - {id: equal, text: "equal to the source resistance"}
+    correct: high
+    solution: "A high input resistance draws (almost) no current, so the voltage being measured is not pulled down."

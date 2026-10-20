@@ -1,0 +1,62 @@
+id: ina_common_mode
+title: Instrumentation amplifier — common-mode input
+concept: instrumentation_amp
+figure: ina
+source: "Lecture 2 notes, p. 4"
+symbols: {Vcm: V, VA: V, VB: V, R1: ohm, R2: ohm, I: A, Vo1: V, Vo2: V}
+steps:
+  - id: setup
+    latex: "V_{\\text{in},1} = V_{\\text{in},2} = V_{cm}"
+    changed: "Both inputs carry the same voltage — pure common mode."
+    why: "We check what the amplifier does with the part both wires share."
+    law: "Common mode"
+    assumption: "Ideal op-amps, negative feedback, not saturated"
+    highlight: [in1, in2]
+
+  - id: va
+    latex: "V_A = V_{cm}"
+    changed: "Node A (top of $R_1$) follows the top input."
+    why: "Virtual short of the top op-amp: its $-$ input $V_A$ equals its $+$ input."
+    law: "Virtual short"
+    highlight: [VA, in1]
+    check: {kind: define, name: VA, expr: "Vcm"}
+
+  - id: vb
+    latex: "V_B = V_{cm}"
+    changed: "Node B (bottom of $R_1$) follows the bottom input."
+    why: "Virtual short of the bottom op-amp."
+    law: "Virtual short"
+    highlight: [VB, in2]
+    check: {kind: define, name: VB, expr: "Vcm"}
+
+  - id: current
+    latex: "I = \\frac{V_B - V_A}{R_1} = 0"
+    changed: "No voltage across $R_1$, so no current through it."
+    why: "Ohm's law: equal voltages at both ends → zero current."
+    law: "Ohm's law"
+    highlight: [R1]
+    check: {kind: define, name: I, expr: "(VB - VA)/R1"}
+    fade:
+      prompt: "Current through $R_1$ for a pure common-mode input?"
+      correct: 0
+      options:
+        - {latex: "0", expr: "0"}
+        - {latex: "\\dfrac{V_{cm}}{R_1}", expr: "Vcm/R1"}
+        - {latex: "\\dfrac{2V_{cm}}{R_1}", expr: "2*Vcm/R1"}
+
+  - id: outputs
+    latex: "V_{o1} = V_A - I\\,R_2 = V_{cm},\\qquad V_{o2} = V_B + I\\,R_2 = V_{cm}"
+    changed: "No current in $R_1$ means no current in either $R_2$: no voltage drop, outputs equal the inputs."
+    why: "The $R_2$ resistors carry the same current as $R_1$ (KCL), here zero. Stage 1 passes common mode with **gain 1** — it does **not** reject it."
+    law: "KCL, Ohm's law"
+    highlight: [R2a, R2b, o1, o2]
+    check: {kind: define, name: Vo2, expr: "VB + I*R2"}
+
+  - id: stage2
+    latex: "V_\\text{out} = V_{o2} - V_{o1} = 0"
+    changed: "Stage 2 subtracts the two equal outputs."
+    why: "Stage 2 is a difference amplifier with four equal resistors: $A_d = 1$, $A_{cm} = 0$. **Stage 2 removes the common mode.**"
+    law: "Difference amplifier"
+    assumption: "Stage-2 resistors matched"
+    highlight: [Ra, Rf, Rb, Rg, out]
+    check: {kind: equals, lhs: "Vo2 - (VA - I*R2)", expr: "0"}

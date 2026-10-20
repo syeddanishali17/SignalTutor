@@ -614,3 +614,8 @@ FIGURES: dict[str, Callable[[list[str]], str]] = {
     "bridge_quarter_diamond": lambda hl: bridge(None, "quarter", layout="diamond", selected=hl, symbolic=True),
     "divider": lambda hl: divider(5.0, 1e3, 1e3, 2.5, 2.5e-3, selected=hl, symbolic=True, show_flow=False),
 }
+
+# amplifier figures register their symbolic versions too
+from tutor.ui.svg import amp_figures as _amp  # noqa: E402
+
+FIGURES.update(_amp.FIGURES)
