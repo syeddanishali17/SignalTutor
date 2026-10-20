@@ -484,12 +484,12 @@ def _small(lesson, scene) -> None:
         w = 2 * math.pi * 1e3
         lin = -lin_amp * np.sin(w * t)
         norm = max(lin_amp, 1e-30)
-        fig = plots.figure("time (periods of the sound)", "current / small-signal amplitude", (0, 2), (-4.5, 4.5),
+        fig = plots.figure("time (periods of the sound)", "current /<br>small-signal amplitude", (0, 2), (-4.5, 4.5),
                            height=250)
         mask = tt <= 2.0
         plots.line(fig, tt[mask], lin[mask] / norm, "small-signal", color=plots.COLORS["volt"], dash="dash",
-                   label_y_shift=-10)
-        plots.line(fig, tt[mask], cur[mask] / norm, "exact", color=plots.COLORS["ink"], label_y_shift=10)
+                   label_y_shift=-16)
+        plots.line(fig, tt[mask], cur[mask] / norm, "exact", color=plots.COLORS["ink"], label_y_shift=16)
         plots.show(fig, key="cap_mic_wave")
         st.caption("For a small swing the curves coincide. For a large one the exact current is lopsided: that "
                    "asymmetry IS the 2ω and 3ω content.")

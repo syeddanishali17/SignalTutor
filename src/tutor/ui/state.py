@@ -1,8 +1,11 @@
-"""Shared, cached resources and the teaching mode. The only Streamlit-aware glue."""
+"""Shared content resources and session-owned learner state."""
 
 from __future__ import annotations
 
+import os
+
 import streamlit as st
+from streamlit.errors import StreamlitSecretNotFoundError
 
 from tutor.engine.concept_graph import ConceptGraph
 from tutor.engine.formula_view import Mode
@@ -11,6 +14,7 @@ from tutor.models.content import ContentBundle
 from tutor.models.loader import load_or_raise
 from tutor.paths import DB_PATH
 from tutor.persistence.repo import Repo
+from tutor.persistence.storage import create_repo, validate_mode
 
 MODE_LABELS: dict[str, str] = {"beginner": "Beginner", "course": "Course", "exam": "Exam"}
 
@@ -25,9 +29,29 @@ def graph() -> ConceptGraph:
     return ConceptGraph(bundle().concepts)
 
 
-@st.cache_resource(show_spinner=False)
+def storage_mode() -> str:
+    """Pin configuration for this session; config changes require a new session.
+
+    An explicit environment variable wins over Community Cloud's root secret.
+    Missing configuration preserves persistent local development behaviour.
+    Invalid configuration fails rather than falling back to a shared database.
+    """
+    if "_storage_mode" not in st.session_state:
+        value = os.environ.get("TUTOR_STORAGE_MODE")
+        if value is None:
+            try:
+                value = st.secrets.get("TUTOR_STORAGE_MODE", "local")
+            except StreamlitSecretNotFoundError:
+                value = "local"
+        st.session_state["_storage_mode"] = validate_mode(value)
+    return st.session_state["_storage_mode"]
+
+
 def repo() -> Repo:
-    return Repo(DB_PATH)
+    """Only content/graph may be globally cached. Learner storage belongs here."""
+    if "_learner_repo" not in st.session_state:
+        st.session_state["_learner_repo"] = create_repo(storage_mode(), DB_PATH)
+    return st.session_state["_learner_repo"]
 
 
 def service() -> StudyService:

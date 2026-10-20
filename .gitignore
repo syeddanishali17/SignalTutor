@@ -6,15 +6,20 @@ sources/
 data/
 local/
 *.sqlite
+*.sqlite3
 *.db
+*.db-*
+*.sqlite-*
 
 # Secrets
 .env
+.env.*
 .streamlit/secrets.toml
 
 # QA screenshots
 qa_out/
 screenshots/
+output/
 
 # Python / tooling
 .venv/

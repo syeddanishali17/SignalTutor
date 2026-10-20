@@ -1,4 +1,4 @@
-"""SQLite persistence (spec section 17), single local user.
+"""SQLite persistence (spec section 17), one learner per repository.
 
 A new connection per operation keeps this safe under Streamlit's threaded
 script runs; SQLite handles the locking.

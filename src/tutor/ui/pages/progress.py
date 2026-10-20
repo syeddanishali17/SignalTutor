@@ -44,4 +44,8 @@ def render() -> None:
         st.markdown("### Predictions")
         st.markdown(f"You committed **{made}** predictions and got **{hits}** right. "
                     "Wrong predictions are where learning happens — revisit those scenes.")
-    st.caption(f"{state.repo().attempt_count()} attempts stored locally in SQLite.")
+    if state.storage_mode() == "session":
+        st.caption(f"{state.repo().attempt_count()} attempts in this browser session. "
+                   "Progress resets when the session or app restarts.")
+    else:
+        st.caption(f"{state.repo().attempt_count()} attempts stored locally in SQLite.")

@@ -16,6 +16,45 @@ uv pip install --python .venv/Scripts/python.exe -e ".[dev]"
 
 Learner data (attempts, review queue, settings) is stored locally in `data/tutor.db` (git-ignored). An optional `local/schedule.yaml` with `exam: YYYY-MM-DD` shows a personal countdown on Today. That file is git-ignored.
 
+## Streamlit Community Cloud
+
+Deploy manually from `syeddanishali17/SignalTutor`, branch `main`, entrypoint
+`app.py`. In **Advanced settings**, choose **Python 3.12** and enter this in
+**Secrets** (required for public multi-user use):
+
+```toml
+TUTOR_STORAGE_MODE = "session"
+```
+
+The root `requirements.txt` pins production dependencies; `pyproject.toml`
+remains the local development configuration. No external service or database
+credentials are required. Leave `TUTOR_DEV` unset for public use.
+
+In session mode, each Streamlit session owns a separate in-memory SQLite
+repository in `st.session_state`. Attempts, mastery, review queues, predictions,
+settings and teaching mode are isolated. There is no globally cached learner
+repository and no learner data is written to `data/tutor.db`. Only read-only
+teaching content and its concept graph use the shared resource cache.
+
+Session progress is temporary: a new session (including a reload that resets
+the connection) or an instance restart can clear it. Cloud filesystem storage
+is not treated as durable. The private local schedule is ignored in session
+mode, and deployment needs no schedule file. Today and Progress explain the
+temporary session lifetime to learners.
+
+For local testing, set the environment variable `TUTOR_STORAGE_MODE=session`
+before running Streamlit, or use the same setting in a git-ignored
+`.streamlit/secrets.toml`. An explicit environment variable takes precedence.
+Without either setting, `local` mode retains persistent `data/tutor.db`
+(or `TUTOR_DATA_DIR/tutor.db`). Invalid mode values stop with an error. Storage
+mode is fixed for each session; restart the app after changing configuration.
+
+The optional `?for=lara` link shows “You can do this, Lara.” as a short,
+non-blocking toast on Today. Other query values do not enable it.
+
+Deployment controls: [Streamlit deployment settings](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy)
+and [Secrets management](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management).
+
 ## Check it
 
 ```bash

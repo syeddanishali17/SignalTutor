@@ -32,8 +32,18 @@ h1 {{ font-size: 2.0rem !important; }}
 h2 {{ font-size: 1.45rem !important; }}
 h3 {{ font-size: 1.15rem !important; }}
 
-/* touch targets */
-.stButton button, [data-testid="stSegmentedControl"] button, [data-testid="stPills"] button {{ min-height: 40px; }}
+/* touch targets: a finger, not a mouse. manipulation keeps pinch-zoom and drops double-tap zoom. */
+html {{ touch-action: manipulation; }}
+.stButton button, [data-testid="stButtonGroup"] button, [data-testid="stPills"] button,
+[data-testid="stPopover"] button,
+[data-testid="stRadio"] label, [data-testid="stCheckbox"] label,
+[data-testid="stTopNavSection"], [data-testid="stTopNavLink"],
+[data-testid="stExpander"] summary {{ min-height: 44px; }}
+.stButton button {{ padding-left: 14px; padding-right: 14px; }}
+button[aria-label^="Help for"] {{ min-width: 44px; min-height: 44px; }}
+[data-testid="stMain"] input, [data-testid="stMain"] textarea, [data-testid="stMain"] select {{ font-size: 16px !important; }}
+[data-testid="stSlider"] [role="group"] > div {{ min-height: 44px; }}
+[data-testid="stSlider"] [role="group"] > div > div:nth-child(2) {{ width: 28px !important; height: 28px !important; }}
 
 /* framed regions (used sparingly: visual, inspector, tray, equation strip) */
 .st-key-visual, .st-key-inspector, .st-key-tray, .st-key-eqstrip, .st-key-consequence {{
@@ -43,18 +53,23 @@ h3 {{ font-size: 1.15rem !important; }}
 .st-key-eqstrip {{ background: #fffdf5; border-left: 5px solid var(--volt); }}
 .st-key-inspector {{ border-top: 5px solid var(--ink); }}
 
-/* lesson main row: visual 60 % / inspector 40 %; wraps below ~900 px (tablet) */
+/* lesson main row: visual 60 % / inspector 40 %; wraps when a column would be under 420 px */
 .st-key-lessonrow [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap; gap: 1rem; }}
 .st-key-lessonrow [data-testid="stColumn"] {{ min-width: min(100%, 420px); }}
+/* tablet / iPad portrait: one existing breakpoint, reused everywhere. Landscape above 900 px keeps two columns. */
 @media (max-width: 900px) {{
-  .st-key-lessonrow [data-testid="stColumn"] {{ flex: 1 1 100% !important; width: 100% !important; }}
-  /* tablet: stack squeezed control trays, equation results and metric rows instead of clipping */
-  .st-key-tray [data-testid="stHorizontalBlock"],
-  .st-key-eqstrip [data-testid="stHorizontalBlock"],
-  .st-key-consequence [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap; }}
-  .st-key-tray [data-testid="stColumn"],
-  .st-key-eqstrip [data-testid="stColumn"] {{ flex: 1 1 100% !important; width: 100% !important; min-width: 0 !important; }}
+  [data-testid="stMain"] [data-testid="stHorizontalBlock"] {{ flex-wrap: wrap !important; }}
+  [data-testid="stMain"] [data-testid="stColumn"] {{
+    flex: 1 1 100% !important; width: 100% !important; min-width: 0 !important;
+  }}
   .st-key-consequence [data-testid="stColumn"] {{ flex: 1 1 46% !important; width: auto !important; min-width: 148px !important; }}
+  .st-key-termchips [data-testid="stColumn"], .st-key-termchips > div,
+  .st-key-eqterms [data-testid="stColumn"], .st-key-eqterms > div {{
+    flex: 0 0 auto !important; width: auto !important; min-width: 0 !important;
+  }}
+  .block-container {{ padding-left: 1rem; padding-right: 1rem; }}
+  .katex-display {{ overflow-x: auto; overflow-y: hidden; max-width: 100%; }}
+  [data-testid="stPlotlyChart"], [data-testid="stImage"] img, .st-key-visual img {{ max-width: 100%; height: auto; }}
 }}
 .st-key-tray .stButton button p {{ white-space: nowrap; }}
 
@@ -121,6 +136,13 @@ h3 {{ font-size: 1.15rem !important; }}
 .st-key-termchips button div, .st-key-termchips button span {{ overflow: visible !important; max-width: none !important; width: auto !important; }}
 .st-key-termchips button p {{ white-space: nowrap; overflow: visible; text-overflow: clip; }}
 .st-key-eqterms > div {{ flex: 0 0 auto !important; width: auto !important; }}
+
+/* toast (Lara greeting): stay inside the viewport and use the notebook palette */
+[data-testid="stToast"] {{
+  max-width: min(22rem, calc(100vw - 1.5rem)) !important;
+  background: var(--card) !important; color: var(--ink) !important;
+  border: 1.5px solid var(--hl-edge) !important;
+}}
 
 /* creator signature: small, muted, outside the teaching area */
 .mst-sign {{ margin: 64px 0 4px 0; padding: 14px 0 6px 0; border-top: 1px solid var(--rule); text-align: center;

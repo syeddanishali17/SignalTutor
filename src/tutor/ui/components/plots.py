@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import math
+import textwrap
 
 import plotly.graph_objects as go
 import streamlit as st
@@ -34,7 +35,8 @@ def figure(x_title: str, y_title: str, x_range: tuple[float, float], y_range: tu
         dragmode=False,
     )
     axis = dict(showgrid=True, gridcolor="#ece7dc", zeroline=True, zerolinecolor="#b9b2a2", zerolinewidth=1.2,
-                linecolor="#b9b2a2", showline=True, mirror=True, ticks="outside", fixedrange=True)
+                linecolor="#b9b2a2", showline=True, mirror=True, ticks="outside", fixedrange=True,
+                automargin=True)
     fig.update_xaxes(title_text=x_title, range=list(x_range), **axis)
     fig.update_yaxes(title_text=y_title, range=list(y_range), **axis)
     return fig
@@ -55,7 +57,13 @@ def line(fig: go.Figure, x, y, label: str, color: str = INK, dash: str = "solid"
         lx, ly = xs[idx], ys[idx]
     if x_log:  # Plotly positions annotations on log axes in log10 units
         lx = math.log10(lx)
-    fig.add_annotation(x=lx, y=ly, text=f"<b>{label}</b>", showarrow=False, xanchor="left", xshift=6,
+    # Keep direct labels inside the reserved margin at tablet widths. Preserve
+    # words and notation; stack a long explanation instead of shrinking it.
+    label_lines = textwrap.wrap(label, width=14, break_long_words=False, break_on_hyphens=False)
+    display_label = "<br>".join(label_lines)
+    if label_y_shift:
+        label_y_shift += math.copysign(9 * (len(label_lines) - 1), label_y_shift)
+    fig.add_annotation(x=lx, y=ly, text=f"<b>{display_label}</b>", showarrow=False, xanchor="left", xshift=6,
                        yshift=label_y_shift, font=dict(color=color, size=12))
 
 
@@ -65,7 +73,14 @@ def point(fig: go.Figure, x: float, y: float, label: str, color: str = VOLT, sho
     fig.add_trace(go.Scatter(x=[x], y=[y], mode="markers", marker=dict(size=13, color=color, symbol="circle",
                                                                         line=dict(color="#ffffff", width=2)),
                              hoverinfo="skip"))
-    fig.add_annotation(x=x, y=y, text=label, showarrow=True, arrowhead=0, ax=34, ay=-28,
+    # Point callouts face into the plotting area near its top/right edges.
+    # Plotly annotations (unlike traces) require log10 coordinates on log axes.
+    label_x = math.log10(x) if fig.layout.xaxis.type == "log" else x
+    x_lo, x_hi = fig.layout.xaxis.range
+    y_lo, y_hi = fig.layout.yaxis.range
+    ax = -34 if label_x > x_lo + 0.8 * (x_hi - x_lo) else 34
+    ay = 28 if y > y_lo + 0.85 * (y_hi - y_lo) else -28
+    fig.add_annotation(x=label_x, y=y, text=label, showarrow=True, arrowhead=0, ax=ax, ay=ay,
                        font=dict(color=color, size=12), bgcolor="rgba(255,255,255,.85)")
 
 

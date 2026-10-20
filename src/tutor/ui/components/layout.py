@@ -31,15 +31,16 @@ _box_counter = itertools.count()
 
 
 def page_header(kicker_text: str, title: str, subtitle: str | None = None, show_mode: bool = True) -> None:
-    left, right = st.columns([5, 2], vertical_alignment="bottom")
-    with left:
-        st.markdown(f'<p class="mst-kicker">{html.escape(kicker_text)}</p>', unsafe_allow_html=True)
-        st.markdown(f"# {title}")
-        if subtitle:
-            st.markdown(f'<p class="mst-muted">{subtitle}</p>', unsafe_allow_html=True)
-    if show_mode:
-        with right:
-            mode_switch()
+    with st.container(key="pagehead"):
+        left, right = st.columns([5, 2], vertical_alignment="bottom")
+        with left:
+            st.markdown(f'<p class="mst-kicker">{html.escape(kicker_text)}</p>', unsafe_allow_html=True)
+            st.markdown(f"# {title}")
+            if subtitle:
+                st.markdown(f'<p class="mst-muted">{subtitle}</p>', unsafe_allow_html=True)
+        if show_mode:
+            with right:
+                mode_switch()
 
 
 def mode_switch() -> None:
@@ -54,6 +55,7 @@ def mode_switch() -> None:
         "Course: lecture notation, faded derivations. "
         "Exam: scaffolding removed, derivations hidden until you reveal them.",
     )
+    st.caption("Beginner labels the fractions. Course uses standard notation. Exam hides the scaffolding.")
     if choice and choice != current:
         state.set_mode(choice)
         st.rerun()

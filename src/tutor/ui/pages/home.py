@@ -81,7 +81,10 @@ def render() -> None:
     svc = state.service()
     mastery = state.mastery_cached()
 
-    exam = exam_date()
+    public_session = state.storage_mode() == "session"
+    if public_session:
+        st.caption("Progress is private to this browser session and resets when the session or app restarts.")
+    exam = None if public_session else exam_date()
     items, minutes = svc.due_summary(today)
     if exam is not None:
         c1, c2 = st.columns(2)
