@@ -3,7 +3,7 @@ title: Wheatstone bridge
 short: "Wheatstone bridge"
 code: C3
 track: course_l01
-prerequisites: [voltage_divider, ground_reference, differential_signal]
+prerequisites: [voltage_divider, ground_reference]
 status: verified
 source_refs: ["Lecture 1 notes, p. 2", "Lecture 2 notes, p. 2"]
 one_liner: "Two voltage dividers fed by the same supply; the output is the **difference** between their midpoints — zero when balanced."

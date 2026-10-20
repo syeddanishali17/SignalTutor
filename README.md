@@ -32,8 +32,17 @@ Learner data (attempts, review queue, settings) is stored locally in `data/tutor
 | Foundation Playground | closed loop & current, voltage as a difference, Ohm's law (with fractions), divider, ground, KCL, reading a circuit |
 | Wheatstone Bridge Lab | pressure → strain → ΔR (membrane), two dividers → bridge, quarter bridge (exact vs approximate), full bridge, temperature drift, loading by a real meter, SymPy-checked derivations |
 | Amplifier Lab | mains interference & common mode, the op-amp as a black box, negative feedback and the virtual short, non-inverting amplifier, difference amplifier, instrumentation amplifier |
-| Practice | auto-graded problems with units and misconception diagnosis, spaced review (1/3/7/14/30 days), oral drills with examiner follow-ups, paper-first whiteboard drills |
-| Reference | progress (rule-based mastery states), glossary with a concept map, sources & known issues (every deviation from the lecture notes, never silently corrected) |
+| Capacitive Sensor Lab | membrane and Hooke's law, parallel-plate capacitance, C(x), barometer vs microphone current, small-signal and harmonics, pull-in |
+| Noise Lab | additive vs multiplicative noise, variance and RMS, spectrum, PSD (white and 1/f), band power, one-sided vs two-sided and the 2π trap. One seeded noise record feeds the time trace, histogram, Welch estimate and band integral |
+| Practice | auto-graded problems with units and misconception diagnosis, spaced review (1/3/7/14/30 days), oral drills with examiner follow-ups, paper-first whiteboard drills, a 15-minute two-topic mock oral |
+| Reference | progress (rule-based mastery states: not started, shaky, solid, exam-ready), glossary with a concept map, sources & known issues |
+
+## What is not in it yet
+
+* Lecture 3 and later (the `course_l03` track is empty). Lock-in detection is named at the end of the Noise Lab and is not a lesson.
+* The sensor-map stages ADC, processing and communication have no lessons.
+* Known issues K1–K10 stay **open**. Dimension checks do not close them; the official slides have not been compared.
+* There is no printable one-pager export. The creator line (`Modern Sensor Tutor · Built by Danish`) is shared by the footer and the home page so an export can use the same string.
 
 ## Layout
 
