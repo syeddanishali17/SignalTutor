@@ -5,39 +5,52 @@ questions:
     question: "Explain a voltage divider to a friend with no electronics background. Why is it the key to the Wheatstone bridge?"
     structure:
       - {label: definition, text: "Two resistors in series across a supply; the output is the junction between them."}
-      - {label: mechanism, text: "Same current through both; each takes a voltage share proportional to its resistance."}
-      - {label: key equation, text: "V_out = V_in · R2/(R1 + R2), R2 being the resistor to ground."}
-      - {label: assumptions, text: "Nothing draws current from the output (unloaded)."}
-      - {label: limitations, text: "A load in parallel with R2 lowers the output."}
+      - {label: mechanism, text: "The same current flows through both; each takes a share of the voltage in proportion to its resistance."}
+      - {label: key equation, text: "$V_\\text{out} = V_\\text{in}\\,\\dfrac{R_2}{R_1 + R_2}$, with $R_2$ the resistor to ground."}
+      - {label: assumptions, text: "Nothing draws current from the output (nothing connected)."}
+      - {label: limitations, text: "A load connected to the output lowers it."}
       - {label: application, text: "Each side of a Wheatstone bridge is a voltage divider."}
     expected_points:
       - {id: series, text: "Same current through both resistors"}
-      - {id: share, text: "Voltage splits in proportion to the resistances"}
-      - {id: formula, text: "V_out = V_in · R2/(R1 + R2)"}
-      - {id: load, text: "Mentions loading (output must not be loaded)"}
+      - {id: share, text: "The voltage splits in proportion to the resistances"}
+      - {id: formula, text: "$V_\\text{out} = V_\\text{in}\\,R_2/(R_1 + R_2)$"}
+      - {id: load, text: "Mentions loading (the output must not be loaded)"}
       - {id: bridge, text: "Links it to the bridge (two dividers side by side)"}
     followups:
       - {when_missing: load, ask: "What happens if you connect a meter with a low input resistance to the output?"}
-      - {always: true, ask: "What is V_out if R1 = R2? And if R2 is shorted?"}
+      - {always: true, ask: "What is V_out if R₁ = R₂? And if R₂ is replaced by a plain wire?"}
     traps:
-      - "Using R1 in the numerator: the output is across the resistor to ground."
+      - "Using $R_1$ in the numerator: the output is across the resistor to ground."
 
   - id: explain_voltage
     concepts: [voltage, ground_reference]
     priority: medium
     question: "What is a voltage? What does ground mean, and what changes if you move it?"
     structure:
-      - {label: definition, text: "A voltage is a potential difference between two points, V_AB = φ_A − φ_B."}
+      - {label: definition, text: "A voltage is a potential difference between two points, $V_{AB} = \\varphi_A - \\varphi_B$."}
       - {label: mechanism, text: "Ground is the node we agree to call 0 V; node voltages are measured from it."}
       - {label: physical meaning, text: "Moving ground relabels every node by the same amount; differences and currents are unchanged."}
       - {label: application, text: "The bridge output is a difference; a shared shift (common mode) cancels in it."}
     expected_points:
-      - {id: difference, text: "Voltage is between two points"}
-      - {id: ground, text: "Ground = chosen 0 V reference"}
-      - {id: invariant, text: "Moving ground does not change differences or currents"}
+      - {id: difference, text: "A voltage is between two points"}
+      - {id: ground, text: "Ground = the chosen 0 V reference"}
+      - {id: invariant, text: "Moving ground changes no difference and no current"}
       - {id: common, text: "Shifting both nodes together leaves their difference unchanged"}
     followups:
       - {when_missing: invariant, ask: "If I declare a different node to be ground, does any current change?"}
-      - {always: true, ask: "Both inputs of a meter rise by 2 V. What does the meter show?"}
+      - {always: true, ask: "Both leads of a voltmeter rise by 2 V. What does the meter show?"}
     traps:
       - "'The node is at 3 V' always means 'relative to ground'."
+
+whiteboard:
+  - id: wb_divider_draw
+    concepts: [voltage_divider]
+    skill: draw
+    prompt: "Draw a voltage divider. Mark the source, the current direction, both voltage drops, the output node and ground. Write V_out."
+    time_limit_s: 180
+    reference_figure: divider
+    checklist:
+      - {id: parts, text: "Source, $R_1$ on top, $R_2$ to ground, ground symbol"}
+      - {id: current, text: "One current arrow, the same through both resistors"}
+      - {id: drops, text: "Voltage drops $V_{R1}$ and $V_{R2}$ marked with brackets or arrows"}
+      - {id: output, text: "Output node marked; $V_\\text{out} = V_\\text{in}\\,R_2/(R_1 + R_2)$"}

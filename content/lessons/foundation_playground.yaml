@@ -4,7 +4,7 @@ module: E
 map_stage: electrical_transducer
 map_note: "Every sensor ends in an electrical circuit. These seven scenes give you the vocabulary."
 concepts: [charge_current, voltage, ground_reference, resistance, ohms_law, fractions, series_circuit, voltage_divider, kcl, reading_circuits]
-problems: [series_same_current, shift_both_nodes, ohm_current, ohm_double_r, divider_vout, divider_r2_up, divider_load, ground_relabel, kcl_node, read_output_node, prefix_magnitude]
+problems: [loop_open_switch, loop_same_current, fraction_denominator, series_same_current, shift_both_nodes, ohm_current, ohm_double_r, divider_vout, divider_r2_up, divider_load, ground_relabel, kcl_node, read_output_node, prefix_magnitude]
 oral: [explain_voltage, explain_divider]
 whiteboard: [wb_divider_draw]
 formulas: [ohms_law, voltage_divider]

@@ -1,28 +1,65 @@
+# Templates and solutions are Markdown + $LaTeX$. Placeholders are [[name]].
 problems:
+  - id: loop_open_switch
+    concept: charge_current
+    kind: mc
+    level: 1
+    template: "A battery drives current round a single loop through a resistor. You open a switch on the **bottom** wire. Where does the current stop?"
+    options:
+      - {id: everywhere, text: "everywhere in the loop at once"}
+      - {id: after, text: "only on the bottom wire, after the switch"}
+      - {id: before, text: "only between the battery and the switch"}
+    correct: everywhere
+    solution: "Current needs a complete loop. Break it anywhere and $I = 0$ everywhere — the three ammeters in the loop scene all drop to zero together."
+
+  - id: loop_same_current
+    concept: charge_current
+    kind: mc
+    level: 1
+    template: "In a single loop, ammeter A₁ (before the resistor) reads 4 mA. What does A₂ (after the resistor) read?"
+    options:
+      - {id: same, text: "4 mA"}
+      - {id: less, text: "less than 4 mA — the resistor used some up", misconception: current_used_up}
+      - {id: zero, text: "0 mA"}
+    correct: same
+    solution: "Charge is not used up: one loop, one current. The resistor takes *energy* (it warms up), not current."
+
+  - id: fraction_denominator
+    concept: fractions
+    kind: direction
+    level: 1
+    template: "In $\\dfrac{a}{b}$ you keep $a$ fixed and make the denominator $b$ three times bigger. The result…"
+    options:
+      - {id: down, text: "becomes three times smaller"}
+      - {id: same, text: "stays the same"}
+      - {id: up, text: "becomes three times bigger", misconception: bigger_denominator_bigger}
+    correct: down
+    solution: "$\\dfrac{6}{2} = 3$ but $\\dfrac{6}{6} = 1$: a bigger denominator makes the result smaller. Same reason more resistance means less current."
+
   - id: ohm_current
     concept: ohms_law
     kind: numeric
     level: 4
-    template: "A [[V]] V source drives a single [[R_k]] kΩ resistor. What current flows?"
+    template: "A $[[V]]\\,\\text{V}$ battery drives a single $[[R_k]]\\,\\text{k}\\Omega$ resistor. What current flows?"
     params:
       V: {choices: [1.5, 3.3, 5, 9, 12]}
       R_k: {choices: [0.47, 1, 2.2, 3.3, 4.7, 10]}
     answer: {fn: ohm.current, unit: A, tolerance_rel: 0.02, display_prefix: m}
     misconception_checks:
       - {scale: 1000, misconception: prefix_slip}
-    solution: "I = V/R. Convert first: R = [[R_k]] kΩ = [[R_k]] × 1000 Ω, then divide."
+    solution: "$I = \\dfrac{V}{R}$. Convert first: $R = [[R_k]]\\,\\text{k}\\Omega = [[R_k]] \\times 1000\\,\\Omega$, then divide."
 
   - id: ohm_double_r
     concept: ohms_law
     kind: direction
     level: 2
-    template: "A fixed voltage drives a resistor. You double R. The current…"
+    template: "A fixed voltage drives a resistor. You double $R$. The current…"
     options:
       - {id: down, text: "halves"}
-      - {id: same, text: "stays the same", misconception: resistance_blocks_all}
+      - {id: same, text: "stays the same"}
       - {id: up, text: "doubles", misconception: ohm_multiply}
     correct: down
-    solution: "I = V/R with V fixed: doubling R halves I."
+    solution: "$I = V/R$ with $V$ fixed: $R$ is in the denominator, so doubling $R$ halves $I$."
 
   - id: series_same_current
     concept: series_circuit
@@ -35,13 +72,15 @@ problems:
       - {id: used, text: "The current is smaller after each resistor because it gets used up.", misconception: current_used_up}
       - {id: bigger, text: "The bigger resistor carries more current."}
     correct: same
-    solution: "One path means one current. What differs between the resistors is the voltage drop, I·R."
+    solution: "One path means one current. What differs between the resistors is the voltage drop, $I\\,R$."
 
   - id: divider_vout
     concept: voltage_divider
     kind: numeric
     level: 4
-    template: "A divider has R1 = [[R1_k]] kΩ (top, from the supply) and R2 = [[R2_k]] kΩ (bottom, to ground), fed with [[Vin]] V. What is V_out at the middle node?"
+    template: >-
+      A divider has $R_1 = [[R1_k]]\,\text{k}\Omega$ (top, from the supply) and $R_2 = [[R2_k]]\,\text{k}\Omega$
+      (bottom, to ground), fed with $V_\text{in} = [[Vin]]\,\text{V}$. What is $V_\text{out}$ at the middle node?
     params:
       Vin: {choices: [5, 10, 12]}
       R1_k: {choices: [1, 2.2, 4.7, 10]}
@@ -49,19 +88,21 @@ problems:
     answer: {fn: divider.vout, unit: V, tolerance_rel: 0.02}
     misconception_checks:
       - {fn: divider.top_resistor_used, misconception: divider_swapped}
-    solution: "V_out = V_in · R2/(R1 + R2): the output is the share of the supply that drops across the bottom resistor."
+    solution: >-
+      $V_\text{out} = V_\text{in}\,\dfrac{R_2}{R_1 + R_2}$: the output is the share of the supply that drops across
+      the **bottom** resistor.
 
   - id: divider_r2_up
     concept: voltage_divider
     kind: direction
     level: 2
-    template: "In an unloaded divider you increase the bottom resistor R2 (output to ground). V_out…"
+    template: "In a divider with nothing connected to the output, you increase the bottom resistor $R_2$. $V_\\text{out}$…"
     options:
       - {id: down, text: "decreases", misconception: divider_swapped}
       - {id: same, text: "stays the same"}
       - {id: up, text: "increases"}
     correct: up
-    solution: "R2/(R1+R2) grows when R2 grows: more of the supply drops across R2."
+    solution: "$\\dfrac{R_2}{R_1+R_2}$ grows when $R_2$ grows: more of the supply drops across $R_2$."
 
   - id: divider_load
     concept: voltage_divider
@@ -73,59 +114,61 @@ problems:
       - {id: same, text: "is unchanged", misconception: loading_ignored}
       - {id: up, text: "rises"}
     correct: down
-    solution: "The meter sits in parallel with R2, making the bottom resistance smaller, so the output drops. Hence: measuring inputs need a high input resistance."
+    solution: "The meter sits side by side with $R_2$, making the bottom resistance smaller, so the output drops. Hence: measuring inputs need a high input resistance."
 
   - id: shift_both_nodes
     concept: voltage
     kind: mc
     level: 2
-    template: "Node A is at 7 V and node B at 3 V (both from ground). Something lifts both nodes by +2 V. What is V_AB now?"
+    template: "Node A is at 7 V and node B at 3 V (both from ground). Something lifts both nodes by +2 V. What is $V_{AB}$ now?"
     options:
       - {id: same, text: "4 V — unchanged"}
       - {id: plus2, text: "6 V — it rose by 2 V", misconception: voltage_at_a_point}
       - {id: plus4, text: "8 V — both rises add up"}
       - {id: zero, text: "0 V"}
     correct: same
-    solution: "V_AB = φ_A − φ_B = 9 V − 5 V = 4 V. A shared shift (common mode) cancels in a difference."
+    solution: "$V_{AB} = \\varphi_A - \\varphi_B = 9\\,\\text{V} - 5\\,\\text{V} = 4\\,\\text{V}$. A shared shift (common mode) cancels in a difference."
 
   - id: ground_relabel
     concept: ground_reference
     kind: numeric
     level: 4
-    template: "Measured from the bottom node, the top node is at [[V_top]] V and the middle node at [[V_mid]] V. You now declare the MIDDLE node to be ground. What is the potential of the top node?"
+    template: >-
+      Measured from the bottom node, the top node is at $[[V_top]]\,\text{V}$ and the middle node at
+      $[[V_mid]]\,\text{V}$. You now declare the **middle** node to be ground. What is the potential of the top node?
     params:
       V_top: {choices: [9, 10, 12]}
       V_mid: {choices: [3, 4, 5, 6]}
     answer: {fn: reference.relabel_top, unit: V, tolerance_rel: 0.01}
     misconception_checks:
       - {fn: reference.unchanged, misconception: ground_is_absolute}
-    solution: "New label = old label − old label of the new ground: [[V_top]] V − [[V_mid]] V. Differences don't change; labels do."
+    solution: "New label = old label − old label of the new ground: $[[V_top]]\\,\\text{V} - [[V_mid]]\\,\\text{V}$. Differences don't change; labels do."
 
   - id: kcl_node
     concept: kcl
     kind: numeric
     level: 4
-    template: "[[I_in_mA]] mA flows into a node. One branch takes [[I_out_mA]] mA out. How much current leaves through the only other branch?"
+    template: "$[[I_in_mA]]\\,\\text{mA}$ flows into a node. One branch takes $[[I_out_mA]]\\,\\text{mA}$ out. How much current leaves through the only other branch?"
     params:
       I_in_mA: {choices: [5, 8, 10, 12]}
       I_out_mA: {choices: [1, 2, 3, 4]}
     answer: {fn: kcl.remaining, unit: A, tolerance_rel: 0.01, display_prefix: m}
     misconception_checks:
       - {fn: kcl.added, misconception: kcl_adds_all}
-    solution: "Σ in = Σ out: [[I_in_mA]] mA = [[I_out_mA]] mA + I, so I = [[I_in_mA]] − [[I_out_mA]] mA."
+    solution: "$\\sum I_\\text{in} = \\sum I_\\text{out}$: $[[I_in_mA]]\\,\\text{mA} = [[I_out_mA]]\\,\\text{mA} + I$, so $I = [[I_in_mA]] - [[I_out_mA]]\\,\\text{mA}$."
 
   - id: read_output_node
     concept: reading_circuits
     kind: mc
     level: 1
-    template: "In a two-resistor divider diagram, a small open circle (○) is drawn at the junction of the resistors. What is it?"
+    template: "In a two-resistor divider diagram, a small open circle (○) is drawn at the end of a wire from the junction of the resistors. What is it?"
     options:
-      - {id: terminal, text: "An output terminal: where you connect a meter or the next stage"}
-      - {id: resistor, text: "A third resistor"}
-      - {id: ground, text: "The ground reference", misconception: ground_is_absolute}
-      - {id: wire, text: "A longer wire with extra resistance", misconception: wire_length_matters}
+      - {id: terminal, text: "an output terminal: where you connect a meter or the next stage"}
+      - {id: resistor, text: "a third resistor"}
+      - {id: ground, text: "the ground reference"}
+      - {id: wire, text: "a longer wire with extra resistance", misconception: wire_length_matters}
     correct: terminal
-    solution: "Open circles are terminals. The junction between the resistors is the divider's output node."
+    solution: "Open circles are terminals. Ground is drawn as three shrinking lines (⏚)."
 
   - id: prefix_magnitude
     concept: si_prefixes
