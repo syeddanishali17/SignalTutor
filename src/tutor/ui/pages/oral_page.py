@@ -6,7 +6,7 @@ import streamlit as st
 
 from tutor.ui import state
 from tutor.ui.components import layout
-from tutor.ui.components.oral import oral_dock, whiteboard_drill
+from tutor.ui.components.oral import mock_session, oral_dock, whiteboard_drill
 
 PRIORITY = {"very_high": "★★★", "high": "★★", "medium": "★"}
 
@@ -28,6 +28,4 @@ def render() -> None:
                            key="wb_pick")
         whiteboard_drill(bundle.whiteboard[wid], scope=f"wbpage_{wid}")
     else:
-        st.info("The timed two-topic mock exam (about 20 minutes, with follow-ups and a report) is part of the "
-                "review-engine milestone. Until then: pick two ★★★ questions above, start the timer, and answer "
-                "both within 20 minutes — including one follow-up each.", icon=":material/schedule:")
+        mock_session(bundle)
