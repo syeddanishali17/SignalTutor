@@ -352,12 +352,15 @@ def flow(points: list[tuple[float, float]], strength: float, eid: str = "", arro
     s = max(0.0, min(1.0, strength))
     pts = _offset_path(points, offset) if offset else points
     dur = 0.55 / max(s, 0.08)
-    width = 2.2 + 3.0 * s
+    # Larger moving dots and matching direction heads; keep paths, dash spacing
+    # and timing unchanged so prominence does not imply a different current.
+    marker_scale = 1.4
+    width = marker_scale * (2.2 + 3.0 * s)
     d = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
     idattr = f' id="{eid}"' if eid else ""
     out = [f'<polyline{idattr} class="flow" points="{d}" stroke-width="{width:.2f}" style="animation-duration:{dur:.2f}s"/>']
     if arrows:
-        head = 7 + 5 * s
+        head = marker_scale * (7 + 5 * s)
         for (x1, y1), (x2, y2) in zip(pts, pts[1:]):
             seg = math.hypot(x2 - x1, y2 - y1)
             if seg < 40:
