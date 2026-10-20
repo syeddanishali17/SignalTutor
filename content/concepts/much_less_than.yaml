@@ -1,0 +1,15 @@
+id: much_less_than
+title: "\"Much smaller than\" (≪) and dropping small terms"
+short: "≪ (much smaller)"
+code: M4
+track: math
+prerequisites: [ratios]
+status: supplemental
+source_refs: ["standard", "Lecture 2 notes, p. 2"]
+one_liner: "If $x \\ll 1$ then $2 + x \\approx 2$: a tiny addition can be dropped — at a known, small cost."
+plain_words: "tiny enough to ignore"
+explanation_md: much_less_than.md
+misconceptions:
+  - id: approx_is_exact
+    text: "An approximation like V2 − V1 ≈ −¼(ΔR/R)V0 is exact."
+    correction: "It is only the first term. For the quarter bridge the relative error is exactly $\\tfrac12\\,\\Delta R/R$, so it grows as $\\Delta R/R$ grows."

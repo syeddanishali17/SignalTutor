@@ -1,0 +1,16 @@
+id: differential_signal
+title: Differential signal
+short: "Differential signal"
+track: course_l02
+prerequisites: [voltage, ground_reference]
+status: verified
+source_refs: ["Lecture 2 notes, p. 2–4"]
+one_liner: "The difference between two wires' voltages, $V_d = V_2 - V_1$. A bridge's output is a tiny differential signal."
+plain_words: "the difference between two wires"
+explanation_md: differential_signal.md
+symbol: "V_d = V_2 - V_1"
+units: V
+misconceptions:
+  - id: diff_is_small_absolute
+    text: "A small differential signal means both wires are near 0 V."
+    correction: "Both bridge outputs sit near $V_0/2$ (e.g. 2.5 V); only their difference is small (mV). Small difference ≠ small voltages."

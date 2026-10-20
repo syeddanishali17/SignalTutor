@@ -1,0 +1,15 @@
+id: proportionality
+title: Proportionality and slope ("sensitivity")
+short: "Proportionality"
+code: M2
+track: math
+prerequisites: [fractions]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "$y$ is **proportional** to $x$ when doubling $x$ doubles $y$: $y = k\\,x$. The constant $k$ is the slope — in sensors called the **sensitivity**."
+plain_words: "goes up together, at a fixed rate"
+explanation_md: proportionality.md
+misconceptions:
+  - id: slope_is_ratio_anywhere
+    text: "Sensitivity is always output divided by input, at any point."
+    correction: "Sensitivity is the slope $\\Delta y/\\Delta x$. Only for a straight line through the origin does it equal $y/x$ everywhere."

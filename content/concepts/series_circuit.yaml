@@ -1,0 +1,15 @@
+id: series_circuit
+title: Series path
+short: "Series path"
+code: E5
+track: electrical
+prerequisites: [ohms_law]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "Parts **in series** (one after the other, no branch between) carry the **same current**; their resistances **add**, $R_\\text{total} = R_1 + R_2$."
+plain_words: "one path, one after another"
+explanation_md: series_circuit.md
+misconceptions:
+  - id: series_current_differs
+    text: "The first resistor in a series chain gets more current."
+    correction: "There is only one path, so the same current flows through every part, whatever the order."

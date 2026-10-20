@@ -1,0 +1,247 @@
+id: wheatstone_lab
+title: Wheatstone Bridge Lab
+module: C3
+map_stage: electrical_transducer
+map_note: "strain → ΔR → bridge voltage"
+concepts: [strain, gauge_factor, wheatstone_bridge, wheatstone_quarter, wheatstone_full, temperature_compensation, common_mode, bridge_loading]
+derivations: [quarter_bridge, full_bridge]
+problems: [gauge_dR, quarter_bridge_output, full_bridge_output, quarter_v2_direction, h_eps_v, approx_error, full_vs_quarter_factor, balance_condition, midpoint_balanced, cm_in_bridge, temp_quarter, temp_full, loading_reading]
+oral: [why_bridge, derive_quarter, full_vs_quarter, gauge_factor_q]
+whiteboard: [wb_quarter_derive, wb_full_draw]
+formulas: [strain_definition, gauge_factor, bridge_quarter_exact, bridge_quarter_approx, bridge_full_output, bridge_full_strain, bridge_balance, quarter_approx_error, bridge_loading]
+
+x-bridge-inspect: &bridge_inspect
+  - {id: V0, label: "Supply V₀", concept: wheatstone_bridge, role: "Feeds **both** dividers. The lecture also calls it $V_b$.", controls: [V0]}
+  - {id: R1, label: "R₁", concept: gauge_factor, role: "**Top** of the left divider. In the quarter bridge it is the one strain gauge, $R_1 = R + \\Delta R$.", controls: [eps, G, R4]}
+  - {id: R2, label: "R₂", concept: wheatstone_bridge, role: "**Top** of the right divider. Compressed ($R - \\Delta R$) in the full bridge.", controls: [eps, G]}
+  - {id: R3, label: "R₃", concept: wheatstone_bridge, role: "**Bottom** of the right divider; $V_1$ is the voltage across it. Stretched ($R + \\Delta R$) in the full bridge.", controls: [eps, G, R3]}
+  - {id: R4, label: "R₄", concept: wheatstone_bridge, role: "**Bottom** of the left divider; $V_2$ is the voltage across it. Compressed ($R - \\Delta R$) in the full bridge.", controls: [eps, G, R4]}
+  - {id: V2, label: "V₂", concept: voltage_divider, role: "Left midpoint, measured from ground: $V_2 = V_0\\,\\dfrac{R_4}{R_1 + R_4}$."}
+  - {id: V1, label: "V₁", concept: voltage_divider, role: "Right midpoint, measured from ground: $V_1 = V_0\\,\\dfrac{R_3}{R_2 + R_3}$."}
+  - {id: meter, label: "Meter", concept: differential_signal, role: "Reads only the **difference** $V_2 - V_1$. An ideal meter draws no current.", controls: [rin]}
+  - {id: I2, label: "I₂ (left)", concept: charge_current, role: "Current in the left branch: $I_2 = V_0/(R_1 + R_4)$."}
+  - {id: I1, label: "I₁ (right)", concept: charge_current, role: "Current in the right branch: $I_1 = V_0/(R_2 + R_3)$."}
+
+x-bridge-terms: &bridge_terms
+  - {id: V0, symbol: br_V0, highlight: [V0], controls: [V0]}
+  - {id: R1, symbol: br_R1, highlight: [R1]}
+  - {id: R2, symbol: br_R2, highlight: [R2]}
+  - {id: R3, symbol: br_R3, highlight: [R3]}
+  - {id: R4, symbol: br_R4, highlight: [R4]}
+  - {id: left, symbol: br_left, latex: "[[R1]] + [[R4]]", highlight: [R1, R4, I2]}
+  - {id: right, symbol: br_right, latex: "[[R2]] + [[R3]]", highlight: [R2, R3, I1]}
+  - {id: out, symbol: br_Vout, highlight: [meter, V1, V2]}
+  - {id: Rplus, symbol: br_Rplus, highlight: [R1], controls: [eps, G]}
+  - {id: x, symbol: br_x, highlight: [R1], controls: [eps, G]}
+
+scenes:
+  - id: sensor
+    title: "Pressure → strain → resistance"
+    short: "0 · The sensor"
+    map_stage: primary_transducer
+    concepts: [strain, gauge_factor]
+    problem: >-
+      Before any circuit: **why does a resistor change at all?**
+      Pressure pushes on a thin membrane clamped at its rim. Four strain gauges — thin resistive tracks — sit on its surface.
+    predict:
+      question: "The membrane bulges under pressure. The gauges near the rim and the gauges near the centre…"
+      options:
+        - {id: same, label: "all stretch the same way"}
+        - {id: opposite, label: "change in opposite directions"}
+        - {id: none, label: "do not change"}
+      correct: opposite
+      reveal: >-
+        On the pressed surface the region near the clamped **rim is stretched** (resistance up, $+\Delta R$) and the region
+        near the **centre is squeezed** (resistance down, $-\Delta R$). Two up, two down — exactly what the full bridge will use.
+    inspect:
+      - {id: membrane, label: "Membrane", concept: strain, role: "A thin plate clamped at its rim. Pressure bends it; its surface strains by $\\varepsilon = \\xi\\,p$.", controls: [p]}
+      - {id: gEdge, label: "Rim gauges", concept: gauge_factor, role: "Near the rim the surface is **stretched**: $\\varepsilon > 0$, so $R \\to R + \\Delta R$ (arrow ↗, circled +)."}
+      - {id: gCenter, label: "Centre gauges", concept: gauge_factor, role: "Near the centre the surface is **squeezed**: $\\varepsilon < 0$, so $R \\to R - \\Delta R$ (arrow ↙, circled −)."}
+      - {id: pressure, label: "Pressure p", concept: strain, role: "Force per area pushing on the membrane, $p = F/A$.", controls: [p]}
+    terms:
+      - {id: eps, symbol: sens_eps, highlight: [gEdge, gCenter]}
+      - {id: xi, symbol: sens_xi, highlight: [membrane]}
+      - {id: p, symbol: sens_p, highlight: [pressure], controls: [p]}
+      - {id: G, symbol: sens_G, highlight: [gEdge, gCenter], controls: [G]}
+      - {id: x, symbol: br_x, highlight: [gEdge, gCenter]}
+    explain:
+      prompt: "Without the picture: how does pressure become a change of resistance, and why do some gauges go up and others down?"
+      points:
+        - "Pressure bends the membrane; its surface strains, $\\varepsilon = \\xi\\,p$"
+        - "A strained resistor changes: $\\Delta R/R = G\\,\\varepsilon$"
+        - "Near the rim stretched (+), near the centre squeezed (−)"
+    notes_md: |
+      **The transfer chain** (lecture 1): pressure $p \xrightarrow{\ \xi\ }$ strain $\varepsilon \xrightarrow{\ G\ }$ relative change $\Delta R/R$. The next steps turn $\Delta R/R$ into a voltage.
+
+      The membrane factor $\xi$ here is an **illustrative** value (it depends on the membrane's size, thickness and material).
+
+  - id: build
+    title: Two dividers make a bridge
+    short: "1 · Build"
+    concepts: [voltage_divider, wheatstone_bridge, common_mode]
+    problem: >-
+      A gauge changes by about 0.1 %. Measured directly, that is a tiny change on top of a big value.
+      **How can we get a signal that starts at zero?** Idea: build *two* voltage dividers and compare them.
+    predict:
+      question: "Two identical dividers (all four resistors equal) share one 5 V supply. A voltmeter connects their midpoints. It reads…"
+      options:
+        - {id: zero, label: "0 V"}
+        - {id: half, label: "2.5 V"}
+        - {id: five, label: "5 V"}
+      correct: zero
+      reveal: >-
+        Both midpoints sit at $V_0/2 = 2.5\,\text{V}$, so their **difference** is 0 V. The big 2.5 V is shared
+        (common mode) and drops out — that is the whole trick of the bridge.
+    inspect: *bridge_inspect
+    terms: *bridge_terms
+    explain:
+      prompt: "Without the picture: why does a balanced bridge read 0 V even though both outputs sit at 2.5 V?"
+      points:
+        - "Each side is a voltage divider"
+        - "Equal ratios give equal midpoint voltages ($V_0/2$)"
+        - "The meter reads the difference, so the shared $V_0/2$ cancels"
+    notes_md: |
+      The bridge is **not** a mysterious diamond. It is the divider from the Playground, twice, with a voltmeter between the two outputs. Use *Drawing → textbook diamond* under *More controls* to see the same circuit rotated.
+
+  - id: quarter
+    title: Quarter bridge — one active gauge
+    short: "2 · Quarter"
+    concepts: [wheatstone_quarter, much_less_than]
+    problem: >-
+      Only $R_1$ is a strain gauge, $R_1 = R + \Delta R$. **How large is the output, and is it proportional to $\Delta R$?**
+    predict:
+      question: >-
+        The gauge $R_1$ is stretched (its resistance goes up). The bridge output $V_2 - V_1$ becomes…
+      options:
+        - {id: neg, label: "negative"}
+        - {id: zero, label: "still 0"}
+        - {id: pos, label: "positive"}
+      correct: neg
+      reveal: >-
+        $R_1$ is the **top** of the left divider: a bigger $R_1$ takes more of the supply, so $V_2$ drops below
+        $V_1 = V_0/2$ and $V_2 - V_1 < 0$. Its size is $\approx \tfrac14\,\tfrac{\Delta R}{R}\,V_0$.
+        (Put the gauge in the lower arm instead and the sign flips — see known issue K9.)
+    inspect: *bridge_inspect
+    terms: *bridge_terms
+    break_it: [big_strain]
+    explain:
+      prompt: "Without the picture: why is the quarter-bridge output about ¼·(ΔR/R)·V₀, and when does that stop being accurate?"
+      points:
+        - "Only one divider changes; $V_1$ stays at $V_0/2$"
+        - "$V_2 = V_0/(2 + \\Delta R/R) \\approx V_0/2 - \\tfrac14\\,(\\Delta R/R)\\,V_0$"
+        - "Valid for $\\Delta R/R \\ll 1$; the relative error is $\\tfrac12\\,\\Delta R/R$"
+    notes_md: |
+      Choose the **silicon** gauge and push the strain up: the dashed **approximation** peels away from the solid **exact** curve. Under *More controls* you can plot the error — it is exactly half of $\Delta R/R$.
+
+  - id: full
+    title: Full bridge — four active gauges
+    short: "3 · Full"
+    concepts: [wheatstone_full, gauge_factor]
+    problem: >-
+      The membrane has regions that stretch and regions that compress (step 0). **Can we use all four arms?**
+    predict:
+      question: >-
+        Same supply, same $\Delta R/R$ on every gauge, but now four active arms ($R_1, R_3$ stretched; $R_2, R_4$ compressed).
+        Compared to the quarter bridge, the output is…
+      options:
+        - {id: same, label: "the same"}
+        - {id: double, label: "2×"}
+        - {id: four, label: "4×"}
+      correct: four
+      reveal: >-
+        Both midpoints now move — in opposite directions — and each moves twice as far as $V_2$ did before: $2\times 2 = 4$.
+        And because each branch still totals $2R$, the output is **exactly linear**.
+    inspect: *bridge_inspect
+    terms: *bridge_terms
+    explain:
+      prompt: "Without the picture: why does a full bridge give four times the output of a quarter bridge, and why is it linear?"
+      points:
+        - "Diagonally opposite arms have the same sign of $\\Delta R$"
+        - "Both midpoints move apart, each by $\\tfrac{\\Delta R}{2R}\\,V_b$"
+        - "Each branch still totals $2R$ → no approximation needed"
+        - "$|V_\\text{out}| = \\tfrac{\\Delta R}{R}\\,V_b = G\\,\\varepsilon\\,V_b$"
+    notes_md: |
+      Switch between steps 2 and 3: the drawing never moves, only the arrows on the gauges change.
+
+  - id: temperature
+    title: Temperature drift
+    short: "4 · Temperature"
+    concepts: [temperature_compensation]
+    problem: >-
+      Gauges also change resistance when they **warm up**. Does the bridge mistake heat for strain?
+    predict:
+      question: "Full bridge, no strain. All four gauges warm up by 20 K. The output…"
+      options:
+        - {id: changes, label: "drifts away from 0"}
+        - {id: same, label: "stays at 0"}
+      correct: same
+      reveal: >-
+        All four arms are multiplied by the same factor $(1 + \alpha\,\Delta T)$, so both divider **ratios** stay the same
+        and the drift cancels. Now switch to the quarter bridge: only $R_1$ warms up, and the output drifts as if strained.
+    inspect: *bridge_inspect
+    terms: *bridge_terms
+    break_it: [temp_quarter]
+    explain:
+      prompt: "Without the picture: why does a full bridge cancel temperature drift while a quarter bridge does not?"
+      points:
+        - "Temperature multiplies a gauge by $(1 + \\alpha\\,\\Delta T)$"
+        - "Full bridge: all arms drift together, ratios unchanged"
+        - "Quarter bridge: only the gauge drifts → apparent strain"
+    notes_md: |
+      The temperature coefficient here is an **illustrative** 0.1 %/K (silicon-like, supplemental). The fixed completion resistors of the quarter bridge are assumed to be off the membrane and not to drift.
+
+  - id: loading
+    title: A real meter loads the bridge
+    short: "5 · Real meter"
+    concepts: [bridge_loading]
+    problem: >-
+      The derivation assumed the meter draws **no current** ($I = 0$). What if it does?
+    predict:
+      question: >-
+        Replace the ideal meter by one with input resistance $R_\text{in} = 10\,R$. The reading…
+      options:
+        - {id: smaller, label: "gets smaller"}
+        - {id: same, label: "is unchanged"}
+        - {id: larger, label: "gets larger"}
+      correct: smaller
+      reveal: >-
+        Current now flows through the meter from one midpoint to the other and pulls them together: the reading drops to
+        $\approx R_\text{in}/(R_\text{in} + R) \approx 91\,\%$ of the ideal value. Lecture 2: an amplifier input
+        impedance below infinity unbalances the bridge.
+    inspect: *bridge_inspect
+    terms: *bridge_terms
+    break_it: [loading]
+    explain:
+      prompt: "Without the picture: why must the amplifier that reads a bridge have a very high input resistance?"
+      points:
+        - "The derivation assumes no current into the meter"
+        - "A finite input resistance pulls the midpoints together"
+        - "Reading $\\approx V_\\text{open}\\,R_\\text{in}/(R_\\text{in} + R)$; need $R_\\text{in} \\gg R$"
+    notes_md: |
+      This is the problem that motivates the **instrumentation amplifier** in the amplifier lab.
+
+break_it:
+  - id: big_strain
+    title: "The approximation breaks for large ΔR/R"
+    cause: "The quarter-bridge formula $-\\tfrac14\\,\\tfrac{\\Delta R}{R}\\,V_0$ drops $\\Delta R/R$ next to the 2 in the denominator."
+    condition: "$\\Delta R/R$ stops being $\\ll 1$ (here: above a few %)."
+    consequence: "The approximation overestimates the output by $\\tfrac12\\,\\Delta R/R$ (relative) — 5 % at $\\Delta R/R = 10\\,\\%$."
+    recovery: "Use the exact formula, or a full bridge, which is exactly linear."
+  - id: temp_quarter
+    title: "A quarter bridge reads heat as strain"
+    cause: "Only the active gauge sits on the warming membrane."
+    condition: "Any temperature change of the gauge."
+    consequence: "$\\Delta R$ from heat is indistinguishable from $\\Delta R$ from strain (apparent strain $\\alpha\\,\\Delta T/G$)."
+    recovery: "Full bridge (all arms drift together) or a second, unstrained 'dummy' gauge in the neighbouring arm."
+  - id: loading
+    title: "The meter loads the bridge"
+    cause: "A finite input resistance lets current flow between the midpoints."
+    condition: "$R_\\text{in}$ is not $\\gg R$."
+    consequence: "The reading shrinks to $\\approx R_\\text{in}/(R_\\text{in} + R)$ of the ideal value."
+    recovery: "Use an amplifier with a very high input resistance (the instrumentation amplifier)."
+traps:
+  - "Factor 4: quarter ≈ ¼ (ΔR/R) V0, full = (ΔR/R) Vb."
+  - "The sign of V2 − V1 depends on which arm holds the gauge (K9) — state your convention."
+  - "Balanced ≠ outputs at 0 V: both sit at V0/2 (common mode)."
+  - "Balance needs equal ratios R1/R4 = R2/R3, not four equal resistors."
+  - "≈ needs a condition: write ΔR/R ≪ 1."

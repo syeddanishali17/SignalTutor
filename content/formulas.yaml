@@ -1,0 +1,318 @@
+# Formula registry (spec section 11).
+#
+# lecture_form / canonical_form are LaTeX for display.
+# lecture_check / canonical_check are machine-readable and verified by
+# scripts/validate_content.py with the safe parser in tutor.engine.expr
+# (never eval). dimension_check records the result for the form that is
+# SHOWN (canonical if present, else lecture); validation fails if it lies.
+#
+# status: verified      = consistent in the notes AND passes dimension/algebra checks
+#                         (slides not yet compared: see 'evidence')
+#         needs_review  = the source form has a problem; shown with a flag
+#         supplemental  = standard textbook relation, not from the lecture
+
+formulas:
+  # --- foundations ------------------------------------------------------------
+  - id: ohms_law
+    title: Ohm's law
+    concept: ohms_law
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check]
+    lecture_form: "I = \\frac{V}{R}"
+    lecture_check: {expr: "V/R", symbols: {V: V, R: ohm}, result_unit: A}
+    dimension_check: pass
+    comes_from: "Definition of resistance, R = V/I, solved for I."
+    assumptions: ["Ohmic (linear) resistor"]
+    meaning:
+      - {symbol: "I", meaning: "current through the resistor", unit: "A", when_it_goes_up: "result"}
+      - {symbol: "V", meaning: "voltage across the resistor", unit: "V", when_it_goes_up: "I rises in proportion"}
+      - {symbol: "R", meaning: "resistance", unit: "Ω", when_it_goes_up: "I falls (1/R)"}
+
+  - id: voltage_divider
+    title: Unloaded voltage divider
+    concept: voltage_divider
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check, sympy]
+    lecture_form: "V_\\text{out} = V_\\text{in}\\,\\frac{R_2}{R_1 + R_2}"
+    lecture_check: {expr: "Vin*R2/(R1+R2)", symbols: {Vin: V, R1: ohm, R2: ohm}, result_unit: V}
+    dimension_check: pass
+    comes_from: "Series current I = Vin/(R1+R2), then Ohm's law across R2."
+    assumptions: ["Nothing draws current from the output node (no load)"]
+    meaning:
+      - {symbol: "V_\\text{in}", meaning: "supply across the whole divider", unit: "V", when_it_goes_up: "V_out rises in proportion"}
+      - {symbol: "R_1", meaning: "top resistor (supply to output)", unit: "Ω", when_it_goes_up: "V_out falls"}
+      - {symbol: "R_2", meaning: "bottom resistor (output to ground)", unit: "Ω", when_it_goes_up: "V_out rises towards V_in"}
+
+  - id: strain_definition
+    title: Strain
+    concept: strain
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check]
+    lecture_form: "\\varepsilon = \\frac{\\Delta L}{L}"
+    lecture_check: {expr: "dL/L", symbols: {dL: m, L: m}, result_unit: "1"}
+    dimension_check: pass
+    meaning:
+      - {symbol: "\\varepsilon", meaning: "strain (relative elongation)", unit: "1 (µε = 10⁻⁶)"}
+
+  - id: thermal_drift
+    title: Resistor temperature drift (linear)
+    concept: temperature_compensation
+    status: supplemental
+    source: standard (textbook)
+    evidence: [textbook, dimension_check]
+    lecture_form: "R(T) = R\\,(1 + \\alpha\\,\\Delta T)"
+    lecture_check: {expr: "R*(1 + alpha*dT)", symbols: {R: ohm, alpha: "1/K", dT: K}, result_unit: ohm}
+    dimension_check: pass
+    assumptions: ["Small temperature change (linear coefficient)"]
+
+  # --- L01: piezoresistive transducer and bridges --------------------------------
+  - id: gauge_factor
+    title: Gauge factor
+    concept: gauge_factor
+    module: C2
+    status: verified
+    source: "Lecture 1 notes, p. 2"
+    evidence: [notes, dimension_check]
+    lecture_form: "G = \\frac{\\Delta R}{R}\\,\\frac{1}{\\varepsilon}"
+    lecture_check: {expr: "dR/R/eps", symbols: {dR: ohm, R: ohm, eps: "1"}, result_unit: "1"}
+    dimension_check: pass
+    comes_from: "Definition: relative resistance change per unit strain."
+    meaning:
+      - {symbol: "G", meaning: "gauge factor", unit: "1", when_it_goes_up: "bigger ΔR for the same strain"}
+      - {symbol: "\\Delta R/R", meaning: "relative resistance change", unit: "1"}
+      - {symbol: "\\varepsilon", meaning: "strain", unit: "1"}
+
+  - id: bridge_full_output
+    title: Full-bridge output
+    concept: wheatstone_full
+    module: C3
+    status: verified
+    source: "Lecture 1 notes, p. 2"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "V_\\text{out} = \\frac{\\Delta R}{R}\\,V_b"
+    lecture_check: {expr: "dR/R*Vb", symbols: {dR: ohm, R: ohm, Vb: V}, result_unit: V}
+    dimension_check: pass
+    comes_from: "R1, R3 = R + ΔR and R2, R4 = R − ΔR: each midpoint moves by (ΔR/2R)·V_b in opposite directions."
+    assumptions: ["Equal and opposite ΔR in the four arms", "Ideal voltmeter (no current drawn)"]
+    meaning:
+      - {symbol: "V_\\text{out}", meaning: "bridge output (magnitude; sign depends on which node is +)", unit: "V"}
+      - {symbol: "\\Delta R/R", meaning: "relative change of each gauge", unit: "1", when_it_goes_up: "V_out rises exactly in proportion"}
+      - {symbol: "V_b", meaning: "bridge supply (V_0 in the L02 notes)", unit: "V", when_it_goes_up: "V_out rises in proportion"}
+
+  - id: bridge_full_strain
+    title: Full-bridge output from strain
+    concept: wheatstone_full
+    module: C3
+    status: verified
+    source: "Lecture 1 notes, p. 2"
+    evidence: [notes, dimension_check]
+    lecture_form: "V_\\text{out} = G\\,\\varepsilon\\,V_b"
+    lecture_check: {expr: "G*eps*Vb", symbols: {G: "1", eps: "1", Vb: V}, result_unit: V}
+    dimension_check: pass
+    comes_from: "Insert ΔR/R = G·ε into the full-bridge output."
+
+  - id: h_eps_v
+    title: Transfer function strain → voltage
+    concept: wheatstone_full
+    module: C2
+    status: verified
+    source: "Lecture 1 notes, p. 2"
+    evidence: [notes, dimension_check]
+    lecture_form: "H_{\\varepsilon\\text{-}V} = \\frac{V_\\text{out}}{\\varepsilon} = G\\,V_b"
+    lecture_check: {expr: "G*Vb", symbols: {G: "1", Vb: V}, result_unit: V}
+    dimension_check: pass
+    assumptions: ["Full bridge, linear regime"]
+
+  - id: bridge_balance
+    title: Bridge balance condition
+    concept: wheatstone_bridge
+    module: C3
+    status: supplemental
+    source: standard (textbook); follows from the two dividers in Lecture 2 notes, p. 2
+    evidence: [textbook, sympy]
+    lecture_form: "\\frac{R_1}{R_4} = \\frac{R_2}{R_3}"
+    lecture_check: {expr: "R1/R4", symbols: {R1: ohm, R4: ohm}, result_unit: "1"}
+    dimension_check: pass
+    comes_from: "Set V2 = V0·R4/(R1+R4) equal to V1 = V0·R3/(R2+R3)."
+
+  # --- L02: quarter-bridge derivation -------------------------------------------------
+  - id: bridge_quarter_I1
+    title: Right-branch current
+    concept: wheatstone_quarter
+    module: C3
+    status: verified
+    source: "Lecture 2 notes, p. 2"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "I_1 = \\frac{V_0}{2R}"
+    lecture_check: {expr: "V0/(2*R)", symbols: {V0: V, R: ohm}, result_unit: A}
+    dimension_check: pass
+
+  - id: bridge_quarter_I2
+    title: Left-branch current
+    concept: wheatstone_quarter
+    module: C3
+    status: verified
+    source: "Lecture 2 notes, p. 2"
+    evidence: [notes, dimension_check, sympy]
+    lecture_form: "I_2 = \\frac{V_0}{2R + \\Delta R}"
+    lecture_check: {expr: "V0/(2*R + dR)", symbols: {V0: V, R: ohm, dR: ohm}, result_unit: A}
+    dimension_check: pass
+
+  - id: bridge_quarter_V2
+    title: Left midpoint voltage
+    concept: wheatstone_quarter
+    module: C3
+    status: verified
+    source: "Lecture 2 notes, p. 2"
+    evidence: [notes, dimension_check, sympy]
+    known_issue: K9
+    lecture_form: "V_2 = I_2 R = \\frac{V_0 R}{2R + \\Delta R} = \\frac{V_0}{2 + \\Delta R/R}"
+    lecture_check: {expr: "V0/(2 + dR/R)", symbols: {V0: V, R: ohm, dR: ohm}, result_unit: V}
+    dimension_check: pass
+    assumptions: ["The gauge R + ΔR is the UPPER-left arm (R1). See K9."]
+
+  - id: bridge_quarter_exact
+    title: Quarter-bridge output (exact)
+    concept: wheatstone_quarter
+    module: C3
+    status: verified
+    source: "Lecture 2 notes, p. 2 (intermediate step)"
+    evidence: [notes, dimension_check, sympy]
+    known_issue: K9
+    lecture_form: "V_2 - V_1 = V_0\\left(\\frac{1}{2 + \\Delta R/R} - \\frac12\\right)"
+    lecture_check: {expr: "V0*(1/(2 + dR/R) - 1/2)", symbols: {V0: V, R: ohm, dR: ohm}, result_unit: V}
+    dimension_check: pass
+
+  - id: bridge_quarter_approx
+    title: Quarter-bridge output (small change)
+    concept: wheatstone_quarter
+    module: C3
+    status: verified
+    source: "Lecture 2 notes, p. 2"
+    evidence: [notes, dimension_check, sympy]
+    known_issue: K9
+    lecture_form: "V_2 - V_1 \\cong -\\frac14\\,\\frac{\\Delta R}{R}\\,V_0 \\quad\\text{for } \\frac{\\Delta R}{R} \\ll 1"
+    lecture_check: {expr: "-dR/R*V0/4", symbols: {V0: V, R: ohm, dR: ohm}, result_unit: V}
+    dimension_check: pass
+    comes_from: "First-order expansion of the exact output in ΔR/R."
+    assumptions: ["ΔR/R ≪ 1", "Ideal voltmeter (no current drawn)", "Gauge in the upper-left arm (sign, see K9)"]
+    meaning:
+      - {symbol: "V_2 - V_1", meaning: "bridge output (left midpoint minus right midpoint)", unit: "V"}
+      - {symbol: "\\Delta R/R", meaning: "relative change of the one active gauge", unit: "1", when_it_goes_up: "|V_2 − V_1| grows (almost linearly)"}
+      - {symbol: "V_0", meaning: "bridge supply (V_b in the L01 notes)", unit: "V", when_it_goes_up: "output grows in proportion"}
+      - {symbol: "\\tfrac14", meaning: "only one of four arms is active, and it only moves one midpoint", unit: "1"}
+
+  - id: quarter_approx_error
+    title: Relative error of the quarter-bridge approximation
+    concept: wheatstone_quarter
+    module: C3
+    status: supplemental
+    source: derived in this app (SymPy-verified), not in the notes
+    evidence: [sympy]
+    lecture_form: "\\frac{V_\\text{approx} - V_\\text{exact}}{V_\\text{exact}} = \\frac12\\,\\frac{\\Delta R}{R}"
+    lecture_check: {expr: "dR/R/2", symbols: {dR: ohm, R: ohm}, result_unit: "1"}
+    dimension_check: pass
+
+  - id: bridge_loading
+    title: Reading with a finite meter resistance (equal-arm bridge)
+    concept: bridge_loading
+    module: C3
+    status: supplemental
+    source: standard (Thevenin equivalent); motivated by Lecture 2 notes, p. 4
+    evidence: [textbook, dimension_check]
+    lecture_form: "V_\\text{read} \\approx V_\\text{open}\\,\\frac{R_\\text{in}}{R_\\text{in} + R}"
+    lecture_check: {expr: "Vopen*Rin/(Rin + R)", symbols: {Vopen: V, Rin: ohm, R: ohm}, result_unit: V}
+    dimension_check: pass
+    assumptions: ["All four arms ≈ R (each midpoint has source resistance R/2)"]
+
+  # --- seeded needs_review forms (spec 11, K1–K6) ---------------------------------------
+  - id: mic_current
+    title: Microphone current (DC bias)
+    module: C5
+    status: needs_review
+    source: "Lecture 1 notes, p. 6"
+    evidence: [notes, dimension_check]
+    known_issue: K1
+    lecture_form: "\\hat I(t) = V_b C_0 \\frac{1}{(d-x)^2}\\, i\\omega\\hat x(t)"
+    canonical_form: "\\hat I(t) = V_b C_0 \\frac{d}{(d-x)^2}\\, i\\omega\\hat x(t)"
+    issue: "Lecture form has wrong dimensions (A/m instead of A). dC/dx = C0·d/(d−x)²."
+    lecture_check: {expr: "Vb*C0*1/(d - x)^2*imath*omega*x", symbols: {Vb: V, C0: F, d: m, x: m, omega: "1/s"}, result_unit: A}
+    canonical_check: {expr: "Vb*C0*d/(d - x)^2*imath*omega*x", symbols: {Vb: V, C0: F, d: m, x: m, omega: "1/s"}, result_unit: A}
+    dimension_check: pass
+    shown_in_exam_mode: canonical_with_flag
+
+  - id: dC_dx
+    title: Slope of the parallel-plate capacitance
+    module: C4
+    status: needs_review
+    source: "Lecture 1 notes, p. 4"
+    evidence: [notes, dimension_check]
+    known_issue: K2
+    lecture_form: "\\frac{\\partial C}{\\partial x} = \\frac{d}{(d-x)^2}"
+    canonical_form: "\\frac{\\partial C}{\\partial x} = \\frac{\\varepsilon A}{(d-x)^2} = \\frac{C_0\\, d}{(d-x)^2}"
+    issue: "Lecture form has units 1/m, but dC/dx must be in F/m. The prefactor εA = C0·d is missing."
+    lecture_check: {expr: "d/(d - x)^2", symbols: {d: m, x: m}, result_unit: "F/m"}
+    canonical_check: {expr: "eps*A/(d - x)^2", symbols: {eps: "F/m", A: "m^2", d: m, x: m}, result_unit: "F/m"}
+    dimension_check: pass
+    shown_in_exam_mode: canonical_with_flag
+
+  - id: tia_output_barometer
+    title: Transimpedance output, barometer case
+    module: C11
+    status: needs_review
+    source: "Lecture 1 notes, p. 5"
+    evidence: [notes, dimension_check]
+    known_issue: K3
+    lecture_form: "V_\\text{out} = -R\\,V_0\\,\\omega\\,\\sin(\\omega t)\\,C_0\\ldots"
+    canonical_form: "V_\\text{out} = +R\\,V_0\\,\\omega\\,C\\,\\sin(\\omega t)"
+    issue: "Sign: V_out = −R·I and I = −V0·ω·C·sin(ωt), so V_out is positive. Amplitude unaffected."
+    lecture_check: {expr: "-R*V0*omega*C0*sin(omega*t)", symbols: {R: ohm, V0: V, omega: "1/s", C0: F, t: s}, result_unit: V}
+    canonical_check: {expr: "R*V0*omega*C*sin(omega*t)", symbols: {R: ohm, V0: V, omega: "1/s", C: F, t: s}, result_unit: V}
+    dimension_check: pass
+    shown_in_exam_mode: canonical_with_flag
+
+  - id: noise_band_power
+    title: Noise power in a frequency band
+    module: C13
+    status: needs_review
+    source: "Lecture 2 notes, p. 7"
+    evidence: [notes, dimension_check]
+    known_issue: K4
+    lecture_form: "P = S_V(\\omega)\\cdot(\\omega_2 - \\omega_1)"
+    canonical_form: "\\sigma^2 = \\int_{f_1}^{f_2} S(f)\\,df \\;\\overset{\\text{white}}{=}\\; S_0\\,(f_2 - f_1) = \\frac{S_0}{2\\pi}(\\omega_2-\\omega_1)"
+    issue: "Valid only for white noise, and a per-Hz PSD integrated over ω needs a factor 1/2π. The dimension check passes (rad/s and Hz are both 1/s), so it cannot catch this."
+    lecture_check: {expr: "S*(omega2 - omega1)", symbols: {S: "V^2/Hz", omega2: "1/s", omega1: "1/s"}, result_unit: "V^2"}
+    canonical_check: {expr: "S*(f2 - f1)", symbols: {S: "V^2/Hz", f2: Hz, f1: Hz}, result_unit: "V^2"}
+    dimension_check: pass
+    shown_in_exam_mode: canonical_with_flag
+
+  - id: variance_from_psd
+    title: Variance from the PSD
+    module: C13
+    status: needs_review
+    source: "Lecture 2 notes, p. 8"
+    evidence: [notes]
+    known_issue: K5
+    lecture_form: "\\sigma_x^2 = \\int_0^\\infty S_x(\\omega)\\,df"
+    canonical_form: "\\sigma_x^2 = \\int_0^\\infty S_x(f)\\,df = \\frac{1}{2\\pi}\\int_0^\\infty S_x(\\omega)\\,d\\omega"
+    issue: "Mixed variables: S written as a function of ω but integrated over f. State which variable the density is per."
+    dimension_check: not_applicable
+    shown_in_exam_mode: canonical_with_flag
+
+  - id: strain_prefactor
+    title: Membrane strain vs pressure
+    module: C2
+    status: needs_review
+    source: "Lecture 1 notes, p. 2"
+    evidence: [notes, dimension_check]
+    known_issue: K6
+    lecture_form: "\\varepsilon(p) \\cong \\frac{A}{E h^2}\\,p = \\xi\\, p"
+    canonical_form: "\\varepsilon(p) \\approx k\\,\\frac{a^2}{E h^2}\\,p"
+    issue: "Dimensionally fine, but the prefactor is geometry-dependent: plate theory uses the side length (or radius) squared a², with a dimensionless constant k, not the membrane area A."
+    lecture_check: {expr: "A/(E*h^2)*p", symbols: {A: "m^2", E: Pa, h: m, p: Pa}, result_unit: "1"}
+    canonical_check: {expr: "k*a^2/(E*h^2)*p", symbols: {k: "1", a: m, E: Pa, h: m, p: Pa}, result_unit: "1"}
+    dimension_check: pass
+    shown_in_exam_mode: canonical_with_flag

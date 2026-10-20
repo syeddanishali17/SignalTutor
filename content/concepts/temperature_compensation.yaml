@@ -1,0 +1,15 @@
+id: temperature_compensation
+title: Temperature compensation in bridges
+short: "Temperature drift"
+code: C3
+track: course_l01
+prerequisites: [wheatstone_full]
+status: verified
+source_refs: ["own lecture notes, p. 5 (temperature affects them all the same)", "Lecture 1 notes, p. 2"]
+one_liner: "Gauges also change with temperature. If all four warm up together their drifts cancel in a full bridge; a quarter bridge mistakes heat for strain."
+plain_words: "equal drifts cancel"
+explanation_md: temperature_compensation.md
+misconceptions:
+  - id: quarter_compensates
+    text: "A quarter bridge cancels temperature drift too."
+    correction: "Only the one gauge on the membrane warms with it; the fixed resistors do not. Its thermal $\\Delta R$ looks exactly like strain. Cancellation needs the drifting resistors in matched positions — e.g. all four gauges of a full bridge."

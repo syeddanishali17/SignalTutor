@@ -1,0 +1,43 @@
+questions:
+  - id: explain_divider
+    concepts: [voltage_divider]
+    priority: medium
+    question: "Explain a voltage divider to a friend with no electronics background. Why is it the key to the Wheatstone bridge?"
+    structure:
+      - {label: definition, text: "Two resistors in series across a supply; the output is the junction between them."}
+      - {label: mechanism, text: "Same current through both; each takes a voltage share proportional to its resistance."}
+      - {label: key equation, text: "V_out = V_in · R2/(R1 + R2), R2 being the resistor to ground."}
+      - {label: assumptions, text: "Nothing draws current from the output (unloaded)."}
+      - {label: limitations, text: "A load in parallel with R2 lowers the output."}
+      - {label: application, text: "Each side of a Wheatstone bridge is a voltage divider."}
+    expected_points:
+      - {id: series, text: "Same current through both resistors"}
+      - {id: share, text: "Voltage splits in proportion to the resistances"}
+      - {id: formula, text: "V_out = V_in · R2/(R1 + R2)"}
+      - {id: load, text: "Mentions loading (output must not be loaded)"}
+      - {id: bridge, text: "Links it to the bridge (two dividers side by side)"}
+    followups:
+      - {when_missing: load, ask: "What happens if you connect a meter with a low input resistance to the output?"}
+      - {always: true, ask: "What is V_out if R1 = R2? And if R2 is shorted?"}
+    traps:
+      - "Using R1 in the numerator: the output is across the resistor to ground."
+
+  - id: explain_voltage
+    concepts: [voltage, ground_reference]
+    priority: medium
+    question: "What is a voltage? What does ground mean, and what changes if you move it?"
+    structure:
+      - {label: definition, text: "A voltage is a potential difference between two points, V_AB = φ_A − φ_B."}
+      - {label: mechanism, text: "Ground is the node we agree to call 0 V; node voltages are measured from it."}
+      - {label: physical meaning, text: "Moving ground relabels every node by the same amount; differences and currents are unchanged."}
+      - {label: application, text: "The bridge output is a difference; a shared shift (common mode) cancels in it."}
+    expected_points:
+      - {id: difference, text: "Voltage is between two points"}
+      - {id: ground, text: "Ground = chosen 0 V reference"}
+      - {id: invariant, text: "Moving ground does not change differences or currents"}
+      - {id: common, text: "Shifting both nodes together leaves their difference unchanged"}
+    followups:
+      - {when_missing: invariant, ask: "If I declare a different node to be ground, does any current change?"}
+      - {always: true, ask: "Both inputs of a meter rise by 2 V. What does the meter show?"}
+    traps:
+      - "'The node is at 3 V' always means 'relative to ground'."

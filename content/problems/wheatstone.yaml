@@ -1,0 +1,164 @@
+problems:
+  - id: full_bridge_output
+    concept: wheatstone_full
+    kind: numeric
+    level: 4
+    template: "A full bridge has G = [[G]], strain ε = [[eps_ue]] µε and V_b = [[Vb]] V. What is the magnitude of V_out?"
+    params:
+      G: {choices: [2.0, 2.1, 100]}
+      eps_ue: {range: [100, 1000], step: 50}
+      Vb: {choices: [2.5, 3.3, 5.0]}
+    answer: {fn: bridge.full_output_mag, unit: V, tolerance_rel: 0.02, accept_sign: either, display_prefix: m}
+    misconception_checks:
+      - {scale: 0.25, misconception: quarter_vs_full}
+      - {fn: bridge.full_with_raw_microstrain, misconception: microstrain_slip}
+    solution: "Full bridge: V_out = G·ε·V_b = [[G]] × [[eps_ue]]×10⁻⁶ × [[Vb]] V. No ¼ — that belongs to the quarter bridge."
+
+  - id: quarter_bridge_output
+    concept: wheatstone_quarter
+    kind: numeric
+    level: 4
+    template: "A quarter bridge: three fixed resistors R = [[R]] Ω and one gauge R + ΔR with ΔR = [[dR]] Ω, supply V_0 = [[V0]] V. What is the magnitude of V_2 − V_1? (The small-change approximation is fine.)"
+    params:
+      R: {choices: [120, 350, 1000]}
+      dR: {choices: [0.12, 0.24, 0.35, 0.5, 1.0]}
+      V0: {choices: [2.5, 5.0, 10.0]}
+    answer: {fn: bridge.quarter_output_mag, unit: V, tolerance_rel: 0.02, accept_sign: either, display_prefix: m}
+    misconception_checks:
+      - {scale: 4, misconception: quarter_vs_full}
+    solution: "|V_2 − V_1| ≈ ¼ · (ΔR/R) · V_0 = ¼ × ([[dR]]/[[R]]) × [[V0]] V. The exact formula differs by only (ΔR/R)/2 relative."
+
+  - id: quarter_v2_direction
+    concept: wheatstone_quarter
+    kind: direction
+    level: 2
+    template: "Quarter bridge, gauge in the upper-left arm (R1). The membrane stretches the gauge, so R1 increases. The left midpoint V2 (from ground)…"
+    options:
+      - {id: down, text: "decreases"}
+      - {id: same, text: "stays at V0/2", misconception: meter_is_free}
+      - {id: up, text: "increases", misconception: divider_swapped}
+    correct: down
+    solution: "V2 = V0·R4/(R1 + R4). R1 is the TOP resistor of the left divider: making it bigger takes a bigger share of the supply, so V2 drops. (Gauge in the lower arm → V2 rises: the sign depends on placement, see K9.)"
+
+  - id: gauge_dR
+    concept: gauge_factor
+    kind: numeric
+    level: 4
+    template: "A strain gauge with G = [[G]] and R = [[R]] Ω sees a strain of [[eps_ue]] µε. What is ΔR?"
+    params:
+      G: {choices: [2.0, 2.1]}
+      R: {choices: [120, 350, 1000]}
+      eps_ue: {range: [200, 1000], step: 100}
+    answer: {fn: bridge.gauge_dR, unit: ohm, tolerance_rel: 0.02, display_prefix: m}
+    misconception_checks:
+      - {fn: bridge.gauge_dR_raw_microstrain, misconception: microstrain_slip}
+    solution: "ΔR = G·ε·R = [[G]] × [[eps_ue]]×10⁻⁶ × [[R]] Ω."
+
+  - id: h_eps_v
+    concept: wheatstone_full
+    kind: numeric
+    level: 4
+    template: "Full bridge, G = [[G]], V_b = [[Vb]] V. What is the transfer function H_ε-V = V_out/ε (in volts per unit strain)?"
+    params:
+      G: {choices: [2.0, 2.1, 100]}
+      Vb: {choices: [2.5, 3.3, 5.0]}
+    answer: {fn: bridge.h_eps_v, unit: V, tolerance_rel: 0.02}
+    misconception_checks:
+      - {scale: 0.25, misconception: quarter_vs_full}
+    solution: "H_ε-V = G·V_b = [[G]] × [[Vb]] V (per unit strain; multiply by ε to get V_out)."
+
+  - id: approx_error
+    concept: wheatstone_quarter
+    kind: numeric
+    level: 5
+    template: "Quarter bridge with ΔR/R = [[x_pct]] %. By what percentage does the approximation −¼(ΔR/R)V_0 overestimate the size of the exact output? Answer with a % sign."
+    params:
+      x_pct: {choices: [0.2, 1, 2, 5, 10]}
+    answer: {fn: bridge.approx_rel_error, unit: "1", tolerance_rel: 0.03}
+    solution: "approx/exact = (2 + ΔR/R)/2 = 1 + (ΔR/R)/2, so the overestimate is half of ΔR/R: [[x_pct]] % / 2."
+
+  - id: full_vs_quarter_factor
+    concept: wheatstone_full
+    kind: mc
+    level: 2
+    template: "Same supply, same strain on every active gauge. How many times larger is the full-bridge output than the quarter-bridge output (small strain)?"
+    options:
+      - {id: one, text: "1× (the same)", misconception: full_same_as_quarter}
+      - {id: two, text: "2×", misconception: quarter_vs_full}
+      - {id: four, text: "4×"}
+      - {id: sixteen, text: "16×"}
+    correct: four
+    solution: "Quarter ≈ ¼(ΔR/R)V0, full = (ΔR/R)V0: factor 4."
+
+  - id: balance_condition
+    concept: wheatstone_bridge
+    kind: mc
+    level: 3
+    template: "Left divider R1 (top) over R4 (bottom), right divider R2 (top) over R3 (bottom). When is V2 − V1 = 0?"
+    options:
+      - {id: ratio, text: "R1/R4 = R2/R3"}
+      - {id: equal, text: "Only when R1 = R2 = R3 = R4", misconception: balance_needs_equal}
+      - {id: sum, text: "R1 + R4 = R2 + R3"}
+      - {id: zero, text: "Only when the supply V0 is 0 V"}
+    correct: ratio
+    solution: "Balanced when both dividers give the same fraction: R4/(R1+R4) = R3/(R2+R3) ⇔ R1/R4 = R2/R3 (⇔ R1·R3 = R2·R4)."
+
+  - id: midpoint_balanced
+    concept: common_mode
+    kind: numeric
+    level: 3
+    template: "A balanced bridge with four equal resistors is fed with V_0 = [[V0]] V. What is the voltage of each output node, measured from ground?"
+    params:
+      V0: {choices: [2.5, 3.3, 5.0, 10.0]}
+    answer: {fn: bridge.midpoint_balanced, unit: V, tolerance_rel: 0.01}
+    misconception_checks:
+      - {fn: zero, misconception: output_nodes_at_zero}
+    solution: "Each side is a divider of two equal resistors: V0/2 = [[V0]]/2 V. The difference is zero; the shared V0/2 is common mode."
+
+  - id: cm_in_bridge
+    concept: common_mode
+    kind: mc
+    level: 2
+    template: "In a 5 V bridge both output nodes sit near 2.5 V and differ by 1 mV. The shared 2.5 V is…"
+    options:
+      - {id: cm, text: "the common-mode signal"}
+      - {id: noise, text: "noise that must be filtered away", misconception: cm_is_noise}
+      - {id: diff, text: "the differential signal", misconception: diff_is_small_absolute}
+      - {id: zero, text: "impossible — balanced outputs are at 0 V", misconception: output_nodes_at_zero}
+    correct: cm
+    solution: "Shared part = common mode (≈ V0/2). The 1 mV difference is the differential signal that carries the measurement."
+
+  - id: temp_quarter
+    concept: temperature_compensation
+    kind: mc
+    level: 3
+    template: "Quarter bridge: only the gauge R1 is on the membrane. The membrane warms up by 10 K but is not strained. The output…"
+    options:
+      - {id: changes, text: "changes — the warming looks like strain"}
+      - {id: zero, text: "stays 0 — temperature cancels in any bridge", misconception: quarter_compensates}
+    correct: changes
+    solution: "Only R1 drifts, so the bridge unbalances exactly as if it were strained (apparent strain)."
+
+  - id: temp_full
+    concept: temperature_compensation
+    kind: direction
+    level: 3
+    template: "Full bridge: all four gauges warm up by the same 10 K (no strain change). The output…"
+    options:
+      - {id: down, text: "decreases"}
+      - {id: same, text: "is unchanged"}
+      - {id: up, text: "increases", misconception: quarter_compensates}
+    correct: same
+    solution: "Every arm is multiplied by the same (1 + αΔT); each divider ratio is unchanged, so the output is unchanged."
+
+  - id: loading_reading
+    concept: bridge_loading
+    kind: direction
+    level: 3
+    template: "An unbalanced bridge (all arms ≈ R) is read by a meter whose input resistance is only 10·R instead of ∞. Compared to the ideal reading, the meter shows…"
+    options:
+      - {id: down, text: "a smaller value (about 9 % less)"}
+      - {id: same, text: "the same value", misconception: meter_is_free}
+      - {id: up, text: "a larger value"}
+    correct: down
+    solution: "The meter's current pulls the two midpoints together: V_read ≈ V_open · R_in/(R_in + R) = 10/11 of the ideal value."

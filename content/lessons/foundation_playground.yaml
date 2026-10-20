@@ -1,0 +1,270 @@
+id: foundation_playground
+title: Foundation Playground
+module: E
+map_stage: electrical_transducer
+map_note: "Every sensor ends in an electrical circuit. These seven scenes give you the vocabulary."
+concepts: [charge_current, voltage, ground_reference, resistance, ohms_law, fractions, series_circuit, voltage_divider, kcl, reading_circuits]
+problems: [series_same_current, shift_both_nodes, ohm_current, ohm_double_r, divider_vout, divider_r2_up, divider_load, ground_relabel, kcl_node, read_output_node, prefix_magnitude]
+oral: [explain_voltage, explain_divider]
+whiteboard: [wb_divider_draw]
+formulas: [ohms_law, voltage_divider]
+break_it:
+  - id: open_loop
+    title: "Open the loop"
+    cause: "Current needs a complete path from the battery's + side, round the circuit, back to its − side."
+    condition: "The switch is open (or any wire is broken)."
+    consequence: "$I = 0$ **everywhere** in the loop — not just after the gap. With no current, the resistor has no voltage across it."
+    recovery: "Close the loop. (A bridge with a broken gauge wire reads nonsense for the same reason.)"
+  - id: divider_loading
+    title: "Loading the divider"
+    cause: "Whatever you connect to the output draws current and sits side by side (in parallel) with $R_2$."
+    condition: "The load resistance is not much larger than $R_2$ (rule of thumb: less than $10\\times R_2$)."
+    consequence: "$V_\\text{out}$ sags below $V_\\text{in}\\,\\dfrac{R_2}{R_1+R_2}$ — the formula's 'nothing connected' assumption is broken."
+    recovery: "Measure with an input of much higher resistance. This is exactly why amplifiers for sensors need a high input impedance."
+scenes:
+  - id: loop
+    title: "What flows: a closed loop"
+    short: "1 · Loop"
+    concepts: [charge_current, reading_circuits]
+    problem: >-
+      A battery, a resistor and some wire. **What actually flows, and where?**
+      Three ammeters (Ⓐ, instruments that count current) sit at three different places in the loop.
+    predict:
+      question: "You open the switch in the top wire. What do the three ammeters show?"
+      options:
+        - {id: one, label: "only A₁ (next to the switch) drops to 0"}
+        - {id: all, label: "all three drop to 0"}
+        - {id: none, label: "nothing changes"}
+      correct: all
+      reveal: >-
+        Current only exists in a **closed** loop. Break it anywhere and it stops **everywhere** at once —
+        and while the loop is closed, all three ammeters always agree: nothing is 'used up' on the way.
+    inspect:
+      - {id: V, label: "Battery", concept: voltage, role: "The **source**. Its long plate is the $+$ side. It pushes charge around the loop; the push is its voltage $V$.", controls: [V]}
+      - {id: nodeTop, label: "Wire / node", concept: reading_circuits, role: "An ideal **wire** (0 Ω). Every point joined by plain wire — here the whole top wire — is **one node** at one potential.", controls: [closed]}
+      - {id: R, label: "Resistor", concept: resistance, role: "The part that **opposes** the current and turns electrical energy into heat."}
+      - {id: I, label: "Ammeters", concept: charge_current, role: "Each Ⓐ sits **in** the wire and shows the current through it. In one loop they always agree."}
+      - {id: loop, label: "Closed loop", concept: charge_current, role: "The complete path. Open it anywhere (the switch) and $I = 0$ everywhere.", controls: [closed]}
+    terms:
+      - {id: I, symbol: ohm_I, highlight: [I]}
+    explain:
+      prompt: "Without the picture: what is current, why does it need a closed loop, and why do all three ammeters agree?"
+      points:
+        - "Current = charge passing a point per second (A = C/s)"
+        - "It needs a closed loop; opening it anywhere stops it everywhere"
+        - "Charge is not used up — the current is the same everywhere in one loop"
+    analogy_note: "The moving dashes picture the RATE of charge flow. The electrons themselves crawl at well under a millimetre per second — the 'start moving' signal is what travels fast."
+    break_it: [open_loop]
+    notes_md: |
+      **New words.** *Source* (battery), *wire*, *node* (all points joined by plain wire), *resistor*, *ammeter* (Ⓐ, counts current, sits in the wire), *closed loop*.
+
+      **Watch the picture.** The blue dashes move in the direction of the current arrow; their speed and thickness show how big the current is.
+
+  - id: voltage_difference
+    title: Voltage is a difference
+    short: "2 · Voltage"
+    concepts: [voltage, ground_reference]
+    problem: >-
+      A **voltmeter** (Ⓥ) always has **two** leads. So what is it actually measuring?
+      Here every connection point (**node**) is drawn at the height of its **potential** $\varphi$ — its electrical 'height'.
+    predict:
+      question: "Nodes A and B both rise by +2 V together. What happens to the voltage between them, $V_{AB}$?"
+      options:
+        - {id: down, label: "decreases"}
+        - {id: same, label: "stays the same"}
+        - {id: up, label: "rises by 2 V"}
+      correct: same
+      reveal: >-
+        $V_{AB} = \varphi_A - \varphi_B$. When both rise by 2 V, the 2 V cancels in the difference.
+        Only differences are physical — the shared part is what we will later call **common mode**.
+    inspect:
+      - {id: A, label: "Node A", concept: voltage, role: "A connection point with potential $\\varphi_A$ — its height on the scale.", controls: [phiA]}
+      - {id: B, label: "Node B", concept: voltage, role: "A second point, potential $\\varphi_B$. The meter compares A against B.", controls: [phiB]}
+      - {id: meter, label: "Voltmeter", concept: voltage, role: "Always spans **two** points and shows their difference $V_{AB}$.", controls: [lift]}
+      - {id: ref, label: "Reference (0 V)", concept: ground_reference, role: "The node we *call* 0 V. Moving it relabels every node but changes no difference.", controls: [ref]}
+    terms:
+      - {id: phiA, symbol: phiA, highlight: [A], controls: [phiA]}
+      - {id: phiB, symbol: phiB, highlight: [B], controls: [phiB]}
+      - {id: VAB, symbol: VAB, highlight: [meter], controls: [lift]}
+    explain:
+      prompt: "Without the picture: why does a voltmeter need two leads, and what does 'node A is at 5 V' really mean?"
+      points:
+        - "A voltage is a difference between two points"
+        - "'5 V' means 5 V relative to a chosen reference (ground)"
+        - "A shift shared by both points does not change the difference"
+    analogy_note: "Heights on a hill are an ANALOGY. It breaks down because electric potential has no natural zero at all — we must choose one."
+    notes_md: |
+      **Potential** is drawn as height. A **voltage** is the height *difference* between two marked points — that is all a voltmeter can see.
+
+      Try it: pick a different reference. Every label changes; the bracket does not.
+
+  - id: current_resistance
+    title: Current and resistance (Ohm's law)
+    short: "3 · Ohm's law"
+    concepts: [resistance, ohms_law, fractions]
+    problem: >-
+      The battery pushes charge round the loop through one resistor. **What sets how much current flows?**
+    predict:
+      question: "Keep the battery voltage $V$ fixed and double the resistance $R$. The current $I$ will…"
+      options:
+        - {id: down, label: "halve"}
+        - {id: same, label: "stay the same"}
+        - {id: up, label: "double"}
+      correct: down
+      reveal: >-
+        $I = \dfrac{V}{R}$ — $R$ is in the **denominator** (the bottom of the fraction): a bigger bottom number makes the result smaller.
+        Double $R$, half the current. Watch the dashes slow down and the point slide down the graph.
+    inspect:
+      - {id: V, label: "Battery V", concept: voltage, role: "The push: the voltage across the resistor (the numerator of $I = V/R$).", controls: [V]}
+      - {id: R, label: "Resistor R", concept: resistance, role: "The opposition (the denominator of $I = V/R$). More $R$ → less current for the same push.", controls: [R]}
+      - {id: I, label: "Current I", concept: charge_current, role: "Charge per second — the result. The same everywhere in the loop."}
+      - {id: loop, label: "Closed loop", concept: charge_current, role: "Open the switch and $I = 0$ everywhere.", controls: [closed]}
+    terms:
+      - {id: I, symbol: ohm_I, highlight: [I]}
+      - {id: V, symbol: ohm_V, highlight: [V], controls: [V]}
+      - {id: R, symbol: ohm_R, highlight: [R], controls: [R]}
+    explain:
+      prompt: "Without the picture: what happens to the current if you double the voltage? If you double the resistance? Why?"
+      points:
+        - "$I = V/R$"
+        - "Double $V$ → double $I$ (proportional)"
+        - "Double $R$ → half $I$ ($R$ is in the denominator)"
+        - "The current is the same everywhere in a single loop"
+    analogy_note: "Push and opposition are a picture, not the physics: the resistor really limits the charge flow and turns the energy into heat."
+    break_it: [open_loop]
+    notes_md: |
+      **Reading the fraction.** $I = \dfrac{V}{R}$ has a **numerator** (top, $V$: the push) and a **denominator** (bottom, $R$: the opposition). Numerator up → result up. Denominator up → result down.
+
+      **The graph** shows each resistor as a straight line of current against voltage. Its steepness is $1/R$: a steeper line means a smaller resistance.
+
+  - id: divider
+    title: Series path and voltage divider
+    short: "4 · Divider"
+    concepts: [series_circuit, voltage_divider]
+    problem: >-
+      Two resistors share one supply, one after the other (**in series**). How much of the voltage ends up across each —
+      and what does the middle node read?
+    predict:
+      question: "Increase the bottom resistor $R_2$. The output voltage $V_\\text{out}$…"
+      options:
+        - {id: down, label: "decreases"}
+        - {id: same, label: "stays the same"}
+        - {id: up, label: "increases"}
+      correct: up
+      reveal: >-
+        $V_\text{out} = V_\text{in}\,\dfrac{R_2}{R_1 + R_2}$: a bigger $R_2$ takes a bigger **share** of the supply.
+        This is exactly what one strain gauge does to one side of a Wheatstone bridge.
+    inspect:
+      - {id: Vin, label: "Supply V_in", concept: voltage, role: "Total voltage across both resistors.", controls: [Vin]}
+      - {id: R1, label: "R₁ (top)", concept: resistance, role: "From the supply to the output node.", controls: [R1]}
+      - {id: R2, label: "R₂ (bottom)", concept: voltage_divider, role: "From the output node to ground. $V_\\text{out}$ is the voltage **across** $R_2$.", controls: [R2]}
+      - {id: out, label: "Output node", concept: voltage_divider, role: "The junction between the resistors. Its voltage is the share that drops across $R_2$.", controls: [load]}
+      - {id: I, label: "Current I", concept: series_circuit, role: "One path, one current through both resistors: $I = V_\\text{in}/(R_1 + R_2)$."}
+    terms:
+      - {id: Vout, symbol: div_Vout, highlight: [out]}
+      - {id: Vin, symbol: div_Vin, highlight: [Vin], controls: [Vin]}
+      - {id: R1, symbol: div_R1, highlight: [R1], controls: [R1]}
+      - {id: R2, symbol: div_R2, highlight: [R2], controls: [R2]}
+      - {id: total, symbol: div_total, latex: "[[R1]] + [[R2]]", highlight: [R1, R2], controls: [R1, R2]}
+    explain:
+      prompt: "Without the picture: why does the output of a divider depend only on the ratio of the resistors?"
+      points:
+        - "Same current through both resistors"
+        - "Each voltage drop is $I\\,R$, so the drops are in proportion to the resistances"
+        - "$V_\\text{out} = V_\\text{in}\\,R_2/(R_1 + R_2)$"
+    break_it: [divider_loading]
+    notes_md: |
+      The **level bar** on the right shows each node's potential; the **brackets** show the voltage across each resistor. The two drops always add up to $V_\text{in}$.
+
+      **Break it:** under *More controls*, connect a meter with a low input resistance to the output and watch $V_\text{out}$ sag.
+
+  - id: ground
+    title: Ground and reference
+    short: "5 · Ground"
+    concepts: [ground_reference]
+    problem: >-
+      Every node label in a diagram is measured from somewhere — the **ground** node (⏚), which we *call* 0 V.
+      What happens if we choose a different 'somewhere'?
+    predict:
+      question: "You move ground from the bottom node to the middle node. The voltage across $R_1$…"
+      options:
+        - {id: down, label: "decreases"}
+        - {id: same, label: "stays the same"}
+        - {id: up, label: "increases"}
+      correct: same
+      reveal: >-
+        All node labels shift by the same amount, so every difference — including the drop across $R_1$ — stays the same.
+        The circuit does not notice where you put the 0 V label.
+    inspect:
+      - {id: top, label: "Top node", concept: ground_reference, role: "Its label depends on the reference.", controls: [ref]}
+      - {id: mid, label: "Middle node", concept: ground_reference, role: "Its label depends on the reference.", controls: [ref]}
+      - {id: bottom, label: "Bottom node", concept: ground_reference, role: "Its label depends on the reference.", controls: [ref]}
+      - {id: gnd, label: "Ground symbol", concept: ground_reference, role: "Marks the node defined as 0 V.", controls: [ref]}
+    terms:
+      - {id: ref, symbol: phi_ref, highlight: [gnd], controls: [ref]}
+    explain:
+      prompt: "Without the picture: what changes and what stays the same when you move ground?"
+      points:
+        - "Ground is a chosen reference (0 V)"
+        - "All node labels shift by the same amount"
+        - "Voltage differences and currents do not change"
+    notes_md: |
+      Left column: **node potentials** (change with the reference). Right column: **differences** (never change).
+
+  - id: junction
+    title: Junction rule (KCL)
+    short: "6 · KCL"
+    concepts: [kcl]
+    problem: >-
+      At a **junction** (a node where three wires meet) the current splits. Is any of it lost?
+    predict:
+      question: "5 mA flows into a node; 2 mA leaves through branch 1. Branch 2 carries…"
+      options:
+        - {id: three, label: "3 mA out"}
+        - {id: seven, label: "7 mA out"}
+        - {id: two, label: "2 mA out"}
+      correct: three
+      reveal: >-
+        What goes in must come out: $5\,\text{mA} = 2\,\text{mA} + 3\,\text{mA}$.
+        Push branch 1 above the input and branch 2 turns **negative** — it then flows *into* the node.
+    inspect:
+      - {id: Iin, label: "I_in", concept: kcl, role: "Current arriving at the node.", controls: [Iin]}
+      - {id: I1, label: "I₁", concept: kcl, role: "Current leaving through branch 1 (you set it).", controls: [I1]}
+      - {id: I2, label: "I₂", concept: kcl, role: "Whatever is left must leave through branch 2."}
+      - {id: node, label: "Node", concept: kcl, role: "Charge cannot pile up here: $\\sum I_\\text{in} = \\sum I_\\text{out}$."}
+    terms:
+      - {id: I2, symbol: kcl_I2, highlight: [I2]}
+      - {id: Iin, symbol: kcl_Iin, highlight: [Iin], controls: [Iin]}
+      - {id: I1, symbol: kcl_I1, highlight: [I1], controls: [I1]}
+    explain:
+      prompt: "Without the picture: state Kirchhoff's current law and say what a negative current means."
+      points:
+        - "$\\sum I_\\text{in} = \\sum I_\\text{out}$ at every node"
+        - "Charge cannot pile up in a junction"
+        - "A negative result means the current flows opposite to the drawn arrow"
+    notes_md: |
+      Arrow **thickness** shows the size of each current; an arrow that **flips** shows a sign change.
+
+  - id: read_circuit
+    title: Read a simple circuit
+    short: "7 · Read it"
+    concepts: [reading_circuits]
+    problem: >-
+      Before any sensor circuit: can you name every part of a two-resistor circuit — and say what each one does?
+    inspect:
+      - {id: src, label: "Source", concept: voltage, role: "The battery or supply. Long plate = $+$ side.", highlight: [Vin]}
+      - {id: wire, label: "Wire / node", concept: reading_circuits, role: "Ideal conductor. Everything joined by plain lines is one node at one potential."}
+      - {id: branch, label: "Branch", concept: reading_circuits, role: "One path between two nodes — here $R_1$ and $R_2$ in a row."}
+      - {id: R1, label: "Resistor", concept: resistance, role: "Rectangle (IEC, as in the lecture drawings) or zig-zag: same part. **Name** in bold, **value** in the tag."}
+      - {id: gnd, label: "Ground", concept: ground_reference, role: "The 0 V reference node."}
+      - {id: out, label: "Output terminal", concept: reading_circuits, role: "Open circle ○: where a meter or the next stage connects."}
+    explain:
+      prompt: "Point at a two-resistor circuit and name: source, current path and direction, both voltage drops, output node, reference."
+      points:
+        - "Source and its + side"
+        - "Current path and direction"
+        - "Voltage drop across each resistor"
+        - "Output node / terminal"
+        - "Ground reference"
+    notes_md: |
+      **Reading order that works:** ground → source → current path → output terminal → "which divider sets this node?"

@@ -1,0 +1,16 @@
+id: ground_reference
+title: Ground and reference node
+short: "Ground"
+code: E6
+track: electrical
+prerequisites: [voltage]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "**Ground** is the node we *agree* to call 0 V; every 'node voltage' is measured from it."
+plain_words: "the agreed zero"
+explanation_md: ground_reference.md
+symbol: '0\,\text{V}'
+misconceptions:
+  - id: ground_is_absolute
+    text: "Ground is a special absolute 0 V; moving it changes the physics."
+    correction: "Ground is a choice of reference. Moving it relabels every node by the same amount; all voltage differences and all currents stay exactly the same."

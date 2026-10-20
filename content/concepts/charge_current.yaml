@@ -1,0 +1,20 @@
+id: charge_current
+title: Charge and current
+short: "Current"
+code: E1
+track: electrical
+prerequisites: [si_prefixes]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "**Current** $I$ is how much electric charge passes a point each second: $1\\,\\text{A} = 1\\,\\text{C/s}$. It only flows around a **closed loop**."
+plain_words: "how much charge flows past per second"
+explanation_md: charge_current.md
+symbol: "I"
+units: "ampere, A (mA = $10^{-3}$ A, µA = $10^{-6}$ A)"
+analogy:
+  text: "Water flowing round a closed loop of pipe: litres per second ↔ coulombs per second."
+  breaks_when: "Electrons themselves crawl along at well under a millimetre per second, while the 'start flowing' signal spreads through the wire almost at light speed. And water can spill out of a broken pipe — charge simply stops everywhere."
+misconceptions:
+  - id: current_used_up
+    text: "A resistor uses up current, so less current comes out than goes in."
+    correction: "Charge is never used up. The same current leaves a resistor as enters it — the three ammeters in the loop scene always agree. What the resistor takes is **energy** (it gets warm), which shows up as a voltage drop across it."

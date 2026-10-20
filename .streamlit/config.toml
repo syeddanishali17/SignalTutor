@@ -1,0 +1,31 @@
+[theme]
+base = "light"
+primaryColor = "#1d5fa8"
+backgroundColor = "#fbfaf7"
+secondaryBackgroundColor = "#f1eee6"
+textColor = "#1d2430"
+font = "sans serif"
+
+# Streamlit 1.62 stores the viewer's theme as "System" and resolves it to the
+# dark variant when the OS prefers dark. The figures, cards and printouts are
+# designed for the light "lab notebook" palette, so both variants use it.
+[theme.light]
+primaryColor = "#1d5fa8"
+backgroundColor = "#fbfaf7"
+secondaryBackgroundColor = "#f1eee6"
+textColor = "#1d2430"
+
+[theme.dark]
+primaryColor = "#1d5fa8"
+backgroundColor = "#fbfaf7"
+secondaryBackgroundColor = "#f1eee6"
+textColor = "#1d2430"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
+
+[server]
+runOnSave = false

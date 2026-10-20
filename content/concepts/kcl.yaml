@@ -1,0 +1,15 @@
+id: kcl
+title: Kirchhoff's current law (KCL)
+short: "KCL"
+code: E7
+track: electrical
+prerequisites: [charge_current]
+status: supplemental
+source_refs: ["standard", "Lecture 2 notes, p. 5 (I1 = I2 = I3 in the instrumentation amplifier)"]
+one_liner: "At any **node** (junction), the current flowing in equals the current flowing out: $\\sum I_\\text{in} = \\sum I_\\text{out}$."
+plain_words: "what goes in must come out"
+explanation_md: kcl.md
+misconceptions:
+  - id: kcl_adds_all
+    text: "At a node you just add up all the currents."
+    correction: "Directions matter: $\\sum I_\\text{in} = \\sum I_\\text{out}$. If a computed current comes out negative, it simply flows the other way than the arrow you drew."

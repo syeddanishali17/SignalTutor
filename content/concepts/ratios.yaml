@@ -1,0 +1,15 @@
+id: ratios
+title: Ratios and normalising (ΔR/R)
+short: "Ratios (ΔR/R)"
+code: M3
+track: math
+prerequisites: [proportionality, fractions]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "Dividing a change by the original value, $\\Delta R/R$, gives a size-independent fraction with no unit."
+plain_words: "change as a fraction of the original"
+explanation_md: ratios.md
+misconceptions:
+  - id: delta_vs_ratio
+    text: "ΔR and ΔR/R are the same thing."
+    correction: "$\\Delta R$ has the unit Ω. $\\Delta R/R$ is a pure number: 1 Ω on a 1 kΩ resistor is $\\Delta R/R = 0.001 = 0.1\\,\\%$."

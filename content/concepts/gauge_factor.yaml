@@ -1,0 +1,17 @@
+id: gauge_factor
+title: Strain gauge and gauge factor
+short: "Gauge factor"
+code: C2
+track: course_l01
+prerequisites: [strain, resistance, ratios]
+status: verified
+source_refs: ["Lecture 1 notes, p. 2"]
+one_liner: "A **strain gauge** is a resistor whose resistance follows strain: $\\dfrac{\\Delta R}{R} = G\\,\\varepsilon$, with the **gauge factor** $G$."
+plain_words: "a resistor that measures stretch"
+explanation_md: gauge_factor.md
+symbol: "G"
+units: "none (G ≈ 2 metal foil, of order 100 silicon)"
+misconceptions:
+  - id: gauge_factor_has_unit
+    text: "The gauge factor has the unit Ω per strain."
+    correction: "Both $\\Delta R/R$ and $\\varepsilon$ are pure numbers, so $G$ is a pure number (≈ 2 for metal foil, of order 100 for silicon)."

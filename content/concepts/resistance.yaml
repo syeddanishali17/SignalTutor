@@ -1,0 +1,17 @@
+id: resistance
+title: Resistance
+short: "Resistance"
+code: E3
+track: electrical
+prerequisites: [charge_current, voltage]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "**Resistance** $R$ says how many volts it takes to push one ampere through a part: $R = V/I$, unit ohm (Ω)."
+plain_words: "how hard it is to push current through"
+explanation_md: resistance.md
+symbol: "R"
+units: "ohm, Ω (kΩ = 1000 Ω)"
+misconceptions:
+  - id: resistance_blocks_all
+    text: "A bigger resistance stops current completely."
+    correction: "A bigger $R$ only reduces the current ($I = V/R$). Only a broken loop — an 'infinite' resistance — stops it."

@@ -1,0 +1,16 @@
+id: ohms_law
+title: Ohm's law
+short: "Ohm's law"
+code: E3
+track: electrical
+prerequisites: [resistance, proportionality, fractions]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "$I = \\dfrac{V}{R}$: for a resistor, current is the push (voltage) divided by the opposition (resistance)."
+plain_words: "more push → more flow; more resistance → less flow"
+explanation_md: ohms_law.md
+symbol: "I = V/R"
+misconceptions:
+  - id: ohm_multiply
+    text: "I = V · R."
+    correction: "Check the units: V·Ω is not A. More resistance must mean *less* current, so $R$ belongs in the denominator: $I = V/R$."

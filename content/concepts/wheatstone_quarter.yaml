@@ -1,0 +1,17 @@
+id: wheatstone_quarter
+title: Quarter bridge (one active gauge)
+short: "Quarter bridge"
+code: C3
+track: course_l02
+prerequisites: [wheatstone_bridge, much_less_than, ratios]
+status: verified
+source_refs: ["Lecture 2 notes, p. 2"]
+one_liner: "One gauge $R + \\Delta R$ and three fixed $R$: $\\;V_2 - V_1 \\approx -\\tfrac14\\,\\dfrac{\\Delta R}{R}\\,V_0$ for $\\Delta R/R \\ll 1$."
+plain_words: "one sensing resistor"
+explanation_md: wheatstone_quarter.md
+symbol: 'V_2 - V_1 \approx -\tfrac14\tfrac{\Delta R}{R}V_0'
+units: V
+misconceptions:
+  - id: quarter_vs_full
+    text: "Using the full-bridge formula for a quarter bridge (or vice versa)."
+    correction: "Quarter: $\\approx \\tfrac14\\,(\\Delta R/R)\\,V_0$. Full: $(\\Delta R/R)\\,V_0$. Same strain, same supply → the full bridge gives 4× the output. The factor 4 is the classic exam trap."

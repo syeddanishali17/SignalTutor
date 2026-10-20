@@ -1,0 +1,142 @@
+questions:
+  - id: why_bridge
+    concepts: [wheatstone_bridge]
+    priority: very_high
+    question: "What is a Wheatstone bridge, and why do we use one to read out a strain gauge?"
+    structure:
+      - {label: definition, text: "Four resistors forming two voltage dividers fed by the same supply V0; the output is the difference between the two midpoints, V2 − V1."}
+      - {label: motivation, text: "A gauge changes by ΔR/R ≈ 10⁻³. Measured directly, that is a tiny change on top of a large value. The bridge subtracts the large common part so the output starts at zero."}
+      - {label: mechanism, text: "Equal divider ratios → V2 = V1 (balanced). Strain changes one ratio → that midpoint moves → a small differential output."}
+      - {label: key equation, text: "Balance: R1/R4 = R2/R3. Quarter: V2 − V1 ≈ −¼ (ΔR/R) V0. Full: |V_out| = (ΔR/R) V_b = G ε V_b."}
+      - {label: physical meaning, text: "Output ∝ strain, zero offset, sensitivity set by the supply and by the number of active arms."}
+      - {label: assumptions, text: "Ideal voltmeter (no current drawn); ΔR/R ≪ 1 for the quarter-bridge formula."}
+      - {label: limitations, text: "Quarter bridge: slightly nonlinear and sees temperature as strain. Output is mV riding on ≈ V0/2 common mode. A finite input impedance loads the bridge."}
+      - {label: application, text: "Piezoresistive pressure sensor (L01): pressure → membrane strain → ΔR → bridge → V_out."}
+    expected_points:
+      - {id: two_dividers, text: "Two voltage dividers from one supply; output = difference of the midpoints"}
+      - {id: balanced_zero, text: "Balanced (equal ratios) → output 0; balance condition R1/R4 = R2/R3"}
+      - {id: tiny_change, text: "Motivation: ΔR/R is tiny; the bridge removes the big common part"}
+      - {id: cm_level, text: "Output is a small differential signal on top of ≈ V0/2 common mode"}
+      - {id: formula, text: "States the quarter (¼) or full-bridge formula correctly"}
+      - {id: ideal_meter, text: "Assumption: the meter/amplifier draws no current"}
+    followups:
+      - {when_missing: balanced_zero, ask: "What is the output when the bridge is balanced, and what exactly is the balance condition?"}
+      - {when_missing: cm_level, ask: "At what voltage does each output node sit? Why does that matter for the amplifier you connect?"}
+      - {when_missing: ideal_meter, ask: "What happens to the bridge if the measuring instrument draws current?", hint: "Loading: it pulls the midpoints together (see L02: input impedance < ∞ unbalances the bridge)."}
+      - {always: true, ask: "Derive the output of a quarter bridge on the whiteboard."}
+      - {always: true, ask: "Why would you prefer a full bridge?"}
+    traps:
+      - "Balance does not need four equal resistors — only equal ratios."
+      - "Quarter vs full bridge: factor 4."
+      - "When balanced, both outputs sit at V0/2, not at 0 V."
+
+  - id: derive_quarter
+    concepts: [wheatstone_quarter]
+    priority: very_high
+    question: "Derive the output voltage of a quarter bridge."
+    structure:
+      - {label: definition, text: "One gauge R + ΔR (R1, upper left) and three fixed R; output V2 − V1."}
+      - {label: mechanism, text: "Ideal meter → two independent dividers. I1 = V0/2R, I2 = V0/(2R + ΔR). V1 = I1·R = V0/2, V2 = I2·R = V0/(2 + ΔR/R)."}
+      - {label: key equation, text: "V2 − V1 = V0 (1/(2 + ΔR/R) − ½) ≈ −¼ (ΔR/R) V0 for ΔR/R ≪ 1."}
+      - {label: assumptions, text: "No current into the meter; ΔR/R ≪ 1 for the last step."}
+      - {label: limitations, text: "Relative error of the approximation is (ΔR/R)/2; sign depends on the gauge position and on which node is +."}
+    expected_points:
+      - {id: no_current, text: "States I = 0 into the meter, so each branch is its own divider"}
+      - {id: currents, text: "I1 = V0/2R and I2 = V0/(2R + ΔR)"}
+      - {id: nodes, text: "V1 = V0/2 and V2 = V0/(2 + ΔR/R), measured across the lower arms"}
+      - {id: exact, text: "Writes the exact difference"}
+      - {id: approx, text: "Approximates to −¼ (ΔR/R) V0"}
+      - {id: condition, text: "States the condition ΔR/R ≪ 1"}
+    followups:
+      - {when_missing: condition, ask: "When is your approximation valid, and how big is its error?"}
+      - {when_missing: no_current, ask: "Why may you treat the two branches separately?"}
+      - {always: true, ask: "How big is the relative error of the approximation for ΔR/R = 2 %?", hint: "(ΔR/R)/2 = 1 %."}
+      - {always: true, ask: "Your drawing has the gauge in the lower-left arm. What changes?", hint: "V2 = I2(R + ΔR): the sign flips, the magnitude stays (K9)."}
+    traps:
+      - "V2 is measured from ground, i.e. across the LOWER arm."
+      - "Forgetting the ≪ condition when writing ≈."
+      - "Sign: depends on where the gauge sits and which node is called +."
+
+  - id: full_vs_quarter
+    concepts: [wheatstone_full, temperature_compensation]
+    priority: high
+    question: "Compare a quarter bridge with a full bridge. Which would you use for a pressure membrane, and why?"
+    structure:
+      - {label: definition, text: "Quarter: one active gauge. Full: four active gauges, two stretched and two compressed."}
+      - {label: mechanism, text: "In the full bridge diagonally opposite arms have the same sign, so both midpoints move apart; each branch still totals 2R."}
+      - {label: key equation, text: "Quarter ≈ ¼ (ΔR/R) V0; full = (ΔR/R) V_b = G ε V_b."}
+      - {label: physical meaning, text: "Full: 4× the sensitivity, exactly linear, temperature-compensated."}
+      - {label: limitations, text: "Needs four matched gauges at places with opposite strain; more wiring."}
+      - {label: application, text: "Membrane pressure sensors put gauges where strain is tensile and where it is compressive."}
+    expected_points:
+      - {id: factor4, text: "Full bridge gives 4× the output"}
+      - {id: linear, text: "Full bridge is exactly linear (no ≪ approximation)"}
+      - {id: temp, text: "Full bridge cancels equal temperature drifts; quarter bridge does not"}
+      - {id: arrangement, text: "Diagonally opposite gauges see the same sign of strain"}
+    followups:
+      - {when_missing: temp, ask: "What happens to each bridge when the membrane warms up by 10 K?"}
+      - {when_missing: arrangement, ask: "Where on the bridge do the stretched and the compressed gauges go?"}
+      - {always: true, ask: "Write the transfer function H_ε-V of the full bridge."}
+    traps:
+      - "Temperature cancels only for resistors that drift together in matched positions."
+
+  - id: gauge_factor_q
+    concepts: [gauge_factor]
+    priority: high
+    question: "What is the gauge factor, and how does it enter the transfer function of a piezoresistive pressure sensor?"
+    structure:
+      - {label: definition, text: "G = (ΔR/R)/ε: relative resistance change per unit strain; dimensionless."}
+      - {label: mechanism, text: "Strain changes geometry (longer, thinner) and, in silicon, the resistivity itself."}
+      - {label: key equation, text: "ΔR/R = G ε; full bridge V_out = G ε V_b; H_ε-V = G V_b; total H_p-V = ξ G V_b."}
+      - {label: physical meaning, text: "Metal foil G ≈ 2 (geometry); silicon of order 100 (piezoresistive effect)."}
+      - {label: application, text: "Chain: pressure → membrane (H_p-ε = ξ) → strain → gauge + bridge (H_ε-V) → voltage."}
+    expected_points:
+      - {id: definition, text: "G = (ΔR/R)/ε, dimensionless"}
+      - {id: values, text: "Typical values: ≈ 2 metal, order 100 silicon"}
+      - {id: chain, text: "Places it in the chain p → ε → ΔR/R → V"}
+      - {id: transfer, text: "H_ε-V = G V_b (cascade H = H_p-ε · H_ε-V)"}
+    followups:
+      - {when_missing: chain, ask: "Draw the transfer chain of the piezoresistive pressure sensor."}
+      - {always: true, ask: "Why is silicon's gauge factor so much larger than a metal's?"}
+    traps:
+      - "Cascading transfer functions by multiplication assumes every stage is linear."
+
+whiteboard:
+  - id: wb_quarter_derive
+    concepts: [wheatstone_quarter]
+    skill: derive
+    prompt: "Draw a quarter bridge (supply, ground, R + ΔR, three R, V1, V2) and derive V2 − V1, first exactly, then for ΔR/R ≪ 1."
+    time_limit_s: 360
+    reference_figure: bridge_quarter
+    reference_derivation: quarter_bridge
+    checklist:
+      - {id: figure, text: "Bridge drawn with V0, ground, the gauge marked R + ΔR, nodes V1 and V2"}
+      - {id: no_current, text: "Wrote I = 0 into the meter"}
+      - {id: currents, text: "I1 = V0/2R and I2 = V0/(2R + ΔR)"}
+      - {id: nodes, text: "V1 = V0/2 and V2 = V0/(2 + ΔR/R)"}
+      - {id: exact, text: "Exact difference written"}
+      - {id: approx, text: "≈ −¼ (ΔR/R) V0 with the condition ΔR/R ≪ 1"}
+
+  - id: wb_full_draw
+    concepts: [wheatstone_full]
+    skill: draw
+    prompt: "Draw a full bridge for a pressure membrane. Mark which gauges are stretched (+ΔR) and which are compressed (−ΔR), the supply, ground, and where V_out is taken."
+    time_limit_s: 240
+    reference_figure: bridge_full
+    checklist:
+      - {id: arms, text: "Four arms labelled R1–R4 with supply V_b and ground"}
+      - {id: signs, text: "Diagonally opposite arms carry the same sign (R1, R3: +ΔR; R2, R4: −ΔR)"}
+      - {id: output, text: "Output terminals at the two midpoints, polarity labelled"}
+      - {id: formula, text: "Wrote V_out = (ΔR/R) V_b = G ε V_b next to it"}
+
+  - id: wb_divider_draw
+    concepts: [voltage_divider]
+    skill: draw
+    prompt: "Draw a voltage divider. Mark the source, the current direction, both voltage drops, the output node and ground. Write V_out."
+    time_limit_s: 180
+    reference_figure: divider
+    checklist:
+      - {id: parts, text: "Source, R1 on top, R2 to ground, ground symbol"}
+      - {id: current, text: "One current arrow, same through both resistors"}
+      - {id: drops, text: "Voltage drops V_R1 and V_R2 marked with brackets/arrows"}
+      - {id: output, text: "Output node marked; V_out = V_in·R2/(R1 + R2)"}

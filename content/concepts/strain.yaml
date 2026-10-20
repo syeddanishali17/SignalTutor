@@ -1,0 +1,17 @@
+id: strain
+title: Stress, strain and Young's modulus
+short: "Strain"
+code: P3
+track: physics
+prerequisites: [ratios]
+status: verified
+source_refs: ["Lecture 1 notes, p. 2"]
+one_liner: "**Strain** $\\varepsilon = \\Delta L / L$ is how much a material stretches, as a fraction of its length ($+$ stretched, $-$ compressed)."
+plain_words: "how much it stretches, as a fraction"
+explanation_md: strain.md
+symbol: '\varepsilon'
+units: "none (a pure number); written in microstrain, 1 µε = $10^{-6}$"
+misconceptions:
+  - id: microstrain_slip
+    text: "Using 500 for 500 µε instead of 500 × 10⁻⁶."
+    correction: "µε means $10^{-6}$: 500 µε = $5\\times10^{-4}$ = 0.05 %. Forgetting the µ makes the answer a million times too large."

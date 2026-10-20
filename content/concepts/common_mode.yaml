@@ -1,0 +1,19 @@
+id: common_mode
+title: Common-mode signal
+short: "Common mode"
+track: course_l02
+prerequisites: [voltage, ground_reference, differential_signal]
+status: verified
+source_refs: ["Lecture 2 notes, p. 1, 3–4"]
+one_liner: "The part two voltages **share**: $V_{cm} = \\dfrac{V_1 + V_2}{2}$. Both wires move together."
+plain_words: "what both wires have in common"
+explanation_md: common_mode.md
+symbol: "V_{cm}"
+units: V
+misconceptions:
+  - id: cm_is_noise
+    text: "Common mode is always noise."
+    correction: "It is any shared part. In a bridge, the large $V_0/2$ level is common mode and is not noise."
+  - id: output_nodes_at_zero
+    text: "When the bridge is balanced, both output nodes are at 0 V."
+    correction: "Both sit at $V_0/2$ (e.g. 2.5 V for a 5 V supply). Their *difference* is 0 V; that shared 2.5 V is common mode."

@@ -1,0 +1,23 @@
+id: voltage
+title: Voltage is a difference between two points
+short: "Voltage"
+code: E2
+track: electrical
+prerequisites: [si_prefixes]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "A **voltage** is always measured *between two points*: $V_{AB} = \\varphi_A - \\varphi_B$, the difference of their potentials $\\varphi$."
+plain_words: "the electrical 'push' between two points"
+explanation_md: voltage.md
+symbol: "V_{AB}"
+units: "volt, V (mV = $10^{-3}$ V, µV = $10^{-6}$ V)"
+analogy:
+  text: "Height difference between two places on a hill: water only flows if one is higher than the other."
+  breaks_when: "A hill has a natural 'sea level'. Electric potential has no natural zero at all — we must choose one point and call it 0 V (ground)."
+misconceptions:
+  - id: voltage_at_a_point
+    text: "Voltage is something a single point has, like a temperature."
+    correction: "A voltage is a difference between two points. 'The node is at 3 V' silently means '3 V relative to ground'. Move the reference and that number changes; the difference between two nodes never does."
+  - id: sign_flip
+    text: "The sign of a voltage does not matter."
+    correction: "$V_{AB} = -V_{BA}$: the sign tells you which point is higher. In a bridge it tells you which way the membrane bent."

@@ -1,0 +1,20 @@
+id: wheatstone_bridge
+title: Wheatstone bridge
+short: "Wheatstone bridge"
+code: C3
+track: course_l01
+prerequisites: [voltage_divider, ground_reference, differential_signal]
+status: verified
+source_refs: ["Lecture 1 notes, p. 2", "Lecture 2 notes, p. 2"]
+one_liner: "Two voltage dividers fed by the same supply; the output is the **difference** between their midpoints — zero when balanced."
+plain_words: "two dividers compared"
+explanation_md: wheatstone_bridge.md
+symbol: "V_2 - V_1"
+units: V
+misconceptions:
+  - id: balance_needs_equal
+    text: "A bridge is balanced only when all four resistors are equal."
+    correction: "It is balanced whenever the two dividers have the same ratio, $R_1/R_4 = R_2/R_3$. Equal resistors are just the simplest case."
+  - id: bridge_mysterious_diamond
+    text: "The diamond is a special new circuit."
+    correction: "Redraw it: it is two voltage dividers fed by the same supply, with a voltmeter between their midpoints."

@@ -1,0 +1,15 @@
+id: fractions
+title: Reading a fraction (numerator over denominator)
+short: "Fractions"
+code: M0
+track: math
+prerequisites: []
+status: supplemental
+source_refs: ["standard"]
+one_liner: "$\\dfrac{a}{b}$ means $a$ shared out over $b$: the top (numerator) is what you have, the bottom (denominator) is what you divide by."
+plain_words: "top number divided by bottom number"
+explanation_md: fractions.md
+misconceptions:
+  - id: bigger_denominator_bigger
+    text: "Making the bottom of a fraction bigger makes the result bigger."
+    correction: "The opposite: $\\frac{6}{2} = 3$ but $\\frac{6}{4} = 1.5$. A bigger denominator makes the result smaller. That is why more resistance means less current in $I = V/R$."

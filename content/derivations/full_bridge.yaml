@@ -1,0 +1,63 @@
+id: full_bridge
+title: Full-bridge output
+concept: wheatstone_full
+figure: bridge_full
+source: "Lecture 1 notes, p. 2 (result); steps follow the same divider method as Lecture 2 notes, p. 2"
+symbols: {Vb: V, R: ohm, dR: ohm, I1: A, I2: A, V1: V, V2: V}
+steps:
+  - id: setup
+    latex: "R_1 = R_3 = R + \\Delta R,\\qquad R_2 = R_4 = R - \\Delta R,\\qquad I_\\text{meter} = 0"
+    changed: "Four gauges. Diagonally opposite arms see the same strain."
+    why: "On a membrane some gauges stretch and some compress. Wiring the stretched ones diagonally makes both midpoints move apart."
+    law: "Circuit reading"
+    assumption: "Equal and opposite ΔR; ideal voltmeter"
+    highlight: [R1, R2, R3, R4]
+
+  - id: currents
+    latex: "I_2 = \\frac{V_b}{(R+\\Delta R) + (R-\\Delta R)} = \\frac{V_b}{2R} = I_1"
+    annotated: |-
+      I_2 = \frac{V_b}{\underbrace{(R+\Delta R)}_{R_1} + \underbrace{(R-\Delta R)}_{R_4}} = \frac{V_b}{2R} = I_1
+    changed: "Branch currents: the ±ΔR cancel in each branch total."
+    why: "Each branch still totals exactly 2R, so neither current depends on ΔR. This is why the full bridge is exactly linear."
+    law: "Series resistors + Ohm's law"
+    highlight: [R1, R4, R2, R3, I1, I2]
+    check: {kind: define, name: I2, expr: "Vb/((R + dR) + (R - dR))"}
+    fade:
+      prompt: "Current in the left branch (R1 = R + ΔR over R4 = R − ΔR)?"
+      correct: 0
+      options:
+        - {latex: "\\frac{V_b}{2R}", expr: "Vb/(2*R)"}
+        - {latex: "\\frac{V_b}{2R + \\Delta R}", expr: "Vb/(2*R + dR)"}
+        - {latex: "\\frac{V_b}{2R + 2\\Delta R}", expr: "Vb/(2*R + 2*dR)"}
+
+  - id: v2
+    latex: "V_2 = I_2\\,(R - \\Delta R) = \\frac{V_b}{2}\\left(1 - \\frac{\\Delta R}{R}\\right)"
+    changed: "Left midpoint: across R4 = R − ΔR."
+    why: "Measured from ground, across the lower-left arm."
+    law: "Ohm's law"
+    highlight: [R4, V2]
+    check: {kind: define, name: V2, expr: "I2*(R - dR)"}
+
+  - id: v1
+    latex: "V_1 = I_1\\,(R + \\Delta R) = \\frac{V_b}{2}\\left(1 + \\frac{\\Delta R}{R}\\right)"
+    changed: "Right midpoint: across R3 = R + ΔR."
+    why: "Measured from ground, across the lower-right arm."
+    law: "Ohm's law"
+    highlight: [R3, V1]
+    check: {kind: define, name: V1, expr: "Vb/(2*R)*(R + dR)"}
+
+  - id: out
+    latex: "V_2 - V_1 = -\\frac{\\Delta R}{R}\\,V_b \\qquad\\Rightarrow\\qquad |V_\\text{out}| = \\frac{\\Delta R}{R}\\,V_b = G\\,\\varepsilon\\,V_b"
+    changed: "Subtract; then insert ΔR/R = G·ε."
+    why: "Both midpoints move by (ΔR/2R)·V_b in opposite directions, so the difference is twice that. No approximation was needed."
+    law: "Algebra; gauge factor definition"
+    highlight: [meter, V1, V2]
+    check: {kind: equals, lhs: "V2 - V1", expr: "-dR/R*Vb"}
+    fade:
+      prompt: "Full-bridge output V2 − V1?"
+      correct: 3
+      options:
+        - {latex: "-\\frac14\\,\\frac{\\Delta R}{R}\\,V_b", expr: "-dR/R*Vb/4"}
+        - {latex: "-\\frac12\\,\\frac{\\Delta R}{R}\\,V_b", expr: "-dR/R*Vb/2"}
+        - {latex: "0", expr: "0"}
+        - {latex: "-\\frac{\\Delta R}{R}\\,V_b", expr: "-dR/R*Vb"}

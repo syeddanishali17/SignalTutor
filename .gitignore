@@ -1,0 +1,20 @@
+# Lecturer material stays out of git (IP, see spec section 2.3)
+sources/
+*.pdf
+
+# Local learner data
+data/
+
+# Python / tooling
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+*.egg-info/
+build/
+dist/
+
+# Planning spec with course details stays local (de-identified repo)
+MODERN_SENSOR_TUTOR_PROJECT_SPEC_*.md
+.claude/

@@ -1,0 +1,15 @@
+id: reading_circuits
+title: Reading a circuit diagram
+short: "Circuit diagrams"
+code: E11
+track: electrical
+prerequisites: [voltage, charge_current, resistance, ground_reference]
+status: supplemental
+source_refs: ["standard"]
+one_liner: "A diagram shows **connections**, not geometry: lines are ideal wires, dots are **nodes**, symbols are parts, open circles are terminals."
+plain_words: "a map of connections"
+explanation_md: reading_circuits.md
+misconceptions:
+  - id: wire_length_matters
+    text: "A longer line in the drawing means more resistance."
+    correction: "Lines are ideal wires with zero resistance; their length and shape mean nothing. Everything connected by plain lines is one node at one potential."

@@ -1,0 +1,19 @@
+id: voltage_divider
+title: Voltage divider
+short: "Voltage divider"
+code: E5
+track: electrical
+prerequisites: [series_circuit, ratios]
+status: supplemental
+source_refs: ["standard", "Lecture 2 notes, p. 2 (each bridge branch is a divider)"]
+one_liner: "Two series resistors split a voltage: $V_\\text{out} = V_\\text{in}\\,\\dfrac{R_2}{R_1 + R_2}$, where $R_2$ is the resistor between the output and ground."
+plain_words: "splits a voltage by a resistor ratio"
+explanation_md: voltage_divider.md
+symbol: 'V_\text{out} = V_\text{in}\frac{R_2}{R_1+R_2}'
+misconceptions:
+  - id: divider_swapped
+    text: "V_out = V_in · R1/(R1 + R2), using the top resistor."
+    correction: "The output is the voltage across the resistor between the output node and ground ($R_2$ here). Sanity check: if $R_2 \\to 0$ the output is shorted to ground, so $V_\\text{out} \\to 0$."
+  - id: loading_ignored
+    text: "Connecting something to the divider output doesn't change it."
+    correction: "Anything connected draws current and sits in parallel with $R_2$, lowering $V_\\text{out}$. A measuring input must have a much higher resistance than $R_2$ — the reason amplifiers for sensors need a high input impedance."

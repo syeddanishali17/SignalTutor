@@ -1,0 +1,15 @@
+id: si_prefixes
+title: Units and SI prefixes
+short: "SI prefixes"
+code: M1
+track: math
+prerequisites: []
+status: supplemental
+source_refs: ["standard SI"]
+one_liner: "A **prefix** is a power of ten glued to a unit: $1\\,\\text{mV} = 0.001\\,\\text{V}$, $1\\,\\text{k}\\Omega = 1000\\,\\Omega$."
+plain_words: "size words for numbers"
+explanation_md: si_prefixes.md
+misconceptions:
+  - id: prefix_slip
+    text: "Dropping or mixing up a prefix, e.g. treating 4.7 kΩ as 4.7 Ω."
+    correction: "Convert to base units first (4.7 kΩ = 4700 Ω), compute, then pick a prefix for the result. A factor of 1000 off is almost always a prefix slip."
