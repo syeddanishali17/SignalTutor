@@ -2,7 +2,7 @@
 
 Order matters for a learner with no circuit background:
 loop (what flows) → voltage (difference) → Ohm (push / opposition) → divider →
-ground → KCL → read a circuit. Every scene: predict → see → name → numbers.
+ground → KCL → read a circuit. Every scene: explore, optionally predict, then name and calculate.
 """
 
 from __future__ import annotations
@@ -63,7 +63,7 @@ def scene_loop(lesson, scene) -> None:
     scope = "pgL"
     defaults = {"V": 5.0, "closed": True}
     C.ensure_defaults(scope, defaults)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     V, closed = C.value(scope, "V"), C.value(scope, "closed")
     R = 1e3
     I = circuits.ohm_current(V, R) if closed else 0.0
@@ -72,12 +72,12 @@ def scene_loop(lesson, scene) -> None:
     L.main_row(scope, scene, svg)
 
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([3, 2, 1.3])
         with c1:
-            C.slider(scope, "V", "Battery voltage V", 0.0, 12.0, 0.5, "%.1f V", disabled=not unlocked)
+            C.slider(scope, "V", "Battery voltage V", 0.0, 12.0, 0.5, "%.1f V")
         with c2:
-            C.toggle(scope, "closed", "Switch closed (loop complete)", disabled=not unlocked)
+            C.toggle(scope, "closed", "Switch closed (loop complete)")
         with c3:
             C.reset_button(scope, defaults)
 
@@ -100,7 +100,7 @@ def scene_voltage(lesson, scene) -> None:
     scope = "pgA"
     defaults = {"phiA": 7.0, "phiB": 3.0, "ref": "C", "lift": False}
     C.ensure_defaults(scope, defaults)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     phiA, phiB = C.value(scope, "phiA"), C.value(scope, "phiB")
     ref, lift = C.value(scope, "ref"), C.value(scope, "lift")
     shift = 2.0 if lift else 0.0
@@ -110,14 +110,14 @@ def scene_voltage(lesson, scene) -> None:
     L.main_row(scope, scene, svg)
 
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2 = st.columns(2)
         with c1:
-            C.slider(scope, "phiA", "φ_A — potential of node A (from C)", 0.0, 10.0, 0.5, "%.1f V", disabled=not unlocked)
-            C.segmented(scope, "ref", "Which node do we call 0 V?", ["A", "B", "C"], disabled=not unlocked)
+            C.slider(scope, "phiA", "φ_A — potential of node A (from C)", 0.0, 10.0, 0.5, "%.1f V")
+            C.segmented(scope, "ref", "Which node do we call 0 V?", ["A", "B", "C"])
         with c2:
-            C.slider(scope, "phiB", "φ_B — potential of node B (from C)", 0.0, 10.0, 0.5, "%.1f V", disabled=not unlocked)
-            C.toggle(scope, "lift", "Lift A and B together by +2 V", disabled=not unlocked)
+            C.slider(scope, "phiB", "φ_B — potential of node B (from C)", 0.0, 10.0, 0.5, "%.1f V")
+            C.toggle(scope, "lift", "Lift A and B together by +2 V")
         C.reset_button(scope, defaults)
 
     rel = circuits.relabel_potentials(pots, ref)
@@ -150,7 +150,7 @@ def scene_ohm(lesson, scene) -> None:
     scope = "pgB"
     defaults = {"V": 6.0, "R": 2.0, "closed": True}
     C.ensure_defaults(scope, defaults)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     V, Rk, closed = C.value(scope, "V"), C.value(scope, "R"), C.value(scope, "closed")
     R = Rk * 1e3
     I = circuits.ohm_current(V, R) if closed else 0.0
@@ -160,14 +160,14 @@ def scene_ohm(lesson, scene) -> None:
     L.main_row(scope, scene, svg)
 
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([2, 2, 1.3])
         with c1:
-            C.slider(scope, "V", "V — battery voltage (the push)", 0.0, 12.0, 0.5, "%.1f V", disabled=not unlocked)
+            C.slider(scope, "V", "V — battery voltage (the push)", 0.0, 12.0, 0.5, "%.1f V")
         with c2:
-            C.select_slider(scope, "R", "R — resistance (each step doubles it)", R_STEPS_K, _kohm, disabled=not unlocked)
+            C.select_slider(scope, "R", "R — resistance (each step doubles it)", R_STEPS_K, _kohm)
         with c3:
-            C.toggle(scope, "closed", "Switch closed", disabled=not unlocked)
+            C.toggle(scope, "closed", "Switch closed")
             C.reset_button(scope, defaults)
 
     if closed:
@@ -208,7 +208,7 @@ def scene_divider(lesson, scene) -> None:
     scope = "pgC"
     defaults = {"Vin": 9.0, "R1": 1.0, "R2": 2.0, "load": False, "RL": 10.0}
     C.ensure_defaults(scope, defaults)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     Vin, R1k, R2k = C.value(scope, "Vin"), C.value(scope, "R1"), C.value(scope, "R2")
     load, RLk = C.value(scope, "load"), C.value(scope, "RL")
     RL = RLk * 1e3 if load else math.inf
@@ -220,18 +220,18 @@ def scene_divider(lesson, scene) -> None:
     L.main_row(scope, scene, svg)
 
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns(3)
         with c1:
-            C.slider(scope, "Vin", "V_in — supply", 0.0, 12.0, 0.5, "%.1f V", disabled=not unlocked)
+            C.slider(scope, "Vin", "V_in — supply", 0.0, 12.0, 0.5, "%.1f V")
         with c2:
-            C.slider(scope, "R1", "R₁ — top resistor", 0.5, 10.0, 0.5, "%.1f kΩ", disabled=not unlocked)
+            C.slider(scope, "R1", "R₁ — top resistor", 0.5, 10.0, 0.5, "%.1f kΩ")
         with c3:
-            C.slider(scope, "R2", "R₂ — bottom resistor (to ground)", 0.5, 10.0, 0.5, "%.1f kΩ", disabled=not unlocked)
+            C.slider(scope, "R2", "R₂ — bottom resistor (to ground)", 0.5, 10.0, 0.5, "%.1f kΩ")
         with st.expander("More controls — break it"):
-            C.toggle(scope, "load", "Connect a meter (a 'load') to the output", disabled=not unlocked)
+            C.toggle(scope, "load", "Connect a meter (a 'load') to the output")
             C.select_slider(scope, "RL", "R_load — the meter's own input resistance",
-                            [0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0, 1000.0], _kohm, disabled=not (unlocked and load))
+                            [0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0, 1000.0], _kohm)
         C.reset_button(scope, defaults)
 
     equation.strip(
@@ -274,7 +274,7 @@ def scene_ground(lesson, scene) -> None:
     scope = "pgD"
     defaults = {"Vin": 9.0, "ref": "bottom"}
     C.ensure_defaults(scope, defaults)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     Vin, ref = C.value(scope, "Vin"), C.value(scope, "ref")
     res_c = circuits.divider(Vin, 1e3, 2e3)
     res = L.resolved(scope, scene)
@@ -284,13 +284,12 @@ def scene_ground(lesson, scene) -> None:
 
     names = {"top": "top node", "mid": "middle (output) node", "bottom": "bottom node"}
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2 = st.columns([3, 2])
         with c1:
-            C.segmented(scope, "ref", "Which node is ground (0 V)?", ["top", "mid", "bottom"], fmt=lambda n: names[n],
-                        disabled=not unlocked)
+            C.segmented(scope, "ref", "Which node is ground (0 V)?", ["top", "mid", "bottom"], fmt=lambda n: names[n])
         with c2:
-            C.slider(scope, "Vin", "V_in — supply", 0.0, 12.0, 0.5, "%.1f V", disabled=not unlocked)
+            C.slider(scope, "Vin", "V_in — supply", 0.0, 12.0, 0.5, "%.1f V")
         C.reset_button(scope, defaults)
 
     pots = {"top": Vin, "mid": res_c.Vout, "bottom": 0.0}
@@ -324,7 +323,7 @@ def scene_kcl(lesson, scene) -> None:
     scope = "pgE"
     defaults = {"Iin": 5.0, "I1": 2.0}
     C.ensure_defaults(scope, defaults)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     Iin, I1 = C.value(scope, "Iin") * 1e-3, C.value(scope, "I1") * 1e-3
     I2 = circuits.kcl_remaining([Iin], [I1])
     res = L.resolved(scope, scene)
@@ -332,12 +331,12 @@ def scene_kcl(lesson, scene) -> None:
     L.main_row(scope, scene, svg)
 
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2 = st.columns(2)
         with c1:
-            C.slider(scope, "Iin", "I_in — current into the node", 0.0, 10.0, 0.5, "%.1f mA", disabled=not unlocked)
+            C.slider(scope, "Iin", "I_in — current into the node", 0.0, 10.0, 0.5, "%.1f mA")
         with c2:
-            C.slider(scope, "I1", "I₁ — current out through branch 1", 0.0, 12.0, 0.5, "%.1f mA", disabled=not unlocked)
+            C.slider(scope, "I1", "I₁ — current out through branch 1", 0.0, 12.0, 0.5, "%.1f mA")
         C.reset_button(scope, defaults)
 
     equation.strip(

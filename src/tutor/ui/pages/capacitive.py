@@ -104,7 +104,7 @@ def _x_of_p(p_kpa: float, k: float = G.k) -> float:
 
 def _membrane(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     p, k = C.value(scope, "p"), C.value(scope, "k")
     geo = cap.Geometry(A=G.A, d=G.d, k=k)
     x = _x_of_p(p, k)
@@ -114,13 +114,12 @@ def _membrane(lesson, scene) -> None:
                       gap_value=_um(G.d - x), x_value=_um(x), selected=res.highlight)
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([3, 2.4, 1])
         with c1:
-            C.slider(scope, "p", "p · pressure on the membrane", 0.0, 4.0, 0.1, "%.1f kPa", disabled=not unlocked)
+            C.slider(scope, "p", "p · pressure on the membrane", 0.0, 4.0, 0.1, "%.1f kPa")
         with c2:
-            C.segmented(scope, "k", "k · stiffness of each spring", K_CHOICES, fmt=lambda v: f"{v / 1e3:g} kN/m",
-                        disabled=not unlocked)
+            C.segmented(scope, "k", "k · stiffness of each spring", K_CHOICES, fmt=lambda v: f"{v / 1e3:g} kN/m")
         with c3:
             C.reset_button(scope, defaults)
     equation.strip(
@@ -152,7 +151,7 @@ def _membrane(lesson, scene) -> None:
 
 def _capacitance(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     g_um, A_mm2, V = C.value(scope, "g"), C.value(scope, "A"), C.value(scope, "V")
     Cv = cap.capacitance(cap.EPS0, A_mm2 * 1e-6, g_um * 1e-6)
     Q = cap.charge(Cv, V)
@@ -162,14 +161,14 @@ def _capacitance(lesson, scene) -> None:
                       meter_label="no current (static)")
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.4, 2.4, 2.4, 1])
         with c1:
-            C.slider(scope, "g", "gap between the plates", 0.5, 4.0, 0.1, "%.1f µm", disabled=not unlocked)
+            C.slider(scope, "g", "gap between the plates", 0.5, 4.0, 0.1, "%.1f µm")
         with c2:
-            C.slider(scope, "A", "A · plate area", 0.25, 4.0, 0.25, "%.2f mm²", disabled=not unlocked)
+            C.slider(scope, "A", "A · plate area", 0.25, 4.0, 0.25, "%.2f mm²")
         with c3:
-            C.slider(scope, "V", "V · voltage across the plates", 0.0, 10.0, 0.5, "%.1f V", disabled=not unlocked)
+            C.slider(scope, "V", "V · voltage across the plates", 0.0, 10.0, 0.5, "%.1f V")
         with c4:
             C.reset_button(scope, defaults)
     equation.strip(
@@ -207,7 +206,7 @@ def _capacitance(lesson, scene) -> None:
 
 def _cx(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     p, tangent = C.value(scope, "p"), C.value(scope, "tangent")
     x = _x_of_p(p)
     u = x / G.d
@@ -219,13 +218,12 @@ def _cx(lesson, scene) -> None:
                       gap_value=_um(G.d - x), x_value=_um(x), selected=res.highlight)
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([3.4, 2, 1])
         with c1:
-            C.slider(scope, "p", "p · pressure (moves the membrane)", 0.0, 9.0, 0.25, "%.2f kPa",
-                     disabled=not unlocked)
+            C.slider(scope, "p", "p · pressure (moves the membrane)", 0.0, 9.0, 0.25, "%.2f kPa")
         with c2:
-            C.toggle(scope, "tangent", "Show the tangent (local slope)", disabled=not unlocked)
+            C.toggle(scope, "tangent", "Show the tangent (local slope)")
         with c3:
             C.reset_button(scope, defaults)
     equation.strip(
@@ -273,7 +271,7 @@ def _cx(lesson, scene) -> None:
 
 def _current(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     v = {k: C.value(scope, k) for k in defaults}
     baro = v["mode"] == "barometer"
     if baro:
@@ -300,32 +298,30 @@ def _current(lesson, scene) -> None:
         gap_value=_um(G.d - x) if baro else "d ± x₀", x_value=_um(x) if baro else "", selected=res.highlight)
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.2, 2.4, 2.4, 1])
         with c1:
             C.segmented(scope, "mode", "Readout case", ["barometer", "microphone"],
-                        fmt=lambda m: "barometer (slow p)" if m == "barometer" else "microphone (fast p)",
-                        disabled=not unlocked)
+                        fmt=lambda m: "barometer (slow p)" if m == "barometer" else "microphone (fast p)")
         if baro:
             with c2:
-                C.slider(scope, "V0", "V₀ · AC bias amplitude", 0.2, 2.0, 0.1, "%.1f V", disabled=not unlocked)
+                C.slider(scope, "V0", "V₀ · AC bias amplitude", 0.2, 2.0, 0.1, "%.1f V")
             with c3:
-                C.slider(scope, "p", "p · static pressure", 0.0, 6.0, 0.25, "%.2f kPa", disabled=not unlocked)
+                C.slider(scope, "p", "p · static pressure", 0.0, 6.0, 0.25, "%.2f kPa")
         else:
             with c2:
-                C.slider(scope, "Vb", "V_b · DC bias", 0.0, 20.0, 1.0, "%.0f V", disabled=not unlocked)
+                C.slider(scope, "Vb", "V_b · DC bias", 0.0, 20.0, 1.0, "%.0f V")
             with c3:
-                C.slider(scope, "a", "x₀/d · sound amplitude", 0.0, 0.4, 0.02, "%.2f", disabled=not unlocked)
+                C.slider(scope, "a", "x₀/d · sound amplitude", 0.0, 0.4, 0.02, "%.2f")
         with c4:
             C.reset_button(scope, defaults)
         if baro:
             with st.expander("More controls"):
                 m1, m2 = st.columns(2)
                 with m1:
-                    C.segmented(scope, "f", "bias frequency f", F_CHOICES, fmt=lambda k: f"{k:g} kHz",
-                                disabled=not unlocked)
+                    C.segmented(scope, "f", "bias frequency f", F_CHOICES, fmt=lambda k: f"{k:g} kHz")
                 with m2:
-                    C.toggle(scope, "dc", "Experiment: use a DC bias instead", disabled=not unlocked,
+                    C.toggle(scope, "dc", "Experiment: use a DC bias instead",
                              help="Constant V on a slowly changing capacitor — watch the current.")
     def rms(a: np.ndarray) -> str:
         val = float(np.sqrt(np.mean(a[5:-5] ** 2)))
@@ -416,7 +412,7 @@ def _mic_wave(a: float) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
 
 def _small(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     a, order = C.value(scope, "a"), C.value(scope, "order")
     exact = cap.geometric_exact(a)
     approx = cap.geometric_partial(a, order)
@@ -428,13 +424,13 @@ def _small(lesson, scene) -> None:
                       i_strength=min(1.0, a / 0.4), meter_label="", gap_value="d ± x₀", selected=res.highlight)
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([3, 2.4, 1])
         with c1:
-            C.slider(scope, "a", "x₀/d · how far the membrane swings", 0.0, 0.6, 0.02, "%.2f", disabled=not unlocked)
+            C.slider(scope, "a", "x₀/d · how far the membrane swings", 0.0, 0.6, 0.02, "%.2f")
         with c2:
             C.segmented(scope, "order", "Keep terms up to", [1, 2, 3],
-                        fmt=lambda n: {1: "1st order", 2: "2nd order", 3: "3rd order"}[n], disabled=not unlocked)
+                        fmt=lambda n: {1: "1st order", 2: "2nd order", 3: "3rd order"}[n])
         with c3:
             C.reset_button(scope, defaults)
     terms = " + ".join(["1", "[[u]]"] + [rf"\left([[u]]\right)^{k}" for k in range(2, order + 1)])
@@ -508,7 +504,7 @@ def _v_needed(u: np.ndarray | float) -> np.ndarray | float:
 
 def _pullin(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     mode, V, xs = C.value(scope, "mode"), C.value(scope, "V"), C.value(scope, "xs")
     f_ref = G.k_eff * G.d * 0.5  # 5 mN: scale for the force arrows
     if mode == "voltage":
@@ -533,18 +529,16 @@ def _pullin(lesson, scene) -> None:
                       note=note, note_color=plots.COLORS["minus"])
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([2.6, 3, 1])
         with c1:
             C.segmented(scope, "mode", "Bias control", ["voltage", "feedback"],
-                        fmt=lambda m: "constant voltage" if m == "voltage" else "feedback (supplemental)",
-                        disabled=not unlocked)
+                        fmt=lambda m: "constant voltage" if m == "voltage" else "feedback (supplemental)")
         with c2:
             if mode == "voltage":
-                C.slider(scope, "V", "V · bias voltage", 0.0, 45.0, 0.5, "%.1f V", disabled=not unlocked)
+                C.slider(scope, "V", "V · bias voltage", 0.0, 45.0, 0.5, "%.1f V")
             else:
-                C.slider(scope, "xs", "x/d · where the feedback holds the membrane", 0.0, 0.9, 0.02, "%.2f",
-                         disabled=not unlocked)
+                C.slider(scope, "xs", "x/d · where the feedback holds the membrane", 0.0, 0.9, 0.02, "%.2f")
         with c3:
             C.reset_button(scope, defaults)
     if pulled:

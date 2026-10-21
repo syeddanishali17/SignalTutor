@@ -2,7 +2,7 @@
 
 Signal Tutor is an interactive learning application for building intuition in sensor electronics, signal conditioning, circuit fundamentals, and oral technical explanation.
 
-Every lesson follows the same loop: **predict → observe → name → derive → break it → check → explain it**, with a circuit picture, an inspector, controls, an equation strip and a plot that are all driven by the same simulation state.
+Every lesson supports **explore → name → derive → break it → check → explain it**. Predictions are an optional thinking aid. The circuit picture, inspector, controls, equation strip and plot all use the same simulation state.
 
 **Basic Circuit Fundamentals**, immediately before Reference in the navigation,
 is a continuous reference handbook: 23 topic groups, 68 entries, worked examples,
@@ -10,9 +10,9 @@ independent circuit diagrams, same-page quick jumps and a formula summary.
 It does not record attempts or affect mastery. Supplemental material is marked
 “Next step”, and the existing source-issue register remains open.
 
-Diagrams have an **Animate diagrams** toggle and respect the device's Reduce
-Motion preference. Static arrows, curves and labels remain readable when motion
-is paused. Lab diagrams also have a **Full-width diagram** view. The app preserves
+Diagrams animate normally and respect the device's Reduce Motion preference
+internally. Static arrows, curves and labels remain readable with that preference.
+Lab diagrams also have a **Full-width diagram** view. The app preserves
 its light notebook theme; cloud editing/sharing actions and the ineffective theme
 menu are hidden without hiding learner navigation.
 

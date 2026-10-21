@@ -26,21 +26,18 @@ from tutor.ui.components.practice import problem_card
 from tutor.ui.svg.core import as_img
 
 
-def top(scope: str, lesson: Lesson, scene: Scene) -> bool:
-    """Problem line + prediction. Returns True when controls are unlocked."""
+def top(scope: str, lesson: Lesson, scene: Scene) -> None:
+    """Problem line and optional prediction; controls are always independent."""
     _dev_query_hooks(scope, scene)
     layout.problem_line(scene.problem)
     predict.prompt(scope, lesson.id, scene.predict)
-    return predict.is_unlocked(scope, scene.predict)
 
 
 def _dev_query_hooks(scope: str, scene: Scene) -> None:
-    """TUTOR_DEV only: ``?unlock=1&sel=R1`` sets up a state for screenshot QA without clicking."""
+    """TUTOR_DEV only: ``?sel=R1`` selects a part for screenshot QA without clicking."""
     if os.environ.get("TUTOR_DEV") != "1":
         return
     qp = st.query_params
-    if qp.get("unlock") == "1" and predict.committed(scope) is None and scene.predict is not None:
-        st.session_state[f"pred__{scope}"] = scene.predict.correct
     sel = qp.get("sel")
     ids = {i.id for i in scene.inspect} | {t.id for t in scene.terms}
     if sel and inspector.selected(scope) is None and sel in ids:
@@ -61,19 +58,18 @@ def main_row(scope: str, scene: Scene, svg: str, below_visual: Callable[[], None
         left, right = st.columns(list(ratio), gap="medium")
         with left:
             with st.container(key="visual"):
-                animate = diagram.motion_control(f"motion_{scope}")
-                diagram.show(svg, animate=animate)
+                diagram.show(svg)
                 if below_visual:
                     below_visual()
                 st.caption("Select a part using the Parts controls or equation symbols.")
         with right:
             inspector.inspector_panel(scope, scene)
     with st.expander("Full-width diagram"):
-        diagram.show(svg, animate=animate, max_width=1400)
+        diagram.show(svg, max_width=1400)
 
 
-def tray_header(locked: bool) -> None:
-    layout.kicker("Controls" + (" — locked until you commit a prediction" if locked else ""))
+def tray_header() -> None:
+    layout.kicker("Controls")
 
 
 def deeper(scope: str, lesson: Lesson, scene: Scene, derive: Callable[[], None] | None = None,

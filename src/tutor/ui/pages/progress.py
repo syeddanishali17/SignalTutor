@@ -42,7 +42,7 @@ def render() -> None:
         hits = sum(1 for p in preds if p[2] == p[3])
         made = sum(1 for p in preds if p[2] != "__skipped")
         st.markdown("### Predictions")
-        st.markdown(f"You committed **{made}** predictions and got **{hits}** right. "
+        st.markdown(f"You checked **{made}** predictions and got **{hits}** right. "
                     "Wrong predictions are where learning happens — revisit those scenes.")
     if state.storage_mode() == "session":
         st.caption(f"{state.repo().attempt_count()} attempts in this browser session. "

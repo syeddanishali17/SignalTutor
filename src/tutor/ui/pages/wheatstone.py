@@ -87,7 +87,7 @@ def _sensor(lesson, scene) -> None:
     scope = "wb_sensor"
     defaults = DEFAULTS["sensor"]
     C.ensure_defaults(scope, defaults)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     p_kpa, G = C.value(scope, "p"), C.value(scope, "G")
     eps = XI_PER_PA * p_kpa * 1e3
     x = bridge.dR_rel_from_strain(G, eps)
@@ -95,12 +95,12 @@ def _sensor(lesson, scene) -> None:
     svg = figures.membrane(p_kpa, P_MAX_KPA, eps, x, selected=res.highlight)
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([3, 2.4, 1.2])
         with c1:
-            C.slider(scope, "p", "p — pressure on the membrane", 0, P_MAX_KPA, 10, "%d kPa", disabled=not unlocked)
+            C.slider(scope, "p", "p — pressure on the membrane", 0, P_MAX_KPA, 10, "%d kPa")
         with c2:
-            C.segmented(scope, "G", "Gauge type", G_CHOICES, fmt=_g, disabled=not unlocked)
+            C.segmented(scope, "G", "Gauge type", G_CHOICES, fmt=_g)
         with c3:
             C.reset_button(scope, defaults)
     equation.strip(
@@ -150,7 +150,7 @@ def _scene(lesson, scene) -> None:
     scope = f"wb_{sid}"
     defaults = DEFAULTS[sid]
     C.ensure_defaults(scope, defaults)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     v = {k: C.value(scope, k) for k in defaults}
 
     # ---- one simulation result for everything below ---------------------------------
@@ -169,7 +169,7 @@ def _scene(lesson, scene) -> None:
                        "A common drawing puts it lower-left, which flips the sign — known issue K9 (Sources page).")
 
     L.main_row(scope, scene, svg, below_visual=note)
-    _tray(scope, sid, defaults, unlocked, v)
+    _tray(scope, sid, defaults, v)
     _equation(scope, scene, res, mode, x, v)
     _banners(lesson, sid, res, mode, x, v)
     _consequence(sid, res, mode, x, v)
@@ -202,56 +202,55 @@ def _simulate(sid: str, v: dict) -> tuple[bridge.BridgeResult, str, float]:
 # ------------------------------------------------------------------------------- controls
 
 
-def _tray(scope: str, sid: str, defaults: dict, unlocked: bool, v: dict) -> None:
-    dis = not unlocked
+def _tray(scope: str, sid: str, defaults: dict, v: dict) -> None:
     with st.container(key="tray"):
-        L.tray_header(dis)
+        L.tray_header()
         if sid == "build":
             c1, c2 = st.columns(2)
             with c1:
-                C.slider(scope, "V0", "V₀ · bridge supply", 0.0, V0_MAX, 0.5, "%.1f V", disabled=dis)
+                C.slider(scope, "V0", "V₀ · bridge supply", 0.0, V0_MAX, 0.5, "%.1f V")
             with c2:
-                C.slider(scope, "R4", "R₄ · bottom of the LEFT divider", 0.5, 2.0, 0.05, "%.2f kΩ", disabled=dis,
+                C.slider(scope, "R4", "R₄ · bottom of the LEFT divider", 0.5, 2.0, 0.05, "%.2f kΩ",
                          help="R1 = R2 = 1 kΩ. Balanced when R1/R4 = R2/R3.")
         else:
             cols = st.columns(3)
             with cols[0]:
-                C.slider(scope, "V0", "V₀ · bridge supply", 0.0, V0_MAX, 0.5, "%.1f V", disabled=dis)
+                C.slider(scope, "V0", "V₀ · bridge supply", 0.0, V0_MAX, 0.5, "%.1f V")
             if sid == "temperature":
                 with cols[1]:
-                    C.slider(scope, "dT", "ΔT · gauges warm up by", 0, 50, 1, "%d K", disabled=dis)
+                    C.slider(scope, "dT", "ΔT · gauges warm up by", 0, 50, 1, "%d K")
                 with cols[2]:
-                    C.segmented(scope, "mode", "Bridge", ["quarter", "full"], fmt=lambda m: MODE_LABEL[m], disabled=dis)
+                    C.segmented(scope, "mode", "Bridge", ["quarter", "full"], fmt=lambda m: MODE_LABEL[m])
             elif sid == "loading":
                 with cols[1]:
-                    C.select_slider(scope, "rin", "R_in · meter input resistance", RIN_CHOICES, _rin, disabled=dis)
+                    C.select_slider(scope, "rin", "R_in · meter input resistance", RIN_CHOICES, _rin)
                 with cols[2]:
-                    C.segmented(scope, "mode", "Bridge", ["quarter", "full"], fmt=lambda m: MODE_LABEL[m], disabled=dis)
+                    C.segmented(scope, "mode", "Bridge", ["quarter", "full"], fmt=lambda m: MODE_LABEL[m])
             else:
                 with cols[1]:
-                    C.slider(scope, "eps", "ε · strain on each gauge", 0, EPS_MAX_UE, 50, "%d µε", disabled=dis)
+                    C.slider(scope, "eps", "ε · strain on each gauge", 0, EPS_MAX_UE, 50, "%d µε")
                 with cols[2]:
-                    C.segmented(scope, "G", "Gauge type", G_CHOICES, fmt=_g, disabled=dis,
+                    C.segmented(scope, "G", "Gauge type", G_CHOICES, fmt=_g,
                                 help="Silicon's large G makes ΔR/R big enough to see the quarter bridge's nonlinearity.")
         with st.expander("More controls"):
             m1, m2, m3 = st.columns(3)
             with m1:
                 C.segmented(scope, "layout", "Drawing", ["dividers", "diamond"],
-                            fmt=lambda s: "two dividers" if s == "dividers" else "textbook diamond", disabled=dis)
+                            fmt=lambda s: "two dividers" if s == "dividers" else "textbook diamond")
             with m2:
-                C.toggle(scope, "currents", "Show branch currents", disabled=dis)
+                C.toggle(scope, "currents", "Show branch currents")
             with m3:
                 if sid == "build":
-                    C.slider(scope, "R3", "R₃ · bottom of the RIGHT divider", 0.5, 2.0, 0.05, "%.2f kΩ", disabled=dis)
+                    C.slider(scope, "R3", "R₃ · bottom of the RIGHT divider", 0.5, 2.0, 0.05, "%.2f kΩ")
                 elif sid in ("temperature", "loading"):
-                    C.slider(scope, "eps", "ε · strain on each gauge", 0, EPS_MAX_UE, 50, "%d µε", disabled=dis)
+                    C.slider(scope, "eps", "ε · strain on each gauge", 0, EPS_MAX_UE, 50, "%d µε")
                 else:
                     C.select_slider(scope, "R", "R · nominal gauge resistance", [120.0, 350.0, 1000.0],
-                                    lambda r: f"{r:g} Ω", disabled=dis)
+                                    lambda r: f"{r:g} Ω")
             if sid == "temperature":
-                C.slider(scope, "alpha", "α · temperature coefficient (illustrative)", 0.0, 0.3, 0.01, "%.2f %%/K", disabled=dis)
+                C.slider(scope, "alpha", "α · temperature coefficient (illustrative)", 0.0, 0.3, 0.01, "%.2f %%/K")
             if sid == "quarter":
-                C.toggle(scope, "err", "Also plot the approximation error", disabled=dis)
+                C.toggle(scope, "err", "Also plot the approximation error")
         C.reset_button(scope, defaults)
 
 

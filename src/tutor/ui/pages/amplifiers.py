@@ -116,7 +116,7 @@ def _banner(lesson, bid: str) -> None:
 
 def _problem(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     vd = C.value(scope, "vd") * 1e-3
     pick = C.value(scope, "pick")
     show = C.value(scope, "show")
@@ -125,16 +125,15 @@ def _problem(lesson, scene) -> None:
     res = L.resolved(scope, scene)
     L.main_row(scope, scene, F.interference(v1, v2, pick, selected=res.highlight, show=show))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.4, 2.4, 2, 1])
         with c1:
-            C.slider(scope, "vd", "V_d · bridge signal (peak)", 0.0, 5.0, 0.25, "%.2f mV", disabled=not unlocked)
+            C.slider(scope, "vd", "V_d · bridge signal (peak)", 0.0, 5.0, 0.25, "%.2f mV")
         with c2:
-            C.slider(scope, "pick", "v_pickup · mains pickup on each wire (peak)", 0.0, 1.0, 0.05, "%.2f V",
-                     disabled=not unlocked)
+            C.slider(scope, "pick", "v_pickup · mains pickup on each wire (peak)", 0.0, 1.0, 0.05, "%.2f V")
         with c3:
             C.segmented(scope, "show", "Show", ["common", "diff"],
-                        fmt=lambda s: "common mode" if s == "common" else "differential", disabled=not unlocked)
+                        fmt=lambda s: "common mode" if s == "common" else "differential")
         with c4:
             C.reset_button(scope, defaults)
     equation.strip(
@@ -177,7 +176,7 @@ def _problem(lesson, scene) -> None:
 
 def _opamp(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     vd = C.value(scope, "vd") * 1e-6
     A = C.value(scope, "A")
     v_minus = VCM
@@ -186,12 +185,12 @@ def _opamp(lesson, scene) -> None:
     res = L.resolved(scope, scene)
     L.main_row(scope, scene, F.opamp_open(v_plus, v_minus, v_out, RAIL, selected=res.highlight))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([3, 2.4, 1])
         with c1:
-            C.slider(scope, "vd", "V₊ − V₋ · input difference", -500, 500, 10, "%d µV", disabled=not unlocked)
+            C.slider(scope, "vd", "V₊ − V₋ · input difference", -500, 500, 10, "%d µV")
         with c2:
-            C.select_slider(scope, "A", "A_d · open-loop gain", A_CHOICES, _A, disabled=not unlocked)
+            C.select_slider(scope, "A", "A_d · open-loop gain", A_CHOICES, _A)
         with c3:
             C.reset_button(scope, defaults)
     sat = abs(A * vd) > RAIL
@@ -229,7 +228,7 @@ def _opamp(lesson, scene) -> None:
 
 def _feedback(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     vin, fb, G, A = (C.value(scope, k) for k in ("vin", "fb", "gain", "A"))
     R1, R2 = NI_GAINS[G], NI_R2
     beta = R2 / (R1 + R2)
@@ -242,21 +241,20 @@ def _feedback(lesson, scene) -> None:
     res = L.resolved(scope, scene)
     L.main_row(scope, scene, F.noninv(vin, v_out, v_fb, R1, R2, selected=res.highlight, feedback=fb, sat=sat))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.6, 2.2, 2.2, 1])
         with c1:
-            C.slider(scope, "vin", "V_in · input voltage", -2.0, 2.0, 0.05, "%.2f V", disabled=not unlocked)
+            C.slider(scope, "vin", "V_in · input voltage", -2.0, 2.0, 0.05, "%.2f V")
         with c2:
             C.segmented(scope, "fb", "Feed back to", ["negative", "positive"],
-                        fmt=lambda s: "− input (negative)" if s == "negative" else "+ input (positive)",
-                        disabled=not unlocked)
+                        fmt=lambda s: "− input (negative)" if s == "negative" else "+ input (positive)")
         with c3:
             C.segmented(scope, "gain", "R₁ · feedback resistor (R₂ = 1 kΩ)", list(NI_GAINS),
-                        fmt=lambda g: _ohm(NI_GAINS[g]), disabled=not unlocked)
+                        fmt=lambda g: _ohm(NI_GAINS[g]))
         with c4:
             C.reset_button(scope, defaults)
         with st.expander("More controls"):
-            C.select_slider(scope, "A", "A_d · open-loop gain", A_CHOICES, _A, disabled=not unlocked,
+            C.select_slider(scope, "A", "A_d · open-loop gain", A_CHOICES, _A,
                             help="A smaller A_d makes the virtual short less perfect: V₊ − V₋ = V_out / A_d.")
     if fb == "negative":
         diff = vin - v_fb
@@ -305,7 +303,7 @@ def _feedback(lesson, scene) -> None:
 
 def _noninv(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     src, G, vtest, vd = (C.value(scope, k) for k in ("src", "gain", "vtest", "vd"))
     R1, R2 = NI_GAINS[G], NI_R2
     vin = VCM + vd * 1e-3 / 2 if src == "bridge" else vtest * 1e-3
@@ -314,19 +312,19 @@ def _noninv(lesson, scene) -> None:
     L.main_row(scope, scene, F.noninv(vin, r.v_out, r.v_minus, R1, R2, selected=res.highlight, source=src,
                                       sat=r.saturated))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.4, 2.2, 2.6, 1])
         with c1:
             C.segmented(scope, "src", "Input", ["bridge", "test"],
-                        fmt=lambda s: "bridge node V₂" if s == "bridge" else "small test signal", disabled=not unlocked)
+                        fmt=lambda s: "bridge node V₂" if s == "bridge" else "small test signal")
         with c2:
-            C.segmented(scope, "gain", "Gain 1 + R₁/R₂", list(NI_GAINS), fmt=str, disabled=not unlocked)
+            C.segmented(scope, "gain", "Gain 1 + R₁/R₂", list(NI_GAINS), fmt=str)
         with c3:
             if src == "bridge":
                 C.slider(scope, "vd", "V_d · strain signal of the bridge", 0.0, 5.0, 0.25, "%.2f mV",
-                         disabled=not unlocked, help="The node sits at 2.5 V + V_d/2.")
+                         help="The node sits at 2.5 V + V_d/2.")
             else:
-                C.slider(scope, "vtest", "test signal amplitude", 0, 500, 10, "%d mV", disabled=not unlocked)
+                C.slider(scope, "vtest", "test signal amplitude", 0, 500, 10, "%d mV")
         with c4:
             C.reset_button(scope, defaults)
     ideal = (1 + R1 / R2) * vin
@@ -372,7 +370,7 @@ def _noninv(lesson, scene) -> None:
 
 def _diffamp(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     k, vd, mis, pick = (C.value(scope, c) for c in ("k", "vd", "mis", "pick"))
     R = (1e3, k * 1e3, 1e3, k * 1e3 * (1 + mis / 100))
     v1 = VCM + pick - vd * 1e-3 / 2
@@ -383,20 +381,19 @@ def _diffamp(lesson, scene) -> None:
     L.main_row(scope, scene, F.diffamp(v1, v2, r.v_out, R, selected=res.highlight, i1=r.i_in1, i2=r.i_in2,
                                        sat=r.saturated))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.2, 2.4, 2.6, 1])
         with c1:
-            C.segmented(scope, "k", "Gain R₂/R₁ = R₄/R₃", DA_K, fmt=str, disabled=not unlocked)
+            C.segmented(scope, "k", "Gain R₂/R₁ = R₄/R₃", DA_K, fmt=str)
         with c2:
-            C.slider(scope, "vd", "V_d · bridge signal (peak)", 0.0, 5.0, 0.25, "%.2f mV", disabled=not unlocked)
+            C.slider(scope, "vd", "V_d · bridge signal (peak)", 0.0, 5.0, 0.25, "%.2f mV")
         with c3:
-            C.slider(scope, "mis", "R₄ mismatch", -5.0, 5.0, 0.1, "%+.1f %%", disabled=not unlocked,
+            C.slider(scope, "mis", "R₄ mismatch", -5.0, 5.0, 0.1, "%+.1f %%",
                      help="R₄ = (R₂/R₁)·R₃·(1 + mismatch). 0 % = perfectly matched.")
         with c4:
             C.reset_button(scope, defaults)
         with st.expander("More controls"):
-            C.slider(scope, "pick", "v_pickup · mains pickup on both inputs (peak)", 0.0, 1.0, 0.05, "%.2f V",
-                     disabled=not unlocked)
+            C.slider(scope, "pick", "v_pickup · mains pickup on both inputs (peak)", 0.0, 1.0, 0.05, "%.2f V")
     numbers = (rf"= {v2:.5f}\cdot\frac{{{R[3]:.6g}}}{{{R[2]:.6g} + {R[3]:.6g}}}\left(1 + {k:g}\right)"
                rf" - {v1:.5f}\cdot {k:g}")
     equation.strip(
@@ -453,7 +450,7 @@ def _ina_traces(R1: float, vd: float, pick: float, mis: float, n: int = 160) -> 
 
 def _ina(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     R1, vd_mV, view, probe, mis, pick = (C.value(scope, c) for c in ("R1", "vd", "view", "probe", "mis", "pick"))
     vd = vd_mV * 1e-3 if view == "diff" else 0.0
     v1 = VCM + pick - vd / 2
@@ -466,27 +463,27 @@ def _ina(lesson, scene) -> None:
     L.main_row(scope, scene, F.ina(r, R1, INA_R2, INA_R, selected=sel.highlight, view=view, probe=probe,
                                    mismatch=mis_f, i_max=i_max), ratio=(7, 3))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.8, 2.2, 2.4, 1])
         with c1:
             C.select_slider(scope, "R1", "R₁ · gain resistor", INA_R1,
-                            lambda v: f"{_ohm(v)} → gain {amp.ina_gain_ideal(v, INA_R2):g}", disabled=not unlocked)
+                            lambda v: f"{_ohm(v)} → gain {amp.ina_gain_ideal(v, INA_R2):g}")
         with c2:
             C.segmented(scope, "view", "Input", ["common", "diff"],
-                        fmt=lambda s: "pure common mode" if s == "common" else "+ strain signal", disabled=not unlocked)
+                        fmt=lambda s: "pure common mode" if s == "common" else "+ strain signal")
         with c3:
             C.segmented(scope, "probe", "Probe", ["in", "stage1", "out"],
-                        fmt={"in": "inputs", "stage1": "after stage 1", "out": "output"}.get, disabled=not unlocked)
+                        fmt={"in": "inputs", "stage1": "after stage 1", "out": "output"}.get)
         with c4:
             C.reset_button(scope, defaults)
         with st.expander("More controls"):
             m1, m2, m3 = st.columns(3)
             with m1:
-                C.slider(scope, "vd", "V_d · bridge signal (peak)", 0.0, 5.0, 0.25, "%.2f mV", disabled=not unlocked)
+                C.slider(scope, "vd", "V_d · bridge signal (peak)", 0.0, 5.0, 0.25, "%.2f mV")
             with m2:
-                C.slider(scope, "pick", "v_pickup · mains pickup (peak)", 0.0, 1.0, 0.05, "%.2f V", disabled=not unlocked)
+                C.slider(scope, "pick", "v_pickup · mains pickup (peak)", 0.0, 1.0, 0.05, "%.2f V")
             with m3:
-                C.slider(scope, "mis", "Stage-2 resistor mismatch", -5.0, 5.0, 0.1, "%+.1f %%", disabled=not unlocked)
+                C.slider(scope, "mis", "Stage-2 resistor mismatch", -5.0, 5.0, 0.1, "%+.1f %%")
     equation.strip(
         scope, scene,
         law=r"[[Vout]] = [[Vo2]] - [[Vo1]] = \left([[gain]]\right)\left([[V2]] - [[V1]]\right)",

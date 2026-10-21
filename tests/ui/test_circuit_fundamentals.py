@@ -56,7 +56,14 @@ def test_handbook_loads_without_database_or_private_schedule(monkeypatch):
     math = [m.value for m in at.latex]
     for representative in (r"V_{AB}=V_A-V_B", r"\tau=RC", r"\mathrm{ASD}(f)=\sqrt{S_x(f)}"):
         assert any(representative in rendered for rendered in math)
-    assert not at.slider and not at.radio and not at.selectbox
+    assert not at.slider and not at.radio and not at.selectbox and not at.toggle
+    # Formula Summary repeats section names; its headings must not create duplicate jump IDs.
+    from tutor.ui.pages.circuit_reference import SUMMARY
+    assert [heading.proto.anchor for heading in list(at.subheader)[-len(SUMMARY):]] == [
+        f"summary-{i}" for i in range(len(SUMMARY))
+    ]
+    anchors = [heading.proto.anchor for heading in list(at.header) + list(at.subheader) if heading.proto.anchor]
+    assert len(anchors) == len(set(anchors))
 
 
 def test_bridge_and_ina_reference_follow_simulator_conventions():

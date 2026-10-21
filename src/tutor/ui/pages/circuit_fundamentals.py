@@ -23,9 +23,7 @@ def render() -> None:
     st.caption("Ideal lumped circuits unless stated otherwise. Next step marks supplemental material. "
                "Symbols are defined locally; read the assumptions before applying a shortcut. "
                "This reference does not record learner progress.")
-    animate = diagram.motion_control("motion_handbook")
-    st.caption("Animated markers guide the eye along static curves; they do not represent electron speed. "
-               "Use the toggle to pause; device Reduce Motion is respected.")
+    st.caption("Animated markers guide the eye along static curves; they do not represent electron speed.")
     with st.container(key="handbook"):
         for i, section in enumerate(SECTIONS):
             st.header(section.title, anchor=section.anchor)
@@ -39,7 +37,7 @@ def render() -> None:
                 if entry.figure == "chain":
                     layout.sensor_map(None)
                 elif entry.figure:
-                    diagram.show(figure(entry.figure), animate=animate, max_width=960)
+                    diagram.show(figure(entry.figure), max_width=960)
                     if entry.figure == "divider":
                         st.caption("Vout is measured from the midpoint to ground; no load is attached.")
                 if entry.note:
@@ -52,8 +50,9 @@ def render() -> None:
             if (i + 1) % 3 == 0:
                 st.markdown('[↑ Back to top](#handbook-top)')
         st.header("Formula Summary", anchor="formula-summary")
-        for title, equations in SUMMARY:
-            st.subheader(title)
+        for index, (title, equations) in enumerate(SUMMARY):
+            # Summary names repeat section names; reserve jump IDs for sections.
+            st.subheader(title, anchor=f"summary-{index}")
             for eq in equations:
                 st.latex(eq)
         st.markdown('[↑ Back to top](#handbook-top)')

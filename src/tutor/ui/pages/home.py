@@ -134,7 +134,7 @@ def render() -> None:
 
     st.markdown("### How to use this")
     st.markdown(
-        "1. **Learn** a scene: predict first, then move the controls and watch the picture.  \n"
+        "1. **Learn** a scene: move the controls and watch the picture. Predictions are optional.  \n"
         "2. Click any **part** or **symbol** — the part, its control and its symbol light up together.  \n"
         "3. **Check** with auto-graded problems — wrong answers name the likely misconception.  \n"
         "4. **Explain it** out loud, tick what you covered, answer the examiner's follow-up.  \n"

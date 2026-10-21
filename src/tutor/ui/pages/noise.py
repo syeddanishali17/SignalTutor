@@ -142,7 +142,7 @@ def _band_model_power(kind: str, level: float, f1: float, f2: float) -> float:
 
 def _noise(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     mode, level = C.value(scope, "mode"), C.value(scope, "level")
     t = np.linspace(0, 1.0, 1200)
     clean = nz.clean_measurement(t)
@@ -153,15 +153,13 @@ def _noise(lesson, scene) -> None:
                                      noise_label="noise n(t)" if mode == "additive" else "relative noise n(t)",
                                      noise_range=(-0.5, 0.5)))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([2.6, 3, 1])
         with c1:
             C.segmented(scope, "mode", "How the noise enters", ["additive", "multiplicative"],
-                        fmt=lambda m: "additive  V + n" if m == "additive" else "multiplicative  V·(1 + n)",
-                        disabled=not unlocked)
+                        fmt=lambda m: "additive  V + n" if m == "additive" else "multiplicative  V·(1 + n)")
         with c2:
-            C.slider(scope, "level", "noise size σ (in V, or relative for ×)", 0.0, 0.15, 0.01, "%.2f",
-                     disabled=not unlocked)
+            C.slider(scope, "level", "noise size σ (in V, or relative for ×)", 0.0, 0.15, 0.01, "%.2f")
         with c3:
             C.reset_button(scope, defaults)
     k = len(t) // 5
@@ -193,7 +191,7 @@ def _noise(lesson, scene) -> None:
 
 def _stats(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     level, n = C.value(scope, "level"), int(C.value(scope, "n"))
     x = level * _unit_white(10000, 31)[:n]
     mean, var = float(np.mean(x)), float(np.var(x))
@@ -203,13 +201,12 @@ def _stats(lesson, scene) -> None:
     L.main_row(scope, scene, F.chain(np.zeros(min(n, 600)), x[:600], x[:600], selected=res.highlight, show_sigma=True,
                                      out_range=(-0.6, 0.6), noise_range=(-0.6, 0.6), noise_label="noise n(t)"))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3 = st.columns([3, 2.4, 1])
         with c1:
-            C.slider(scope, "level", "noise size (true σ)", 0.01, 0.2, 0.01, "%.2f V", disabled=not unlocked)
+            C.slider(scope, "level", "noise size (true σ)", 0.01, 0.2, 0.01, "%.2f V")
         with c2:
-            C.segmented(scope, "n", "number of samples N", [100, 1000, 10000], fmt=lambda v: f"{v:,}",
-                        disabled=not unlocked)
+            C.segmented(scope, "n", "number of samples N", [100, 1000, 10000], fmt=lambda v: f"{v:,}")
         with c3:
             C.reset_button(scope, defaults)
     equation.strip(
@@ -254,7 +251,7 @@ def _stats(lesson, scene) -> None:
 
 def _spectrum(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     a = [C.value(scope, k) for k in ("a1", "a2", "a3")]
     level = C.value(scope, "level")
     fs, n = 2000.0, 8000
@@ -268,14 +265,14 @@ def _spectrum(lesson, scene) -> None:
     res = L.resolved(scope, scene)
     L.main_row(scope, scene, F.spectrum(list(zip(SPEC_F, a)), selected=res.highlight, floor=floor))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         a_cols = st.columns(3)
         for i, (k, fk) in enumerate(zip(("a1", "a2", "a3"), SPEC_F)):
             with a_cols[i]:
-                C.slider(scope, k, f"A{'₁₂₃'[i]} · sine at {fk:g} Hz", 0.0, 1.0, 0.05, "%.2f V", disabled=not unlocked)
+                C.slider(scope, k, f"A{'₁₂₃'[i]} · sine at {fk:g} Hz", 0.0, 1.0, 0.05, "%.2f V")
         n_col, r_col = st.columns([4, 1])
         with n_col:
-            C.slider(scope, "level", "noise σ", 0.0, 0.5, 0.05, "%.2f V", disabled=not unlocked)
+            C.slider(scope, "level", "noise σ", 0.0, 0.5, 0.05, "%.2f V")
         with r_col:
             C.reset_button(scope, defaults)
     equation.strip(
@@ -317,7 +314,7 @@ def _psd(lesson, scene) -> None:
     kind = C.value(scope, "kind")
     if st.session_state.get(C.wkey(scope, "level")) not in (S0_CHOICES if kind == "white" else S1_CHOICES):
         st.session_state[C.wkey(scope, "level")] = 1e-5 if kind == "white" else 1e-4
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     level, asd = C.value(scope, "level"), C.value(scope, "asd")
     x, f, S = _noise_record(kind, level)
     model = _model(kind, level)
@@ -327,17 +324,17 @@ def _psd(lesson, scene) -> None:
                      s0_label=(f"S₀ = {_sci(level, 'V²/Hz')}" if kind == "white" else f"S₁/f, S₁ = {_sci(level, 'V²')}"))
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.2, 3, 2, 1])
         with c1:
             C.segmented(scope, "kind", "Noise shape", ["white", "pink"],
-                        fmt=lambda k: "white (flat)" if k == "white" else "1/f", disabled=not unlocked)
+                        fmt=lambda k: "white (flat)" if k == "white" else "1/f")
         with c2:
             choices = S0_CHOICES if kind == "white" else S1_CHOICES
             C.select_slider(scope, "level", "S₀ · white level" if kind == "white" else "S₁ · 1/f level", choices,
-                            lambda v: _sci(v, "V²/Hz" if kind == "white" else "V²"), disabled=not unlocked)
+                            lambda v: _sci(v, "V²/Hz" if kind == "white" else "V²"))
         with c3:
-            C.toggle(scope, "asd", "Show as spectral amplitude √S", disabled=not unlocked)
+            C.toggle(scope, "asd", "Show as spectral amplitude √S")
         with c4:
             C.reset_button(scope, defaults)
     at = [10.0, 100.0, 1000.0]
@@ -390,7 +387,7 @@ def _band(lesson, scene) -> None:
     kind = C.value(scope, "kind")
     if st.session_state.get(C.wkey(scope, "level")) not in (S0_CHOICES if kind == "white" else S1_CHOICES):
         st.session_state[C.wkey(scope, "level")] = 1e-5 if kind == "white" else 1e-4
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     level, f1, f2 = C.value(scope, "level"), C.value(scope, "f1"), C.value(scope, "f2")
     if f2 <= f1:  # the learner crossed the edges: use the band between them (never empty)
         f1, f2 = (f2, f1) if f2 < f1 else (f1, f1 * 2)
@@ -409,18 +406,18 @@ def _band(lesson, scene) -> None:
                      area_label=f"σ² = {_sci(p_model, 'V²')}")
     L.main_row(scope, scene, svg)
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2, 2.2, 2, 2])
         with c1:
             C.segmented(scope, "kind", "Noise shape", ["white", "pink"],
-                        fmt=lambda k: "white" if k == "white" else "1/f", disabled=not unlocked)
+                        fmt=lambda k: "white" if k == "white" else "1/f")
         with c2:
             C.select_slider(scope, "level", "level", S0_CHOICES if kind == "white" else S1_CHOICES,
-                            lambda v: _sci(v, "V²/Hz" if kind == "white" else "V²"), disabled=not unlocked)
+                            lambda v: _sci(v, "V²/Hz" if kind == "white" else "V²"))
         with c3:
-            C.select_slider(scope, "f1", "f₁ · lower edge", F_EDGES[:-1], lambda v: f"{v:g} Hz", disabled=not unlocked)
+            C.select_slider(scope, "f1", "f₁ · lower edge", F_EDGES[:-1], lambda v: f"{v:g} Hz")
         with c4:
-            C.select_slider(scope, "f2", "f₂ · upper edge", F_EDGES[1:], lambda v: f"{v:g} Hz", disabled=not unlocked)
+            C.select_slider(scope, "f2", "f₂ · upper edge", F_EDGES[1:], lambda v: f"{v:g} Hz")
         C.reset_button(scope, defaults)
     if kind == "white":
         numbers = rf"= {_tex_sci(level)}\,\tfrac{{\text{{V}}^2}}{{\text{{Hz}}}}\times({f2:g} - {f1:g})\,\text{{Hz}}"
@@ -470,7 +467,7 @@ def _band(lesson, scene) -> None:
 
 def _sides(lesson, scene) -> None:
     scope, defaults = _setup(scene)
-    unlocked = L.top(scope, lesson, scene)
+    L.top(scope, lesson, scene)
     kind, f1, f2 = C.value(scope, "kind"), C.value(scope, "f1"), C.value(scope, "f2")
     if f2 <= f1:
         f1, f2 = min(f1, f2), max(f1, f2) + 50
@@ -487,15 +484,15 @@ def _sides(lesson, scene) -> None:
     res = L.resolved(scope, scene)
     L.main_row(scope, scene, F.sides_view(fmax, kind=kind, selected=res.highlight, band=(f1, f2)))
     with st.container(key="tray"):
-        L.tray_header(not unlocked)
+        L.tray_header()
         c1, c2, c3, c4 = st.columns([2.2, 2.6, 2.6, 1])
         with c1:
             C.segmented(scope, "kind", "Noise shape", ["white", "pink"],
-                        fmt=lambda k: "white" if k == "white" else "1/f", disabled=not unlocked)
+                        fmt=lambda k: "white" if k == "white" else "1/f")
         with c2:
-            C.slider(scope, "f1", "f₁", 0.0, 900.0, 50.0, "%.0f Hz", disabled=not unlocked)
+            C.slider(scope, "f1", "f₁", 0.0, 900.0, 50.0, "%.0f Hz")
         with c3:
-            C.slider(scope, "f2", "f₂", 100.0, 1000.0, 50.0, "%.0f Hz", disabled=not unlocked)
+            C.slider(scope, "f2", "f₂", 100.0, 1000.0, 50.0, "%.0f Hz")
         with c4:
             C.reset_button(scope, defaults)
     equation.strip(

@@ -3,7 +3,7 @@
 Drives a headless Microsoft Edge / Chrome over the DevTools protocol and waits
 until Streamlit has finished rendering (no running indicator, no skeletons)
 before capturing. Dev tool only; needs the app running with TUTOR_DEV=1 for the
-``?unlock=1&sel=…`` hooks.
+``?sel=…`` selection hook. All controls are interactive without setup.
 
     python scripts/qa_screenshots.py OUT_DIR name=path[@width] ...
     python scripts/qa_screenshots.py shots pgA=playground?scene=divider@768

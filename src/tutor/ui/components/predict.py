@@ -1,9 +1,4 @@
-"""Predict, then observe (spec 4.2 / 16.6 predict_prompt).
-
-The controls of a scene stay locked until the learner commits a prediction (or
-explicitly skips). After committing, the verdict compares predicted vs
-observed and the prediction is stored in SQLite.
-"""
+"""Optional predictions, recorded independently of the live experiment."""
 
 from __future__ import annotations
 
@@ -18,49 +13,36 @@ def _key(scope: str) -> str:
     return f"pred__{scope}"
 
 
-def committed(scope: str) -> str | None:
-    """The committed option id, ``"__skipped"``, or ``None``."""
+def checked(scope: str) -> str | None:
+    """The saved option id, or None when the learner has not checked it."""
     return st.session_state.get(_key(scope))
 
 
-def is_unlocked(scope: str, predict: Predict | None) -> bool:
-    return predict is None or state.mode() == "exam" or committed(scope) is not None
-
-
-def clear(scope: str) -> None:
-    st.session_state.pop(_key(scope), None)
-
-
 def prompt(scope: str, lesson_id: str, predict: Predict | None) -> None:
-    """Render the prediction block (nothing in exam mode)."""
+    """Offer a thinking aid without changing circuit state (hidden in exam mode)."""
     if predict is None or state.mode() == "exam":
         return
-    done = committed(scope)
     labels = {o.id: o.label for o in predict.options}
-    if done is None:
-        layout.kicker("Predict first — commit before you touch anything")
-        with st.container(key=f"box-predict-{scope}"):
+    # Older sessions may contain a skipped sentinel; it is simply unanswered now.
+    done = checked(scope)
+    if done not in labels:
+        done = None
+    with st.expander("What do you expect?"):
+        st.caption("Optional prediction · Try the live controls whenever you like.")
+        if done is None:
             st.markdown(f"**{predict.question}**")
-            with st.container(horizontal=True, vertical_alignment="bottom"):
-                choice = st.segmented_control("Your prediction", [o.id for o in predict.options],
-                                              format_func=lambda i: labels[i], key=f"{_key(scope)}__choice",
-                                              label_visibility="collapsed")
-                if st.button("Commit prediction", type="primary", disabled=choice is None, key=f"{_key(scope)}__go"):
-                    st.session_state[_key(scope)] = choice
-                    state.service().record_prediction(f"{lesson_id}/{scope}", choice, predict.correct)
-                    st.rerun()
-                if st.button("Skip", type="tertiary", key=f"{_key(scope)}__skip",
-                             help="Predictions make the result stick. Skipping unlocks the controls anyway."):
-                    st.session_state[_key(scope)] = "__skipped"
-                    st.rerun()
-            st.caption("The controls unlock once you commit — guessing wrong is part of the point.")
-        return
-    expected = labels[predict.correct]
-    if done == "__skipped":
-        kind, tag, head = "miss", "Skipped — expected outcome", f"Expected in this scenario: **{expected}**."
-    elif done == predict.correct:
-        kind, tag, head = "hit", "Prediction matches the expected outcome", f"You predicted **{labels[done]}** — expected: **{expected}**."
-    else:
-        kind, tag, head = "miss", "Reconsider your prediction", f"You predicted **{labels[done]}** — expected: **{expected}**."
-    # Blank line: the verdict, the equation and the explanation stay separate lines.
-    layout.box(kind, f"{head}\n\n{predict.reveal}\n\nNow use the controls to try the scenario; the diagram shows the current control values.", title=tag)
+            choice = st.segmented_control("Your prediction", list(labels),
+                                          format_func=labels.get, key=f"{_key(scope)}__choice")
+            if st.button("Check prediction", disabled=choice is None, key=f"{_key(scope)}__go"):
+                state.service().record_prediction(f"{lesson_id}/{scope}", choice, predict.correct)
+                st.session_state[_key(scope)] = choice
+                st.rerun()
+            return
+        expected = labels[predict.correct]
+        if done == predict.correct:
+            kind, tag = "hit", "Prediction matches the expected outcome"
+        else:
+            kind, tag = "miss", "Reconsider your prediction"
+        layout.box(kind, f"You predicted **{labels[done]}**. Expected in this scenario: **{expected}**."
+                   f"\n\n{predict.reveal}\n\nTest the idea with the live controls; "
+                   "the diagram shows the current control values.", title=tag)
